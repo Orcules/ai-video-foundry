@@ -1,0 +1,12 @@
+{
+  "max_workers": 20,
+  "queue_drain_interval_seconds": 15,
+  "job_artifacts_retention_days": 7,
+  "gcs_asset_persistence": "all",
+  "_gcs_asset_persistence_options": "all = upload all intermediates + final video to GCS | final_video_only = upload only final video to GCS | none = no GCS uploads (Mux still uploads final video as always)",
+  "defaults": {
+    "max_concurrent_jobs": 10,
+    "max_concurrent_per_customer": 5,
+    "max_queued_jobs": 50
+  }
+}

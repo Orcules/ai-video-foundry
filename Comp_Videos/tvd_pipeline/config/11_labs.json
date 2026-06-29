@@ -1,0 +1,28 @@
+{
+  "tts_model": "eleven_v3",
+  "sts_model": "eleven_multilingual_sts_v2",
+  "voice_settings": {
+    "normal": {
+      "stability": 0.5,
+      "similarity_boost": 0.75,
+      "style": 0.0,
+      "use_speaker_boost": true
+    },
+    "expressive": {
+      "stability": 0.0,
+      "similarity_boost": 0.75,
+      "style": 0.55,
+      "use_speaker_boost": true
+    }
+  },
+  "default_voices": {
+    "female": "21m00Tcm4TlvDq8ikWAM",
+    "male": "pNInz6obpgDQGcFmaJgB"
+  },
+  "language_voices": {
+    "he": {
+      "male": "8Q33DcKUm1QhbjQ4bqpD",
+      "female": "5K8bxz8WOmQy4pTCvp0q"
+    }
+  }
+}

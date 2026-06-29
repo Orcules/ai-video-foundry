@@ -1,0 +1,41 @@
+{
+  "default": {
+    "scene_images": [
+      "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/a5c6ef89-3da6-40a7-a93a-564b2b0dfb35/scene_images/scene_01.jpg",
+      "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/a5c6ef89-3da6-40a7-a93a-564b2b0dfb35/scene_images/scene_02.jpg",
+      "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/a5c6ef89-3da6-40a7-a93a-564b2b0dfb35/scene_images/scene_03.jpg",
+      "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/a5c6ef89-3da6-40a7-a93a-564b2b0dfb35/scene_images/scene_04.jpg",
+      "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/a5c6ef89-3da6-40a7-a93a-564b2b0dfb35/scene_images/scene_05.jpg"
+    ],
+    "scene_videos": [
+      "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/a5c6ef89-3da6-40a7-a93a-564b2b0dfb35/scene_videos/scene_01.mp4",
+      "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/a5c6ef89-3da6-40a7-a93a-564b2b0dfb35/scene_videos/scene_02.mp4",
+      "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/a5c6ef89-3da6-40a7-a93a-564b2b0dfb35/scene_videos/scene_03.mp4",
+      "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/a5c6ef89-3da6-40a7-a93a-564b2b0dfb35/scene_videos/scene_04.mp4",
+      "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/a5c6ef89-3da6-40a7-a93a-564b2b0dfb35/scene_videos/scene_05.mp4"
+    ],
+    "music_url": "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/a5c6ef89-3da6-40a7-a93a-564b2b0dfb35/music.mp3",
+    "vo_audio_url": "https://storage.googleapis.com/automatiq/Comp/Final_Video/product_videos/row_None_vo_1772377698.mp3",
+    "product_image": "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/a5c6ef89-3da6-40a7-a93a-564b2b0dfb35/scene_images/scene_01.jpg",
+    "final_video_url": "https://storage.googleapis.com/automatiq/Comp/Final_Video/Comp/Final_Video/product_videos/row_None_subtitled_1772378042.mp4"
+  },
+  "product video": {},
+  "influencer": {
+    "scene_images": [
+      "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/2b1bccf8-0082-4060-9920-8d45ee6ac286/scene_images/scene_01.jpg",
+      "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/2b1bccf8-0082-4060-9920-8d45ee6ac286/scene_images/scene_02.jpg",
+      "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/2b1bccf8-0082-4060-9920-8d45ee6ac286/scene_images/scene_03.jpg",
+      "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/2b1bccf8-0082-4060-9920-8d45ee6ac286/scene_images/scene_04.jpg"
+    ],
+    "scene_videos": [
+      "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/2b1bccf8-0082-4060-9920-8d45ee6ac286/scene_videos/scene_01.mp4",
+      "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/2b1bccf8-0082-4060-9920-8d45ee6ac286/scene_videos/scene_02.mp4",
+      "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/2b1bccf8-0082-4060-9920-8d45ee6ac286/scene_videos/scene_03.mp4",
+      "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/2b1bccf8-0082-4060-9920-8d45ee6ac286/scene_videos/scene_04.mp4"
+    ],
+    "music_url": "https://storage.googleapis.com/automatiq/Comp/Final_Video/jobs/2b1bccf8-0082-4060-9920-8d45ee6ac286/music.mp3",
+    "vo_audio_url": "https://storage.googleapis.com/automatiq/Comp/Final_Video/ugc_videos/row_None_vo_1772443712.mp3",
+    "final_video_url": "https://storage.googleapis.com/automatiq/Comp/Final_Video/Comp/Final_Video/ugc_videos/row_None_subtitled_1772444016.mp4"
+  },
+  "personal-brand": {}
+}

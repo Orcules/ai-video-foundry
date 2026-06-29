@@ -1,0 +1,44 @@
+{
+  "template_ids": [
+    "your-zapcap-template-id",
+    "50cdfac1-0a7a-48dd-af14-4d24971e213a",
+    "55267be2-9eec-4d06-aff8-edcb401b112e",
+    "7b946549-ae16-4085-9dd3-c20c82504daa",
+    "982ad276-a76f-4d80-a4e2-b8fae0038464",
+    "a51c5222-47a7-4c37-b052-7b9853d66bf6",
+    "ca050348-e2d0-49a7-9c75-7a5e8335c67d",
+    "d46bb0da-cce0-4507-909d-fa8904fb8ed7",
+    "dfe027d9-bd9d-4e55-a94f-d57ed368a060",
+    "e659ee0c-53bb-497e-869c-90f8ec0a921f",
+    "d2018215-2125-41c1-940e-f13b411fff5c",
+    "1c0c9b65-47c4-41bf-a187-25a8305fd0dd",
+    "a104df87-5b1a-4490-8cca-62e504a84615",
+    "6255949c-4a52-4255-8a67-39ebccfaa3ef",
+    "a6760d82-72c1-4190-bfdb-7d9c908732f1"
+  ],
+  "style_override": false,
+  "position_only_override": false,
+  "render_options": {
+    "subs_options": {
+      "emoji": true,
+      "emojiAnimation": true,
+      "emphasizeKeywords": true,
+      "displayWords": 3
+    },
+    "style_options": {
+      "top": 50,
+      "fontUppercase": false,
+      "fontSize": 42,
+      "fontWeight": 700,
+      "fontColor": "#FFFFFF",
+      "fontShadow": "m",
+      "stroke": "m",
+      "strokeColor": "#000000"
+    }
+  },
+  "subtitle_position_map": {
+    "top": 15,
+    "middle": 50,
+    "bottom": 80
+  }
+}

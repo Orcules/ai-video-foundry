@@ -1,0 +1,1 @@
+Describe what you see in this video clip in one sentence.

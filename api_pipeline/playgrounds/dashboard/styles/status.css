@@ -1,0 +1,209 @@
+.status-bar {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.status-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-idle { background: var(--surface2); color: var(--text2); }
+.badge-running { background: rgba(99,102,241,0.15); color: var(--accent2); }
+.badge-complete { background: rgba(34,197,94,0.15); color: var(--green); }
+.badge-error { background: rgba(239,68,68,0.15); color: var(--red); }
+.badge-aborted { background: rgba(249,115,22,0.15); color: var(--orange); }
+.badge-paused { background: rgba(234,179,8,0.15); color: var(--yellow); }
+.badge-queued { background: rgba(168,85,247,0.15); color: #c084fc; }
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.badge-running .status-dot {
+  background: var(--accent2);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.badge-idle .status-dot { background: var(--text2); }
+.badge-complete .status-dot { background: var(--green); }
+.badge-error .status-dot { background: var(--red); }
+.badge-aborted .status-dot { background: var(--orange); }
+
+.badge-paused .status-dot {
+  background: var(--yellow);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.badge-queued .status-dot {
+  background: #c084fc;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.job-id-display {
+  font-size: 12px;
+  color: var(--text2);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+.btn-copy-id {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text2);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 1px 5px;
+  margin-left: 4px;
+  vertical-align: middle;
+  transition: color 0.2s, border-color 0.2s;
+}
+.btn-copy-id:hover { color: var(--accent); border-color: var(--accent); }
+
+.active-jobs-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.active-jobs-row select {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  padding: 6px 10px;
+  outline: none;
+  transition: border-color 0.2s;
+  cursor: pointer;
+}
+
+.active-jobs-row select:focus {
+  border-color: var(--cyan, #22d3ee);
+}
+
+.active-jobs-row select option {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.monitor-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.monitor-row input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  padding: 6px 10px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.monitor-row input:focus {
+  border-color: var(--cyan, #22d3ee);
+}
+
+.monitor-row input::placeholder {
+  color: var(--text2);
+  opacity: 0.6;
+}
+
+.btn-monitor {
+  background: transparent;
+  border: 1px solid var(--cyan, #22d3ee);
+  border-radius: 6px;
+  color: var(--cyan, #22d3ee);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.btn-monitor:hover {
+  background: rgba(34, 211, 238, 0.1);
+}
+
+.btn-monitor:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.progress-container {
+  background: var(--bg);
+  border-radius: 6px;
+  height: 24px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 6px;
+  transition: width 0.5s ease-out;
+  position: relative;
+}
+
+.progress-fill.complete {
+  background: linear-gradient(90deg, var(--green), #4ade80);
+}
+
+.progress-fill.error {
+  background: linear-gradient(90deg, var(--red), #f87171);
+}
+
+.progress-text {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}

@@ -1,0 +1,51 @@
+{
+  "_valid_values": {
+    "_description": "Reference for valid values. Not used by code — only for human readers.",
+    "video_model": ["veo-3.0", "veo-3.0-fast", "veo-3.1", "veo-3.1-fast", "kling-2.5", "kling-2.6", "runway", "runway-gen4-turbo", "none"],
+    "video_provider": ["direct", "kie"],
+    "video_resolution": ["720p", "1080p", "4k"],
+    "image_model": ["nano-banana-pro", "gemini-3-pro-image", "gemini-3-flash", "nano-banana-2", "gemini-25-flash-image"],
+    "image_provider": ["direct", "kie"],
+    "image_resolution": ["1K", "2K", "4K"]
+  },
+  "product": {
+    "720p_low":  { "video_model": "veo-3.0-fast", "video_provider": "direct", "video_resolution": "720p",  "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "720p_high": { "video_model": "veo-3.0",      "video_provider": "direct", "video_resolution": "720p",  "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "1080p_low": { "video_model": "veo-3.0-fast", "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "1080p_high":{ "video_model": "veo-3.0",      "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "4k_low":    { "video_model": "veo-3.0-fast", "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "2K" },
+    "4k_high":   { "video_model": "veo-3.0",      "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "4K" }
+  },
+  "influencer": {
+    "720p_low":  { "video_model": "veo-3.0-fast", "video_provider": "direct", "video_resolution": "720p",  "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "720p_high": { "video_model": "veo-3.0",      "video_provider": "direct", "video_resolution": "720p",  "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "1080p_low": { "video_model": "veo-3.0-fast", "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "1080p_high":{ "video_model": "veo-3.0",      "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "4k_low":    { "video_model": "veo-3.0-fast", "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "2K" },
+    "4k_high":   { "video_model": "veo-3.0",      "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "4K" }
+  },
+  "personal_brand": {
+    "720p_low":  { "video_model": "veo-3.0-fast", "video_provider": "direct", "video_resolution": "720p",  "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "720p_high": { "video_model": "veo-3.0",      "video_provider": "direct", "video_resolution": "720p",  "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "1080p_low": { "video_model": "veo-3.0-fast", "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "1080p_high":{ "video_model": "veo-3.0",      "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "4k_low":    { "video_model": "veo-3.0-fast", "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "2K" },
+    "4k_high":   { "video_model": "veo-3.0",      "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "4K" }
+  },
+  "ugc_real": {
+    "720p_low":  { "video_model": "veo-3.0-fast", "video_provider": "direct", "video_resolution": "720p",  "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "720p_high": { "video_model": "veo-3.0",      "video_provider": "direct", "video_resolution": "720p",  "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "1080p_low": { "video_model": "veo-3.0-fast", "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "1080p_high":{ "video_model": "veo-3.0",      "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "4k_low":    { "video_model": "veo-3.0-fast", "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "2K" },
+    "4k_high":   { "video_model": "veo-3.0",      "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "4K" }
+  },
+  "custom": {
+    "720p_low":  { "video_model": "veo-3.0-fast", "video_provider": "direct", "video_resolution": "720p",  "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "720p_high": { "video_model": "veo-3.0",      "video_provider": "direct", "video_resolution": "720p",  "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "1080p_low": { "video_model": "veo-3.0-fast", "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "1080p_high":{ "video_model": "veo-3.0",      "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "1K" },
+    "4k_low":    { "video_model": "veo-3.0-fast", "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "2K" },
+    "4k_high":   { "video_model": "veo-3.0",      "video_provider": "direct", "video_resolution": "1080p", "image_model": "nano-banana-pro", "image_provider": "kie", "image_resolution": "4K" }
+  }
+}

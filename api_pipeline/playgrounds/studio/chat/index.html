@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VidBuddy — Chat Studio</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/chat.css?v=cb-9" />
+</head>
+<body>
+  <!-- Background blobs (same vibe as home.html) -->
+  <div class="blobs" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <header class="chat-header">
+    <a class="chat-logo" href="/studio/home.html">
+      <span class="material-symbols-outlined">play_circle</span>
+      VidBuddy
+    </a>
+    <div class="chat-header-controls">
+      <div class="chat-mode-switch" id="chatModeSwitch" title="Switch between Concierge (guided) and Director (Gemini 3 Pro plans the whole video) modes">
+        <button class="chat-mode-btn active" id="chatModeConcierge" data-mode="concierge" type="button">
+          <span class="material-symbols-outlined">support_agent</span>
+          Concierge
+        </button>
+        <button class="chat-mode-btn" id="chatModeDirector" data-mode="director" type="button">
+          <span class="material-symbols-outlined">movie_edit</span>
+          Director
+        </button>
+      </div>
+      <span class="chat-cost-chip" id="costChip" hidden>
+        <span class="material-symbols-outlined">savings</span>
+        <span id="costChipText">$0.00</span>
+      </span>
+      <button class="chat-icon-btn" id="resetSessionBtn" title="Start a new chat">
+        <span class="material-symbols-outlined">refresh</span>
+      </button>
+      <a class="chat-link-btn" href="/studio/" title="Open the classic step-by-step studio">
+        <span class="material-symbols-outlined">tune</span>
+        Classic studio
+      </a>
+    </div>
+  </header>
+
+  <div class="chat-auth-banner" id="authBanner" hidden>
+    <span class="material-symbols-outlined">key</span>
+    <span class="chat-auth-text">Enter your API key to start.</span>
+    <input type="password" class="chat-auth-input" id="apiKeyInput" placeholder="sk-..." autocomplete="off" />
+    <button class="chat-btn-primary" id="apiKeySaveBtn">Save</button>
+  </div>
+
+  <!-- Sign-in overlay (Supabase email/password). Shown when cloud auth is on and user is not signed in. -->
+  <div class="chat-signin-overlay" id="signinOverlay" hidden>
+    <div class="chat-signin-card">
+      <div class="chat-signin-header">
+        <span class="material-symbols-outlined">login</span>
+        <h2>Sign in to VidBuddy</h2>
+      </div>
+      <p class="chat-signin-sub" id="signinModeHint">Welcome back. Sign in to start creating.</p>
+      <form id="signinForm" autocomplete="on" novalidate>
+        <label class="chat-signin-label">
+          <span>Email</span>
+          <input type="email" id="signinEmail" autocomplete="email" placeholder="you@example.com" />
+        </label>
+        <label class="chat-signin-label">
+          <span>Password</span>
+          <input type="password" id="signinPassword" autocomplete="current-password" placeholder="••••••••" />
+        </label>
+        <div class="chat-signin-error" id="signinError" hidden></div>
+        <button type="submit" class="chat-btn-primary" id="signinSubmit" style="width:100%;justify-content:center;">
+          <span id="signinSubmitLabel">Sign in</span>
+        </button>
+        <div class="chat-signin-toggle">
+          <span id="signinToggleText">New here?</span>
+          <button type="button" id="signinToggleBtn" class="chat-link-inline">Create an account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <main class="chat-shell">
+    <!-- Left: conversation -->
+    <aside class="chat-panel">
+      <div class="chat-thread" id="chatThread" aria-live="polite">
+        <!-- messages injected by chat.js -->
+      </div>
+
+      <div class="chat-attachments" id="chatAttachments" hidden>
+        <!-- thumbnails of pending attachments -->
+      </div>
+
+      <form class="chat-composer" id="chatComposer">
+        <button type="button" class="chat-icon-btn" id="attachBtn" title="Attach an image">
+          <span class="material-symbols-outlined">attach_file</span>
+        </button>
+        <input type="file" id="attachInput" accept="image/*,video/*" multiple hidden />
+        <textarea
+          id="chatInput"
+          class="chat-input"
+          rows="1"
+          placeholder="Tell me about the video you want to make…"
+          autocomplete="off"
+        ></textarea>
+        <button type="submit" class="chat-send-btn" id="chatSendBtn" disabled>
+          <span class="material-symbols-outlined">send</span>
+        </button>
+      </form>
+
+      <div class="chat-typing" id="typingIndicator" hidden>
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="chat-typing-label">VidBuddy is thinking…</span>
+      </div>
+    </aside>
+
+    <!-- Right: live side panel where uploads, character previews, scenes, players, final video appear -->
+    <section class="side-panel" id="sidePanel">
+      <div class="side-empty" id="sideEmpty">
+        <div class="side-empty-icon">
+          <span class="material-symbols-outlined">movie</span>
+        </div>
+        <p class="side-empty-title">Your video preview will appear here</p>
+        <p class="side-empty-sub">Uploads, scenes, voiceover, and the final result show up on this side as we build them together.</p>
+      </div>
+      <!-- chat.js injects panels here via #sideContent -->
+      <div id="sideContent"></div>
+    </section>
+  </main>
+
+  <!-- Supabase JS + the same StudioAuth wrapper used by the classic studio.
+       This makes a sign-in here equivalent to a sign-in there: the JWT is shared
+       via the same localStorage key managed by Supabase. -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/studio/js/auth.js?v=studio-24"></script>
+  <script src="js/chat.js?v=cb-13" defer></script>
+</body>
+</html>

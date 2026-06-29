@@ -1,0 +1,30 @@
+{
+  "_description": "Model alias translation tables and cost tracker fallback model names.",
+  "animation_model_map": {
+    "google": { "video_model": "veo-3.1-fast", "video_provider": "direct" },
+    "kling":  { "video_model": "kling-2.5",     "video_provider": "kie" },
+    "runway": { "video_model": "runway",         "video_provider": "kie" },
+    "none":   { "video_model": null,             "video_provider": null }
+  },
+  "image_api_map": {
+    "google":         { "image_model": "gemini-3-pro-image",           "image_provider": "direct" },
+    "google-31-flash": { "image_model": "gemini-3.1-flash-image-preview", "image_provider": "direct" },
+    "nano-banana-2":  { "image_model": "nano-banana-2",                "image_provider": "direct" },
+    "gemini-25-flash-image": { "image_model": "gemini-25-flash-image", "image_provider": "direct" },
+    "kie":            { "image_model": "nano-banana-pro",               "image_provider": "kie" },
+    "kie-flash":      { "image_model": "gemini-3-flash",                "image_provider": "kie" }
+  },
+  "cost_tracker_fallbacks": {
+    "veo3_video": "veo-3.0-generate-001",
+    "kling_video": "kling-2.5",
+    "runway_video": "runway-gen4-turbo",
+    "elevenlabs_tts": "eleven_v3",
+    "nano_banana_image": "nano-banana-pro",
+    "suno_music": "suno-v5",
+    "zapcap_subtitles": "zapcap"
+  },
+  "text_model_fallbacks": {
+    "model": "gemini-2.5-flash",
+    "provider": "gemini"
+  }
+}

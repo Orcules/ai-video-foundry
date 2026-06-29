@@ -1,0 +1,56 @@
+{
+  "nano_banana": {
+    "model": "nano-banana-2",
+    "output_format": "jpg",
+    "ugc_real_master_grid_resolution": "4K"
+  },
+  "nano_banana_scene": {
+    "aspect_ratio": "9:16"
+  },
+  "nano_banana_product": {
+    "aspect_ratio": "1:1"
+  },
+  "nano_banana_cta": {
+    "aspect_ratio": "16:9"
+  },
+  "flash": {
+    "stream": false,
+    "include_thoughts": false,
+    "reasoning_effort": "low"
+  },
+  "runway": {
+    "quality": "720p",
+    "waterMark": "",
+    "ratio": "9:16"
+  },
+  "kling": {
+    "negative_prompt": "blur, distort, and low quality",
+    "cfg_scale": 0.5,
+    "aspect_ratio": "9:16"
+  },
+  "seedance": {
+    "model": "bytedance/seedance-2",
+    "resolution": "720p",
+    "aspect_ratio": "9:16",
+    "duration": 5,
+    "generate_audio": false,
+    "nsfw_checker": false,
+    "max_reference_images": 9,
+    "max_reference_videos": 3,
+    "max_reference_audios": 3,
+    "min_duration_seconds": 4,
+    "max_duration_seconds": 15,
+    "seconds_between_create_tasks": 6
+  },
+  "avatar_pro": {
+    "model": "kling/ai-avatar-pro",
+    "max_prompt_length": 5000,
+    "seconds_between_create_tasks": 10,
+    "normalize_input_image": true,
+    "avatar_max_edge_px": 1920,
+    "avatar_min_short_edge_px": 512,
+    "avatar_max_image_bytes": 9500000,
+    "avatar_max_download_bytes": 25165824,
+    "avatar_image_download_timeout_sec": 45
+  }
+}

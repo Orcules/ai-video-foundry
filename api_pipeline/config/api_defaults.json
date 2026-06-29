@@ -1,0 +1,18 @@
+{
+  "_description": "Default values for API request parameters. Edit here instead of code.",
+  "duration": 20,
+  "language": "en",
+  "country": "",
+  "style": "Auto",
+  "animation_model": "auto",
+  "output_resolution": "720p_low",
+  "gender": "f",
+  "image_api": "kie",
+  "product_image_mode": "auto",
+  "quality_check": true,
+  "enrich_cta_with_influencer": false,
+  "max_retries": 3,
+  "simulation_type": "wrapper",
+  "end_card_position": "middle",
+  "subtitle_position": "middle"
+}

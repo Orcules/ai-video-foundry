@@ -1,0 +1,1 @@
+You have the first frame of the presenter in the venue and an additional image of the presenter with a clear face. Animate the first frame. {motion_prompt}

@@ -1,0 +1,2 @@
+[functions.pipeline-mux-webhook]
+verify_jwt = false

@@ -1,0 +1,56 @@
+.upload-btn {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  padding: 0;
+  font-size: 14px;
+}
+
+.upload-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent2);
+  background: rgba(99,102,241,0.1);
+}
+
+.upload-btn.uploading {
+  pointer-events: none;
+  opacity: 0.7;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.upload-btn.done {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.remove-btn {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  padding: 0;
+  font-size: 16px;
+}
+
+.remove-btn:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: rgba(239,68,68,0.1);
+}

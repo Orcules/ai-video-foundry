@@ -1,0 +1,30 @@
+{
+  "common": {
+    "customMode": true,
+    "model": "V5",
+    "callBackUrl": "https://httpbin.org/post"
+  },
+  "pure_music": {
+    "instrumental": true,
+    "styleWeight": 0.85,
+    "weirdnessConstraint": 0.40
+  },
+  "upload_cover": {
+    "instrumental": true,
+    "audioWeight": 0.25,
+    "styleWeight": 0.80,
+    "weirdnessConstraint": 0.60
+  },
+  "cover_vocal": {
+    "instrumental": false,
+    "audioWeight": 0.40,
+    "styleWeight": 0.65,
+    "weirdnessConstraint": 0.45
+  },
+  "cover_instrumental": {
+    "instrumental": true,
+    "audioWeight": 0.35,
+    "styleWeight": 0.70,
+    "weirdnessConstraint": 0.50
+  }
+}

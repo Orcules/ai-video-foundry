@@ -1,0 +1,19 @@
+{
+  "veo3_1": {
+    "aspect_ratio": "9:16",
+    "number_of_videos": 1,
+    "person_generation": "allow_all"
+  },
+  "veo3_0": {
+    "sampleCount": 1,
+    "generateAudio": false,
+    "aspectRatio": "9:16"
+  },
+  "retry": {
+    "high_load_max_retries": 5,
+    "high_load_initial_delay": 15,
+    "high_load_backoff_multiplier": 2.0,
+    "high_load_max_delay": 300,
+    "max_concurrent_requests": 6
+  }
+}

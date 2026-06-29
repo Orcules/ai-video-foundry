@@ -1,0 +1,482 @@
+{
+  "_comment": "LLM config for API server validation gates. Uses Vercel AI Hub provider.",
+  "location_extract": {
+    "model": "google/gemini-3-flash-preview",
+    "temperature": 0.1,
+    "max_tokens": 150,
+    "responseSchema": {
+      "type": "object",
+      "properties": {
+        "product_location": {
+          "type": "string",
+          "description": "City and country where the product/venue/experience is located, e.g. 'Wroclaw, Poland' or 'Budapest, Hungary'. Empty string if online-only or unclear."
+        }
+      },
+      "required": ["product_location"],
+      "additionalProperties": false
+    }
+  },
+  "asset_gate": {
+    "model": "google/gemini-3-flash-preview",
+    "temperature": 0.1,
+    "max_tokens": 200,
+    "responseSchema": {
+      "type": "object",
+      "properties": {
+        "assets_required": {
+          "type": "boolean",
+          "description": "Whether real photos/videos are essential for this business type"
+        },
+        "reason": {
+          "type": "string",
+          "description": "One sentence explanation of the decision"
+        }
+      },
+      "required": ["assets_required", "reason"],
+      "additionalProperties": false
+    }
+  },
+  "studio_chat_agent": {
+    "model": "google/gemini-3-flash-preview",
+    "temperature": 0.4,
+    "max_tokens": 1500,
+    "responseSchema": {
+      "type": "object",
+      "properties": {
+        "reply": {
+          "type": "string",
+          "description": "Free-text reply to show in chat. MUST be in detected_language. Keep under 3 short sentences. Conversational, warm."
+        },
+        "detected_language": {
+          "type": "string",
+          "description": "BCP-47 language code of the user's last message (en, he, es, fr, ar, ja, etc.). Defaults to en."
+        },
+        "slots_update": {
+          "type": "object",
+          "description": "Fields to merge into the session's gathered slots. Only include fields you can confidently extract from the conversation. Omit unknown fields entirely.",
+          "properties": {
+            "video_type": {"type": "string", "description": "One of: product video, influencer, personal-brand, ugc-real"},
+            "user_goal": {"type": "string", "description": "Free-text label of what the user wants (e.g. 'explainer', 'motivation', 'tutorial', 'product ad'). For your own bookkeeping."},
+            "prompt": {"type": "string", "description": "The video script / topic / description in the user's words"},
+            "duration": {"type": "integer", "description": "Target video length in seconds (10-120)"},
+            "language": {"type": "string", "description": "Output VO language code (en, he, es, etc.)"},
+            "country": {"type": "string", "description": "Country for cultural adaptation (usa, israel, japan, etc.)"},
+            "gender": {"type": "string", "description": "f or m — narrator gender"},
+            "style": {"type": "string", "description": "Visual style name (Auto, Cinematic photography, Modern flat 2d, Modern semi flat 2d, Minimal line art, etc.)"},
+            "business_name": {"type": "string", "description": "Brand or business name (required for influencer)"},
+            "slogan_text": {"type": "string", "description": "Short tagline / CTA"},
+            "character_urls": {"type": "array", "items": {"type": "string"}, "description": "Uploaded character/host image URLs"},
+            "product_image_urls": {"type": "array", "items": {"type": "string"}, "description": "Uploaded product/reference image URLs"},
+            "reference_image_urls": {"type": "array", "items": {"type": "string"}, "description": "Scene reference image URLs"},
+            "asset_urls": {"type": "array", "items": {"type": "string"}, "description": "Existing video/image clips to insert as-is"},
+            "logo_url": {"type": "string", "description": "Brand logo URL"},
+            "fidelity_to_assets": {"type": "number", "description": "Float 0.0-1.0 — how literal the visuals should be to user uploads (1.0 = stay true to photos/videos, 0.0 = free creative interpretation). Only relevant when assets have been uploaded."}
+          },
+          "additionalProperties": true
+        },
+        "ui_action": {
+          "type": "object",
+          "description": "What the chat UI should do after this turn. Use type=none if no UI change is needed (just a chat reply).",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["none", "show_panel", "request_upload", "show_summary", "start_generation"],
+              "description": "show_panel = mount a wizard panel in the side; request_upload = open file picker; show_summary = render the cost/plan card with a Generate button; start_generation = forbidden unless user just confirmed the summary; none = pure chat reply"
+            },
+            "panel": {
+              "type": "string",
+              "enum": ["none", "uploads_product", "uploads_character", "uploads_logo", "uploads_assets", "character_preview", "scene_prompts", "scene_images", "vo_player", "music_player", "final_video", "storyboard_review"],
+              "description": "Which side panel to mount when type=show_panel or request_upload. Use 'none' otherwise. Use 'storyboard_review' to show the chat-built storyboard for user approval/editing before custom-pipeline generation."
+            },
+            "summary": {
+              "type": "object",
+              "description": "Plan summary. REQUIRED when type=show_summary. Omit otherwise.",
+              "properties": {
+                "video_type_label": {"type": "string", "description": "Humanized pipeline name (e.g. 'Influencer Video')"},
+                "user_goal": {"type": "string"},
+                "duration_seconds": {"type": "integer"},
+                "language": {"type": "string"},
+                "country": {"type": "string"},
+                "style": {"type": "string"},
+                "gender": {"type": "string"},
+                "highlights": {"type": "array", "items": {"type": "string"}, "description": "3-6 short bullets describing what we'll create"}
+              },
+              "additionalProperties": true
+            }
+          },
+          "required": ["type", "panel"],
+          "additionalProperties": false
+        },
+        "needs_more_info": {
+          "type": "boolean",
+          "description": "True if you still need to ask more questions before showing the summary card."
+        },
+        "missing_fields": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Names of slot fields you still need to collect (e.g. 'business_name', 'character_urls', 'gender'). Empty when ready to show summary."
+        }
+      },
+      "required": ["reply", "detected_language", "ui_action", "needs_more_info"],
+      "additionalProperties": false
+    }
+  },
+  "director": {
+    "_note": "Was gemini-3-pro-preview but not yet released in user's GCP project. Flash is fast enough for storyboard planning and same quota tier as Concierge.",
+    "model": "google/gemini-3-flash-preview",
+    "temperature": 0.6,
+    "max_tokens": 12000,
+    "responseSchema": {
+      "type": "object",
+      "description": "Director output — EITHER a full storyboard, OR a needs_assets request when key uploads are missing.",
+      "properties": {
+        "needs_assets": {
+          "type": "array",
+          "description": "When set (non-empty), the Director is asking the user to upload assets before continuing. Server surfaces these to the chat UI. Storyboard fields can be omitted in this case.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "panel": {"type": "string", "enum": ["uploads_character", "uploads_product", "uploads_logo", "uploads_assets"]},
+              "asset_type": {"type": "string", "enum": ["character", "product", "logo", "venue", "voice_audio", "music_audio", "asset_video"]},
+              "reason": {"type": "string", "description": "Friendly one-liner explaining WHY this asset is needed (shown to user)"},
+              "min_count": {"type": "integer"},
+              "max_count": {"type": "integer"}
+            },
+            "required": ["panel", "asset_type", "reason"],
+            "additionalProperties": false
+          }
+        },
+        "reply": {
+          "type": "string",
+          "description": "When needs_assets is set: friendly one-liner the chat surfaces to the user, in their language. Optional when building a full storyboard."
+        },
+        "meta": {
+          "type": "object",
+          "properties": {
+            "title": {"type": "string"},
+            "video_type": {"type": "string", "description": "Always 'custom' for Director output."},
+            "preset_hint": {"type": "string", "description": "Internal hint: product | influencer | personal_brand | ugc_real_grid | motion_graphics | narrative"},
+            "target_duration_seconds": {"type": "number"},
+            "language": {"type": "string"},
+            "country": {"type": "string"},
+            "style": {"type": "string"},
+            "fidelity_to_assets": {"type": "number"},
+            "aspect_ratio": {"type": "string"},
+            "viral_structure": {"type": "string", "description": "hook_problem_solution_cta | hook_proof_cta | story | tutorial | testimonial | narrative_arc | ugc_punchline"},
+            "pacing": {"type": "string", "description": "fast_first_3s | even | slow_burn"}
+          },
+          "required": ["title", "target_duration_seconds", "language", "style"],
+          "additionalProperties": true
+        },
+        "character_sheet": {
+          "type": "object",
+          "description": "Locked character reference bundle (Veo Ingredients / Seedance style).",
+          "properties": {
+            "subject_description": {"type": "string"},
+            "reference_image_urls": {"type": "array", "items": {"type": "string"}, "description": "1-3 locked images, character first."},
+            "voice_id": {"type": "string"},
+            "gender": {"type": "string"}
+          },
+          "additionalProperties": true
+        },
+        "venue_sheet": {
+          "type": "object",
+          "properties": {
+            "description": {"type": "string"},
+            "reference_image_urls": {"type": "array", "items": {"type": "string"}, "description": "0-3 venue stills."},
+            "lighting": {"type": "string"}
+          },
+          "additionalProperties": true
+        },
+        "style_sheet": {
+          "type": "object",
+          "properties": {
+            "description": {"type": "string"},
+            "reference_image_urls": {"type": "array", "items": {"type": "string"}, "description": "0-1 style/texture refs."},
+            "film_grain_intensity": {"type": "integer"},
+            "color_palette": {"type": "array", "items": {"type": "string"}}
+          },
+          "additionalProperties": true
+        },
+        "voiceover": {
+          "type": "object",
+          "properties": {
+            "script": {"type": "string", "description": "Words the narrator says. Use ||| between scenes."},
+            "voice_id": {"type": "string"},
+            "language": {"type": "string"}
+          },
+          "required": ["script"],
+          "additionalProperties": true
+        },
+        "music": {
+          "type": "object",
+          "properties": {
+            "description": {"type": "string"},
+            "mood": {"type": "string"}
+          },
+          "additionalProperties": true
+        },
+        "assets": {
+          "type": "object",
+          "properties": {
+            "character_urls": {"type": "array", "items": {"type": "string"}},
+            "product_image_urls": {"type": "array", "items": {"type": "string"}},
+            "reference_image_urls": {"type": "array", "items": {"type": "string"}},
+            "asset_video_urls": {"type": "array", "items": {"type": "string"}},
+            "logo_url": {"type": "string"},
+            "slogan_text": {"type": "string"}
+          },
+          "additionalProperties": true
+        },
+        "scenes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "scene_number": {"type": "integer"},
+              "narrative_role": {"type": "string"},
+              "vo_text": {"type": "string"},
+              "duration": {"type": "number"},
+              "preview_image_model": {
+                "type": "string",
+                "enum": ["nano-banana-2", "nano-banana-pro", "gemini-3-pro-image-preview", "gemini-3.1-flash-image-preview", "gemini-2.5-flash-image"],
+                "description": "Image model that renders this scene's preview/first frame. The chosen image becomes the I2V start frame. Pick per the rules in director_models_reference.md."
+              },
+              "director_note": {
+                "type": "string",
+                "description": "Short (≤120 chars) rationale: WHY did you pick this scene's tools/structure? Surfaced to the user as a transparency badge under the scene. Example: 'Used Seedance — brief calls for cut-to-multiple-shots in one beat.'"
+              },
+              "camera": {
+                "type": "object",
+                "properties": {
+                  "shot_type": {"type": "string"},
+                  "primary_move": {"type": "string"},
+                  "lens_feel": {"type": "string"},
+                  "speed": {"type": "string"}
+                },
+                "additionalProperties": true
+              },
+              "clips": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": {"type": "string", "enum": ["asset_video", "asset_image_animate", "generate", "composite", "ken_burns", "motion_graphic", "seedance_multishot", "framework_render"]},
+                    "framework": {
+                      "type": "string",
+                      "enum": ["manim", "remotion", "hyperframes", "lottie"],
+                      "description": "When clip.type=framework_render: which framework renders this clip. Manim for math, Remotion for components/data, HyperFrames for HTML branded chrome, Lottie for vector loops. The executor falls back to a styled Ken Burns placeholder until the integration ships."
+                    },
+                    "duration": {"type": "number"},
+                    "tool_hint": {"type": "string", "enum": ["auto", "veo", "seedance", "kling", "runway", "kenburns", "trim"]},
+                    "video_model_override": {
+                      "type": "string",
+                      "enum": ["veo-3.0", "veo-3.0-fast", "veo-3.1", "veo-3.1-fast", "veo-3.1-ref", "veo-3.1-ref-fast", "kling-2.5", "kling-2.6", "seedance-2", "runway-gen4-turbo", "runway-gen4.5", "kenburns"],
+                      "description": "Explicit video model to animate this clip. Overrides animation_router.pick_tool(). Pick per director_models_reference.md."
+                    },
+                    "video_provider_override": {
+                      "type": "string",
+                      "enum": ["direct", "kie", "fal", "runway_direct", "ffmpeg", "rendi"],
+                      "description": "Provider for video_model_override. Defaults align with the model (e.g. veo→direct, kling→kie, seedance→kie, runway→runway_direct)."
+                    },
+                    "director_note": {
+                      "type": "string",
+                      "description": "Short (≤100 chars) rationale: WHY did you pick this clip's model/tool? Surfaced to user as a small badge under the clip. Example: 'Veo Ref Fast — character lock from sheet.'"
+                    },
+                    "shows_character": {"type": "boolean"},
+                    "source": {
+                      "type": "object",
+                      "properties": {
+                        "asset_video_index": {"type": "integer"},
+                        "reference_image_index": {"type": "integer"},
+                        "start_seconds": {"type": "number"},
+                        "end_seconds": {"type": "number"}
+                      },
+                      "additionalProperties": true
+                    },
+                    "first_prompt": {"type": "string"},
+                    "motion_prompt": {"type": "string"},
+                    "overlay": {
+                      "type": "object",
+                      "properties": {
+                        "logo": {"type": "boolean"},
+                        "slogan": {"type": "boolean"},
+                        "text_animation": {"type": "string"}
+                      },
+                      "additionalProperties": true
+                    },
+                    "ingredients": {
+                      "type": "object",
+                      "properties": {
+                        "use_character_sheet": {"type": "boolean"},
+                        "use_venue_sheet": {"type": "boolean"},
+                        "use_style_sheet": {"type": "boolean"}
+                      },
+                      "additionalProperties": true
+                    }
+                  },
+                  "required": ["type", "duration"],
+                  "additionalProperties": true
+                }
+              }
+            },
+            "required": ["scene_number", "duration", "clips"],
+            "additionalProperties": true
+          }
+        },
+        "grid": {
+          "type": "object",
+          "description": "Optional 3x3 grid output (ugc_real-style). Omit for standard linear video.",
+          "properties": {
+            "rows": {"type": "integer"},
+            "cols": {"type": "integer"},
+            "lipsync_cells": {"type": "array", "items": {"type": "integer"}}
+          },
+          "additionalProperties": true
+        }
+      },
+      "required": ["meta", "voiceover", "scenes"],
+      "additionalProperties": true
+    }
+  },
+  "critic_scene": {
+    "model": "google/gemini-3-flash-preview",
+    "temperature": 0.2,
+    "max_tokens": 800,
+    "responseSchema": {
+      "type": "object",
+      "description": "Per-scene consistency critique. Cheap quality gate.",
+      "properties": {
+        "consistency_score": {"type": "number", "description": "0.0-1.0. How well does the scene match the character_sheet / venue_sheet / style_sheet?"},
+        "issues": {"type": "array", "items": {"type": "string"}, "description": "Specific complaints (e.g. 'character face does not match reference')"},
+        "retry_recommended": {"type": "boolean"},
+        "retry_strategy": {"type": "string", "description": "Suggested fix: move_character_first | strengthen_venue_prompt | retry_with_seedance | accept_as_is"}
+      },
+      "required": ["consistency_score", "retry_recommended"],
+      "additionalProperties": false
+    }
+  },
+  "manim_codegen": {
+    "_note": "Generates Manim Community v0.19.0 Python code for short math/concept explainer clips. No responseSchema — output is raw Python source, parsed/stripped by manim_service.py. Uses gemini-2.5-flash (NOT gemini-3-flash-preview) because the v3 preview burns the entire max_tokens budget on hidden thinking tokens and returns an empty text payload for raw-code tasks — manim_service.py would then silently mask that empty response by prepending 'from manim import *' and producing a 20-char file with no Scene class. gemini-2.5-flash reliably emits raw Python without a thinking budget. max_tokens=4000 so a full ExplainerScene class with several animations fits without truncation.",
+    "model": "google/gemini-2.5-flash",
+    "temperature": 0.3,
+    "max_tokens": 4000
+  },
+  "storyboard_builder": {
+    "model": "google/gemini-3-pro-preview",
+    "temperature": 0.7,
+    "max_tokens": 8000,
+    "responseSchema": {
+      "type": "object",
+      "description": "A full storyboard ready for the custom pipeline executor.",
+      "properties": {
+        "meta": {
+          "type": "object",
+          "properties": {
+            "title": {"type": "string"},
+            "video_type": {"type": "string", "description": "Always 'custom' for storyboards."},
+            "preset_hint": {"type": "string", "description": "One of: location-faithful | product | ugc | personal_brand | motion_graphics"},
+            "target_duration_seconds": {"type": "number"},
+            "language": {"type": "string"},
+            "country": {"type": "string"},
+            "style": {"type": "string"},
+            "fidelity_to_assets": {"type": "number", "description": "0.0 = freely creative AI scenes, 1.0 = stay literal to user uploads"},
+            "aspect_ratio": {"type": "string", "description": "Usually 9:16 (portrait) or 16:9 (landscape) or 1:1 (square)."}
+          },
+          "required": ["title", "target_duration_seconds", "language", "style"],
+          "additionalProperties": true
+        },
+        "voiceover": {
+          "type": "object",
+          "properties": {
+            "script": {"type": "string", "description": "The exact words the narrator will say. Use ||| to mark scene transitions inside the script."},
+            "voice_id": {"type": "string"},
+            "language": {"type": "string"}
+          },
+          "required": ["script"],
+          "additionalProperties": true
+        },
+        "music": {
+          "type": "object",
+          "properties": {
+            "description": {"type": "string"},
+            "mood": {"type": "string"}
+          },
+          "additionalProperties": true
+        },
+        "assets": {
+          "type": "object",
+          "properties": {
+            "character_urls": {"type": "array", "items": {"type": "string"}},
+            "product_image_urls": {"type": "array", "items": {"type": "string"}},
+            "reference_image_urls": {"type": "array", "items": {"type": "string"}},
+            "asset_video_urls": {"type": "array", "items": {"type": "string"}},
+            "logo_url": {"type": "string"},
+            "slogan_text": {"type": "string"}
+          },
+          "additionalProperties": true
+        },
+        "scenes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "scene_number": {"type": "integer"},
+              "narrative_role": {"type": "string", "description": "hook | problem | solution | proof | cta | story | etc."},
+              "vo_text": {"type": "string", "description": "The portion of the VO that plays during this scene."},
+              "duration": {"type": "number"},
+              "clips": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": ["asset_video", "asset_image_animate", "generate", "composite", "ken_burns"]
+                    },
+                    "duration": {"type": "number"},
+                    "tool_hint": {
+                      "type": "string",
+                      "enum": ["auto", "veo", "kling", "runway", "kenburns", "trim"]
+                    },
+                    "shows_influencer": {"type": "boolean"},
+                    "source": {
+                      "type": "object",
+                      "properties": {
+                        "asset_video_index": {"type": "integer"},
+                        "reference_image_index": {"type": "integer"},
+                        "start_seconds": {"type": "number"},
+                        "end_seconds": {"type": "number"}
+                      },
+                      "additionalProperties": true
+                    },
+                    "first_prompt": {"type": "string"},
+                    "motion_prompt": {"type": "string"},
+                    "overlay": {
+                      "type": "object",
+                      "properties": {
+                        "logo": {"type": "boolean"},
+                        "slogan": {"type": "boolean"}
+                      },
+                      "additionalProperties": true
+                    }
+                  },
+                  "required": ["type", "duration"],
+                  "additionalProperties": true
+                }
+              }
+            },
+            "required": ["scene_number", "duration", "clips"],
+            "additionalProperties": true
+          }
+        }
+      },
+      "required": ["meta", "voiceover", "scenes"],
+      "additionalProperties": true
+    }
+  }
+}

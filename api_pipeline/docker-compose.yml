@@ -1,0 +1,35 @@
+services:
+  video-api:
+    build:
+      context: ..
+      dockerfile: api_pipeline/Dockerfile
+    container_name: video-pipeline
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - MAX_PIPELINE_WORKERS=2
+      - MUX_TOKEN_ID=${MUX_TOKEN_ID}
+      - MUX_TOKEN_SECRET=${MUX_TOKEN_SECRET}
+      - SIM_MUX_PLAYBACK_ID=${SIM_MUX_PLAYBACK_ID:-}
+      - PYTHONPATH=/app
+      - WATCHFILES_FORCE_POLLING=true
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/Comp_Videos/service_account.json
+      - GCS_CREDENTIALS_FILE=/app/Comp_Videos/service_account.json
+    volumes:
+      - ../api_pipeline/job_artifacts:/app/api_pipeline/job_artifacts
+      # Dev mounts — local code overrides baked-in image, no rebuild needed
+      - ../api_pipeline:/app/api_pipeline
+      # Monolith mount — needed for Type 2 (monolith) simulation and real pipelines
+      - ../Comp_Videos:/app/Comp_Videos
+      - ../Comp_Videos/tvd_pipeline:/app/tvd_pipeline
+    networks:
+      - openclaw-net
+    command: ["uvicorn", "api_pipeline.server:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "--reload-dir", "/app/api_pipeline", "--reload-dir", "/app/tvd_pipeline/pipelines", "--reload-dir", "/app/tvd_pipeline/services", "--reload-dir", "/app/tvd_pipeline/config", "--reload-dir", "/app/Comp_Videos", "--reload-exclude", "*.jpg", "--reload-exclude", "*.jpeg", "--reload-exclude", "*.png", "--reload-exclude", "*.gif", "--reload-exclude", "*.webp", "--reload-exclude", "*.mp4", "--reload-exclude", "*.mp3", "--reload-exclude", "*.wav", "--reload-exclude", "*.pdf", "--reload-exclude", "*.md", "--reload-exclude", "*.sh", "--reload-exclude", "*.txt", "--reload-exclude", "*.json"]
+    restart: unless-stopped
+
+networks:
+  openclaw-net:
+    external: true
+    name: shared-app-net

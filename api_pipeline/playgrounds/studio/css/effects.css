@@ -1,0 +1,689 @@
+/* VidBuddy — Effects & micro-interaction layer
+   Scroll reveals, entrance animations, hover physics, shimmer
+   ============================================================ */
+
+/* ══════════════════════════════════════════════════════════════
+   SCROLL REVEAL
+   ══════════════════════════════════════════════════════════════ */
+.vb-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity  0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.vb-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+.vb-reveal[data-i="1"] { transition-delay: 0.06s; }
+.vb-reveal[data-i="2"] { transition-delay: 0.12s; }
+.vb-reveal[data-i="3"] { transition-delay: 0.18s; }
+.vb-reveal[data-i="4"] { transition-delay: 0.24s; }
+.vb-reveal[data-i="5"] { transition-delay: 0.30s; }
+.vb-reveal[data-i="6"] { transition-delay: 0.36s; }
+.vb-reveal[data-i="7"] { transition-delay: 0.42s; }
+.vb-reveal[data-i="8"] { transition-delay: 0.48s; }
+
+/* ══════════════════════════════════════════════════════════════
+   STEP CONTENT ENTRANCES
+   ══════════════════════════════════════════════════════════════ */
+
+/* Title drops in from above */
+.studio-step.active .studio-step-title {
+  animation: vbTitleDrop 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes vbTitleDrop {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Description fades up with a slight delay */
+.studio-step.active .studio-step-desc {
+  animation: vbFadeUp 0.45s 0.09s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Cards stagger up */
+.studio-step.active .studio-card {
+  animation: vbCardSlide 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.studio-step.active .studio-card:nth-child(1) { animation-delay: 0.08s; }
+.studio-step.active .studio-card:nth-child(2) { animation-delay: 0.15s; }
+.studio-step.active .studio-card:nth-child(3) { animation-delay: 0.22s; }
+.studio-step.active .studio-card:nth-child(4) { animation-delay: 0.29s; }
+.studio-step.active .studio-card:nth-child(5) { animation-delay: 0.36s; }
+.studio-step.active .studio-card:nth-child(6) { animation-delay: 0.43s; }
+
+@keyframes vbCardSlide {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Settings section slides in */
+.studio-step.active .studio-settings-section {
+  animation: vbFadeUp 0.5s 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Fields in active step stagger */
+.studio-step.active > .studio-field,
+.studio-step.active > .studio-grid-2 > .studio-field,
+.studio-step.active > .studio-grid-3 > .studio-field {
+  animation: vbFadeUp 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.studio-step.active > .studio-field:nth-child(1),
+.studio-step.active > .studio-grid-2 > .studio-field:nth-child(1),
+.studio-step.active > .studio-grid-3 > .studio-field:nth-child(1) { animation-delay: 0.10s; }
+.studio-step.active > .studio-field:nth-child(2),
+.studio-step.active > .studio-grid-2 > .studio-field:nth-child(2),
+.studio-step.active > .studio-grid-3 > .studio-field:nth-child(2) { animation-delay: 0.17s; }
+.studio-step.active > .studio-field:nth-child(3),
+.studio-step.active > .studio-grid-2 > .studio-field:nth-child(3),
+.studio-step.active > .studio-grid-3 > .studio-field:nth-child(3) { animation-delay: 0.24s; }
+.studio-step.active > .studio-field:nth-child(4),
+.studio-step.active > .studio-grid-2 > .studio-field:nth-child(4),
+.studio-step.active > .studio-grid-3 > .studio-field:nth-child(4) { animation-delay: 0.31s; }
+
+@keyframes vbFadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GRADIENT TEXT OVERRIDES
+   ══════════════════════════════════════════════════════════════ */
+
+/* Step titles — gradient instead of flat dark */
+.studio-step-title {
+  background: var(--vb-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding-bottom: 0.06em; /* prevent descender clip */
+}
+
+/* Auth title — gradient */
+.studio-auth-title {
+  background: var(--vb-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding-bottom: 0.06em;
+}
+
+/* Gallery title — gradient */
+.studio-gallery-title {
+  background: var(--vb-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CARD PHYSICS
+   ══════════════════════════════════════════════════════════════ */
+
+/* Better default shadow + lift hover */
+.studio-card {
+  box-shadow: 0 2px 12px rgba(74, 75, 215, 0.05);
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s ease,
+    outline-color 0.18s ease;
+}
+.studio-card:hover {
+  transform: translateY(-5px);           /* lift up, not scale */
+  box-shadow: 0 18px 48px rgba(74, 75, 215, 0.14);
+}
+.studio-card:active { transform: translateY(-2px) scale(0.98); }
+
+/* Check circle spring pop */
+.studio-card.selected .studio-card-check,
+.studio-card[aria-selected="true"] .studio-card-check {
+  animation: vbCheckPop 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes vbCheckPop {
+  from { transform: scale(0) rotate(-30deg); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   DURATION BUTTON SPRING
+   ══════════════════════════════════════════════════════════════ */
+.studio-duration-btn.active {
+  animation: vbDurationPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes vbDurationPop {
+  from { transform: scale(0.86); }
+  to   { transform: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PROGRESS BAR SHIMMER
+   ══════════════════════════════════════════════════════════════ */
+.studio-progress-fill {
+  position: relative;
+  overflow: hidden;
+}
+.studio-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 38%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  animation: vbShimmer 2.2s ease-in-out infinite;
+  border-radius: 9999px;
+}
+@keyframes vbShimmer {
+  0%   { left: -40%; }
+  100% { left: 130%; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   NAVIGATION — gradient glow line at top
+   ══════════════════════════════════════════════════════════════ */
+.studio-nav {
+  position: relative;
+}
+.studio-nav::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 14%; right: 14%;
+  height: 2px;
+  background: var(--vb-gradient);
+  opacity: 0.4;
+  border-radius: 9999px;
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HEADER — scroll shadow
+   ══════════════════════════════════════════════════════════════ */
+.studio-header {
+  transition: box-shadow 0.35s ease;
+}
+.studio-header.is-scrolled {
+  box-shadow: 0 4px 36px rgba(74, 75, 215, 0.09);
+}
+
+/* Header animates in on page load */
+.studio-header {
+  animation: vbHeaderIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.studio-progress-wrap {
+  animation: vbHeaderIn 0.4s 0.07s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes vbHeaderIn {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SETTINGS SECTION — shimmer sweep on hover
+   ══════════════════════════════════════════════════════════════ */
+.studio-settings-section {
+  position: relative;
+  overflow: hidden;
+}
+.studio-settings-section::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -90%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.75s ease;
+  pointer-events: none;
+}
+.studio-settings-section:hover::after { left: 140%; }
+
+/* ══════════════════════════════════════════════════════════════
+   BUTTON EFFECTS — shine sweep + ripple
+   ══════════════════════════════════════════════════════════════ */
+.studio-btn-primary,
+.studio-btn-primary-lg {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shine sweep on hover */
+.studio-btn-primary::before,
+.studio-btn-primary-lg::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: -70%;
+  width: 32%; height: 160%;
+  background: rgba(255, 255, 255, 0.22);
+  transform: translateY(-50%) skewX(-18deg);
+  transition: left 0.55s ease;
+  pointer-events: none;
+  border-radius: 2px;
+}
+.studio-btn-primary:hover::before,
+.studio-btn-primary-lg:hover::before { left: 140%; }
+
+/* Ripple keyframe (span injected by effects.js) */
+@keyframes vbRipple {
+  to { transform: scale(2.8); opacity: 0; }
+}
+
+/* Back button hover — underline slide */
+.studio-btn-back {
+  position: relative;
+}
+.studio-btn-back::after {
+  content: '';
+  position: absolute;
+  bottom: 8px; left: 50%; right: 50%;
+  height: 2px;
+  background: var(--vb-outline);
+  border-radius: 1px;
+  transition: left 0.25s ease, right 0.25s ease;
+}
+.studio-btn-back:hover::after {
+  left: 1.5rem;
+  right: 1.5rem;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FOCUS RINGS — stronger, glowy
+   ══════════════════════════════════════════════════════════════ */
+.studio-input:focus {
+  box-shadow: 0 0 0 3px rgba(74, 75, 215, 0.2), 0 2px 10px rgba(74, 75, 215, 0.08) !important;
+  background: var(--vb-surface-lowest) !important;
+}
+.studio-textarea:focus {
+  box-shadow: 0 0 0 3px rgba(74, 75, 215, 0.2), 0 2px 10px rgba(74, 75, 215, 0.08) !important;
+  background: var(--vb-surface-lowest) !important;
+}
+.studio-select:focus {
+  box-shadow: 0 0 0 3px rgba(74, 75, 215, 0.2) !important;
+  background: var(--vb-surface-lowest) !important;
+}
+
+/* Textarea smooth expand */
+.studio-textarea {
+  transition: box-shadow 0.22s ease, background 0.22s ease, min-height 0.35s ease;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   AUTH CARD — entrance pop
+   ══════════════════════════════════════════════════════════════ */
+.studio-auth-card {
+  animation: vbAuthCardIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes vbAuthCardIn {
+  from { opacity: 0; transform: translateY(36px) scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Auth tab spring when activated */
+.studio-auth-tab.active {
+  animation: vbTabPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes vbTabPop {
+  from { transform: scale(0.92); }
+  to   { transform: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GALLERY — card stagger & reveal
+   ══════════════════════════════════════════════════════════════ */
+.studio-gallery-card {
+  animation: vbGalleryCardIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--vb-i, 0) * 0.07s);
+}
+@keyframes vbGalleryCardIn {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Gallery title animate in */
+.studio-gallery-header {
+  animation: vbHeaderIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PIPELINE MINI STEPS — pulse when active
+   ══════════════════════════════════════════════════════════════ */
+.studio-pipeline-step.active .studio-pipeline-step-icon {
+  animation: vbPulseGlow 2s ease-in-out infinite;
+}
+@keyframes vbPulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(74, 75, 215, 0.3); }
+  50%       { box-shadow: 0 0 0 8px rgba(74, 75, 215, 0); }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPINNER — gradient arc
+   ══════════════════════════════════════════════════════════════ */
+.studio-spinner {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2.5px solid var(--vb-surface-high);
+  border-top-color: var(--vb-primary);
+  border-radius: 50%;
+  animation: vbSpin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes vbSpin { to { transform: rotate(360deg); } }
+
+/* ══════════════════════════════════════════════════════════════
+   STATUS / ALERT CHIPS — slide in
+   ══════════════════════════════════════════════════════════════ */
+.studio-status {
+  animation: vbFadeUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MODE TOGGLE — shine on active
+   ══════════════════════════════════════════════════════════════ */
+.studio-mode-toggle button.active {
+  position: relative;
+  overflow: hidden;
+}
+.studio-mode-toggle button.active::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 60%);
+  border-radius: 9999px;
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   UPLOAD ZONES — hover lift
+   ══════════════════════════════════════════════════════════════ */
+.studio-upload-zone,
+.studio-upload-zone-sq {
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.studio-upload-zone:hover,
+.studio-upload-zone-sq:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(74, 75, 215, 0.1);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CHIP — spring scale
+   ══════════════════════════════════════════════════════════════ */
+.studio-chip:hover {
+  transform: scale(1.06) translateY(-1px);
+  box-shadow: 0 4px 12px rgba(74, 75, 215, 0.15);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GENDER TOGGLE — active pill spring
+   ══════════════════════════════════════════════════════════════ */
+.studio-gender-btn.active {
+  animation: vbGenderPop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes vbGenderPop {
+  from { transform: scale(0.9); }
+  to   { transform: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SESSION LIST PANEL — slide down
+   ══════════════════════════════════════════════════════════════ */
+.studio-session-list-panel:not([style*="display: none"]) {
+  animation: vbPanelIn 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes vbPanelIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FINAL VIDEO — fade in
+   ══════════════════════════════════════════════════════════════ */
+.studio-final-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 1rem;
+  box-shadow: 0 8px 40px rgba(74, 75, 215, 0.12);
+  animation: vbFadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  background: #000;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CHAR PREVIEW — pop in
+   ══════════════════════════════════════════════════════════════ */
+.studio-char-preview {
+  animation: vbFadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.studio-char-preview img {
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(74, 75, 215, 0.12);
+  transition: box-shadow 0.3s ease;
+}
+.studio-char-preview img:hover {
+  box-shadow: 0 12px 48px rgba(74, 75, 215, 0.2);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   AUDIO PLAYER — nice look
+   ══════════════════════════════════════════════════════════════ */
+.studio-audio-player audio {
+  width: 100%;
+  border-radius: 9999px;
+  animation: vbFadeUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SCROLLBAR — thinner, prettier
+   ══════════════════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--vb-primary-container), var(--vb-secondary-container));
+  border-radius: 3px;
+}
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ══════════════════════════════════════════════════════════════
+   STEP 4 — CHARACTER SOURCE PICKER
+   ══════════════════════════════════════════════════════════════ */
+
+/* 3-column compact source selector */
+.studio-source-picker {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin: 0.5rem 0 1.25rem;
+}
+
+.studio-source-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 1rem 0.5rem;
+  background: var(--vb-surface-lowest);
+  border-radius: 0.75rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  text-align: center;
+  user-select: none;
+}
+
+.studio-source-card:hover {
+  border-color: rgba(74, 75, 215, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Hide the native radio visually but keep it accessible */
+.studio-source-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0; height: 0;
+}
+
+/* Active state when radio is checked */
+.studio-source-card:has(input:checked) {
+  border-color: var(--vb-primary);
+  box-shadow: 0 0 0 3px rgba(74, 75, 215, 0.12), 0 4px 16px rgba(74, 75, 215, 0.1);
+  background: rgba(186, 187, 255, 0.08);
+}
+
+.studio-source-card .material-symbols-outlined {
+  font-size: 1.5rem;
+  color: var(--vb-on-surface-variant);
+  transition: color 0.2s ease;
+}
+
+.studio-source-card:has(input:checked) .material-symbols-outlined {
+  color: var(--vb-primary);
+  font-variation-settings: 'FILL' 1;
+}
+
+.studio-source-card span:last-child {
+  font-family: var(--studio-font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--vb-on-surface-variant);
+  transition: color 0.2s ease;
+}
+
+.studio-source-card:has(input:checked) span:last-child {
+  color: var(--vb-primary);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   STEP 4 — AI PANEL
+   ══════════════════════════════════════════════════════════════ */
+
+.studio-ai-panel {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(186, 187, 255, 0.1);
+  border-radius: 0.75rem;
+  border: 1px solid rgba(186, 187, 255, 0.3);
+}
+
+.studio-ai-panel-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  flex: 1;
+  min-height: 2rem;
+  align-items: center;
+}
+
+/* Empty state hint inside chips area */
+.studio-ai-panel-chips:empty::before {
+  content: 'Click "AI suggestions" to generate character ideas from your Step 3 prompt.';
+  font-size: 0.75rem;
+  color: var(--vb-outline);
+  font-style: italic;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   STEP 4 — EXAMPLES ROW
+   ══════════════════════════════════════════════════════════════ */
+
+.studio-examples-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.65rem;
+}
+
+.studio-examples-label {
+  font-family: var(--studio-font-heading);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--vb-outline);
+  margin-right: 0.2rem;
+  white-space: nowrap;
+}
+
+.studio-example-chip {
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--vb-outline-variant);
+  border-radius: 9999px;
+  background: transparent;
+  font-family: var(--studio-font-heading);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--vb-on-surface-variant);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.studio-example-chip:hover {
+  background: var(--vb-surface-container);
+  border-color: var(--vb-primary);
+  color: var(--vb-primary);
+}
+
+.studio-example-chip-ai {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(132, 44, 211, 0.08);
+  border-color: rgba(132, 44, 211, 0.25);
+  color: var(--vb-secondary);
+}
+
+.studio-example-chip-ai:hover {
+  background: rgba(132, 44, 211, 0.14);
+  border-color: var(--vb-secondary);
+  color: var(--vb-secondary);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   COLLAPSIBLE HINT — <details>
+   ══════════════════════════════════════════════════════════════ */
+
+.studio-hint-details {
+  margin-top: 0.65rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.studio-hint-details summary {
+  font-family: var(--studio-font-heading);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--vb-outline);
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0;
+}
+
+.studio-hint-details summary::before {
+  content: '›';
+  font-size: 1rem;
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+.studio-hint-details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.studio-hint-details p {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--vb-on-surface-variant);
+  line-height: 1.6;
+  padding: 0.5rem 0.75rem;
+  background: var(--vb-surface-low);
+  border-radius: 0.5rem;
+}

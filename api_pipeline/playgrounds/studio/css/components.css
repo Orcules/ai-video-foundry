@@ -1,0 +1,1021 @@
+/* VidBuddy — Stitch-faithful components
+   All values extracted directly from Stitch Tailwind classes
+   ============================================================ */
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+.studio-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: none;
+  border-radius: 9999px;
+  font-family: var(--studio-font-heading);
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  white-space: nowrap;
+  text-decoration: none;
+  line-height: 1;
+}
+
+/* Primary — gradient, white text, shadow-primary/20 */
+.studio-btn-primary {
+  padding: 0.55rem 1.35rem;
+  font-size: 0.875rem;
+  background: var(--vb-gradient);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(74, 75, 215, 0.2);
+}
+
+.studio-btn-primary:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(74, 75, 215, 0.35);
+}
+
+.studio-btn-primary:active { transform: scale(0.95); }
+
+/* Primary large — wizard "Next" button (Stitch: px-8 py-3 shadow) */
+.studio-btn-primary-lg {
+  padding: 0.75rem 2rem;
+  font-size: 0.9375rem;
+  background: var(--vb-gradient);
+  color: #fff;
+  box-shadow: 0 10px 20px rgba(74, 75, 215, 0.2);
+}
+
+.studio-btn-primary-lg:hover {
+  transform: scale(1.02);
+  box-shadow: 0 14px 28px rgba(74, 75, 215, 0.35);
+}
+
+.studio-btn-primary-lg:active { transform: scale(0.95); }
+
+/* Secondary — outline */
+.studio-btn-secondary {
+  padding: 0.55rem 1.35rem;
+  font-size: 0.875rem;
+  background: transparent;
+  color: var(--vb-primary);
+  border: 1.5px solid var(--vb-primary);
+}
+
+.studio-btn-secondary:hover { background: rgba(74, 75, 215, 0.06); }
+
+/* Ghost — text-only */
+.studio-btn-ghost {
+  padding: 0.55rem 1rem;
+  font-size: 0.875rem;
+  background: transparent;
+  color: var(--vb-on-surface-variant);
+  border: none;
+}
+
+.studio-btn-ghost:hover {
+  background: var(--vb-surface-container);
+  color: var(--vb-on-surface);
+}
+
+/* Back button — Stitch: uppercase tracked text-only */
+.studio-btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: none;
+  color: var(--vb-outline);
+  font-family: var(--studio-font-heading);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  transition: color 0.2s ease;
+}
+
+.studio-btn-back:hover { color: var(--vb-on-surface); }
+
+/* Danger */
+.studio-btn-danger {
+  padding: 0.55rem 1.35rem;
+  font-size: 0.875rem;
+  background: transparent;
+  color: var(--vb-error);
+  border: 1.5px solid var(--vb-error);
+}
+
+.studio-btn-danger:hover { background: rgba(172, 49, 73, 0.06); }
+
+/* ── Wizard selection cards ──────────────────────────────────── */
+/* Stitch step1: rounded-xl bg-surface-container-lowest ring-2 ring-primary + glow */
+.studio-card {
+  position: relative;
+  background: var(--vb-surface-lowest);
+  border-radius: 0.75rem;
+  border: none;
+  outline: 2px solid transparent;
+  outline-offset: 0;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, outline-color 0.2s ease;
+  user-select: none;
+}
+
+.studio-card:hover { transform: scale(1.02); }
+.studio-card:active { transform: scale(0.95); }
+
+/* Selected state — Stitch: ring-2 ring-primary + glow-active */
+.studio-card.selected,
+.studio-card[aria-selected="true"] {
+  outline-color: var(--vb-primary);
+  box-shadow: 0 0 20px 0 rgba(74, 75, 215, 0.15);
+}
+
+/* Check circle — Stitch: absolute top-3 right-3 gradient rounded-full */
+.studio-card-check {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--vb-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(74, 75, 215, 0.3);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.studio-card-check .material-symbols-outlined {
+  font-size: 0.875rem;
+  color: #fff;
+  font-variation-settings: 'FILL' 1, 'wght' 700;
+}
+
+.studio-card.selected .studio-card-check,
+.studio-card[aria-selected="true"] .studio-card-check { opacity: 1; }
+
+/* Card icon — Stitch: w-12 h-12 rounded-xl bg-*-container/15 */
+.studio-card-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  background: rgba(186, 187, 255, 0.15);
+}
+
+.studio-card-icon .material-symbols-outlined { font-size: 1.75rem; color: var(--vb-primary); }
+.studio-card-icon.secondary { background: rgba(240, 219, 255, 0.2); }
+.studio-card-icon.secondary .material-symbols-outlined { color: var(--vb-secondary); }
+.studio-card-icon.tertiary  { background: rgba(255, 154, 194, 0.2); }
+.studio-card-icon.tertiary .material-symbols-outlined  { color: var(--vb-tertiary); }
+.studio-card-icon.warning   { background: rgba(255, 237, 213, 0.5); }
+.studio-card-icon.warning .material-symbols-outlined   { color: #c2410c; }
+
+.studio-card-title {
+  font-family: var(--studio-font-heading);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--vb-on-surface);
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.01em;
+}
+
+.studio-card-desc {
+  font-size: 0.75rem;
+  color: var(--vb-on-surface-variant);
+  line-height: 1.5;
+}
+
+/* ── Section cards (step4 / upload sections) ─────────────────── */
+/* Stitch step4: bg-surface-container-lowest rounded-lg p-8 */
+.studio-section-card {
+  background: var(--vb-surface-lowest);
+  border-radius: 1rem;
+  padding: 2rem;
+}
+
+.studio-section-card + .studio-section-card { margin-top: 2rem; }
+
+.studio-section-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.studio-section-card-header .material-symbols-outlined { color: var(--vb-primary); font-size: 1.5rem; }
+
+.studio-section-card-header h2 {
+  font-family: var(--studio-font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--vb-on-surface);
+  margin: 0;
+}
+
+/* ── Upload zones ────────────────────────────────────────────── */
+/* Stitch: border-2 border-dashed border-outline-variant bg-surface-container-low */
+.studio-upload-zone {
+  border: 2px dashed var(--vb-outline-variant);
+  border-radius: 1rem;
+  background: var(--vb-surface-low);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.studio-upload-zone:hover { background: var(--vb-surface-container); border-color: var(--vb-primary); }
+.studio-upload-zone .material-symbols-outlined { font-size: 2rem; color: var(--vb-outline); transition: color 0.2s ease; }
+.studio-upload-zone:hover .material-symbols-outlined { color: var(--vb-primary); }
+
+.studio-upload-zone-label {
+  font-family: var(--studio-font-heading);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--vb-outline);
+  transition: color 0.2s ease;
+}
+
+.studio-upload-zone:hover .studio-upload-zone-label { color: var(--vb-primary); }
+
+.studio-upload-zone-sq {
+  aspect-ratio: 1;
+  border: 2px dashed var(--vb-outline-variant);
+  border-radius: 1rem;
+  background: var(--vb-surface-low);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.studio-upload-zone-sq:hover { background: var(--vb-surface-container); border-color: var(--vb-primary); }
+
+/* ── Inputs ──────────────────────────────────────────────────── */
+/* Stitch signin: bg-surface-container-highest border-none rounded-sm px-4 py-3 */
+.studio-input {
+  width: 100%;
+  background: var(--vb-surface-highest);
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.75rem 1rem;
+  font-family: var(--studio-font);
+  font-size: 0.9375rem;
+  color: var(--vb-on-surface);
+  outline: none;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.studio-input::placeholder { color: var(--vb-outline); }
+
+.studio-input:focus {
+  box-shadow: 0 0 0 2px rgba(74, 75, 215, 0.2);
+  background: var(--vb-surface-lowest);
+}
+
+/* Selects — Stitch step4: bg-surface-container-lowest border-none rounded-xl */
+.studio-select {
+  width: 100%;
+  appearance: none;
+  background: var(--vb-surface-lowest);
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-family: var(--studio-font);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--vb-on-surface);
+  outline: none;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+.studio-select:focus { box-shadow: 0 0 0 2px rgba(74, 75, 215, 0.2); }
+
+.studio-textarea {
+  width: 100%;
+  background: var(--vb-surface-low);
+  border: none;
+  border-radius: 1rem;
+  padding: 1rem;
+  font-family: var(--studio-font);
+  font-size: 0.9375rem;
+  color: var(--vb-on-surface);
+  resize: vertical;
+  outline: none;
+  transition: box-shadow 0.2s ease;
+  min-height: 8rem;
+}
+
+.studio-textarea:focus { box-shadow: 0 0 0 2px rgba(74, 75, 215, 0.2); }
+
+/* ── Labels ──────────────────────────────────────────────────── */
+/* Stitch: text-[10px] font-bold uppercase tracking-widest */
+.studio-label {
+  display: block;
+  font-family: var(--studio-font-heading);
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: var(--vb-on-surface-variant);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  margin-left: 0.25rem;
+}
+
+/* ── Gender toggle ───────────────────────────────────────────── */
+/* Stitch: flex p-1.5 bg-surface-container-lowest rounded-full */
+.studio-gender-toggle {
+  display: flex;
+  gap: 0.25rem;
+  background: var(--vb-surface-lowest);
+  border-radius: 9999px;
+  padding: 0.375rem;
+  width: fit-content;
+}
+
+.studio-gender-btn {
+  padding: 0.5rem 2rem;
+  border: none;
+  background: transparent;
+  border-radius: 9999px;
+  font-family: var(--studio-font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--vb-on-surface-variant);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Stitch active: bg-primary text-white shadow-sm */
+.studio-gender-btn.active,
+.studio-gender-btn[data-active="true"] {
+  background: var(--vb-primary);
+  color: #fff;
+  box-shadow: 0 1px 4px rgba(74, 75, 215, 0.25);
+}
+
+.studio-gender-btn:not(.active):hover { background: var(--vb-surface-low); }
+
+/* ── Duration buttons ────────────────────────────────────────── */
+.studio-duration-btn {
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 9999px;
+  font-family: var(--studio-font-heading);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  background: var(--vb-surface-low);
+  color: var(--vb-on-surface-variant);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.studio-duration-btn.active,
+.studio-duration-btn[data-active="true"] {
+  background: var(--vb-gradient);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(74, 75, 215, 0.25);
+}
+
+.studio-duration-btn:not(.active):hover { background: var(--vb-surface-container); }
+
+/* ── Toggle switch ───────────────────────────────────────────── */
+/* Stitch step4: w-14 h-7 bg-surface-container rounded-full */
+.studio-toggle {
+  position: relative;
+  display: inline-block;
+  width: 3.5rem;
+  height: 1.75rem;
+  flex-shrink: 0;
+}
+
+.studio-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+
+.studio-toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--vb-surface-container);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.studio-toggle-slider::after {
+  content: '';
+  position: absolute;
+  top: 0.125rem;
+  left: 0.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.3s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.studio-toggle input:checked + .studio-toggle-slider { background: var(--vb-primary); }
+.studio-toggle input:checked + .studio-toggle-slider::after { transform: translateX(1.75rem); }
+
+/* ── Character preset chips ──────────────────────────────────── */
+/* Stitch: px-4 py-2 bg-primary-container/20 rounded-full text-xs font-bold */
+.studio-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: rgba(186, 187, 255, 0.2);
+  color: var(--vb-primary);
+  border-radius: 9999px;
+  font-family: var(--studio-font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.studio-chip:hover { transform: scale(1.05); background: rgba(186, 187, 255, 0.35); }
+
+.studio-chip-muted {
+  background: var(--vb-surface-container);
+  color: var(--vb-outline);
+}
+
+.studio-chip-muted:hover { background: var(--vb-surface-high); transform: none; }
+
+/* ── AI tip box ──────────────────────────────────────────────── */
+.studio-ai-tip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(255, 154, 194, 0.2);
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--vb-on-surface);
+}
+
+.studio-ai-tip .material-symbols-outlined { color: var(--vb-tertiary); }
+
+/* ── Pipeline timeline ───────────────────────────────────────── */
+/* Stitch progress.html: vertical timeline, step circles */
+.studio-pipeline {
+  background: var(--vb-surface-lowest);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 1px 4px rgba(52, 45, 85, 0.04);
+  border: 1px solid rgba(52, 45, 85, 0.03);
+}
+
+.studio-pipeline-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: relative;
+}
+
+.studio-pipeline-steps::before {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 1rem;
+  bottom: 1rem;
+  width: 2px;
+  background: var(--vb-surface-high);
+  z-index: 0;
+}
+
+.studio-pipeline-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.studio-pipeline-step-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--vb-surface-high);
+}
+
+.studio-pipeline-step-icon .material-symbols-outlined { font-size: 1.25rem; }
+
+.studio-pipeline-step.completed .studio-pipeline-step-icon { background: #d1fae5; }
+.studio-pipeline-step.completed .studio-pipeline-step-icon .material-symbols-outlined {
+  color: #059669;
+  font-variation-settings: 'FILL' 1;
+}
+
+.studio-pipeline-step.active .studio-pipeline-step-icon {
+  background: var(--vb-primary-container);
+  box-shadow: 0 0 15px rgba(74, 75, 215, 0.2);
+}
+
+.studio-pipeline-step.active .studio-pipeline-step-icon .material-symbols-outlined {
+  color: var(--vb-primary);
+  animation: pipelineSpin 1s linear infinite;
+}
+
+.studio-pipeline-step.pending { opacity: 0.4; }
+.studio-pipeline-step.pending .studio-pipeline-step-icon .material-symbols-outlined { color: var(--vb-on-surface-variant); }
+
+@keyframes pipelineSpin { to { transform: rotate(360deg); } }
+
+.studio-pipeline-step-body { padding-top: 0.375rem; }
+
+.studio-pipeline-step-label {
+  font-family: var(--studio-font-heading);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--vb-on-surface);
+}
+
+.studio-pipeline-step.active .studio-pipeline-step-label {
+  color: var(--vb-primary);
+  font-weight: 700;
+}
+
+.studio-pipeline-step-sub {
+  font-size: 0.8125rem;
+  color: rgba(97, 89, 133, 0.7);
+  margin-top: 0.25rem;
+}
+
+/* ── Status pills ────────────────────────────────────────────── */
+.studio-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  font-family: var(--studio-font-heading);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.studio-status-pill.completed  { background: #d1fae5; color: #065f46; }
+.studio-status-pill.processing,
+.studio-status-pill.running    { background: rgba(186, 187, 255, 0.25); color: var(--vb-primary); }
+.studio-status-pill.queued     { background: #dbeafe; color: #1e40af; }
+.studio-status-pill.failed     { background: #ffe4e6; color: #9f1239; }
+.studio-status-pill.paused     { background: var(--vb-surface-container); color: var(--vb-outline); }
+
+/* ── Divider with text ───────────────────────────────────────── */
+.studio-divider {
+  position: relative;
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.studio-divider::before {
+  content: '';
+  position: absolute;
+  inset: 50% 0 auto;
+  height: 1px;
+  background: rgba(181, 172, 220, 0.3);
+}
+
+.studio-divider span {
+  position: relative;
+  background: var(--vb-surface-lowest);
+  padding: 0 1rem;
+  font-family: var(--studio-font-heading);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--vb-outline);
+}
+
+/* ── Social login buttons ────────────────────────────────────── */
+.studio-social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 9999px;
+  background: var(--vb-surface-low);
+  border: none;
+  cursor: pointer;
+  font-family: var(--studio-font-heading);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--vb-on-surface);
+  transition: background 0.2s ease;
+  flex: 1;
+}
+
+.studio-social-btn:hover { background: var(--vb-surface-container); }
+
+.studio-social-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* ── Review settings card ────────────────────────────────────── */
+/* Stitch: rounded-[2rem] */
+.studio-settings-card {
+  background: var(--vb-surface-low);
+  border-radius: 2rem;
+  padding: 2.5rem;
+}
+
+/* ── Summary bento cards ─────────────────────────────────────── */
+.studio-summary-bento {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.studio-summary-card {
+  background: var(--vb-surface-lowest);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(181, 172, 220, 0.1);
+  box-shadow: 0 4px 20px rgba(44, 47, 49, 0.04);
+}
+
+.studio-summary-card-label {
+  font-family: var(--studio-font-heading);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--vb-on-surface-variant);
+  margin-bottom: 0.5rem;
+}
+
+.studio-summary-card-value {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--studio-font-heading);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--vb-on-surface);
+}
+
+.studio-summary-card-value .material-symbols-outlined { color: var(--vb-primary); }
+
+/* ── Launch CTA button ───────────────────────────────────────── */
+/* Stitch review: large gradient pill + glow */
+.studio-launch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 3rem;
+  border-radius: 9999px;
+  background: var(--vb-gradient);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-family: var(--studio-font-heading);
+  font-size: 1.25rem;
+  font-weight: 800;
+  box-shadow: 0 15px 40px rgba(74, 75, 215, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.studio-launch-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 50px rgba(74, 75, 215, 0.5);
+}
+
+.studio-launch-btn:active { transform: scale(0.95); }
+
+.studio-launch-btn .material-symbols-outlined {
+  font-size: 1.75rem;
+  font-variation-settings: 'FILL' 1;
+  transition: transform 0.3s ease;
+}
+
+.studio-launch-btn:hover .material-symbols-outlined { transform: rotate(12deg); }
+
+/* ── Voice waveform (nine-cell activity) ─────────────────────── */
+.studio-nine-cell-activity {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 2rem;
+  background: rgba(186, 187, 255, 0.15);
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid rgba(186, 187, 255, 0.3);
+  overflow: hidden;
+}
+
+.studio-nine-cell-bar {
+  flex: 1;
+  border-radius: 9999px;
+  background: var(--vb-primary);
+  animation: wavePulse 1.4s ease-in-out infinite;
+}
+
+@keyframes wavePulse {
+  0%, 100% { transform: scaleY(0.5); }
+  50%       { transform: scaleY(1); }
+}
+
+/* ── Selectable card variant (JS click-to-select) ───────────── */
+/* studio-card-selectable is a semantic marker; actual styling lives on .studio-card */
+.studio-card-selectable { cursor: pointer; }
+
+/* ── Small button modifier ───────────────────────────────────── */
+.studio-btn-sm {
+  padding: 0.35rem 0.85rem !important;
+  font-size: 0.75rem !important;
+}
+
+/* ── Form field wrapper ──────────────────────────────────────── */
+.studio-field {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Field hint / helper text ────────────────────────────────── */
+.studio-field-hint {
+  font-size: 0.78125rem;
+  color: var(--vb-outline);
+  line-height: 1.5;
+  margin-top: 0.4rem;
+}
+
+/* ── Checkbox row ────────────────────────────────────────────── */
+.studio-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.studio-checkbox-row input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--vb-primary);
+  flex-shrink: 0;
+}
+
+/* ── Inline status / alert banners ───────────────────────────── */
+.studio-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.studio-status-error {
+  background: rgba(172, 49, 73, 0.08);
+  color: var(--vb-error);
+  border: 1px solid rgba(172, 49, 73, 0.2);
+}
+
+.studio-status-success {
+  background: var(--vb-success-bg);
+  color: var(--vb-success);
+  border: 1px solid rgba(45, 125, 70, 0.2);
+}
+
+.studio-warn {
+  background: var(--vb-warning-bg);
+  color: var(--vb-warning);
+  border: 1px solid rgba(146, 64, 14, 0.2);
+}
+
+/* ── Button row ──────────────────────────────────────────────── */
+.studio-btn-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* ── Duration options row ────────────────────────────────────── */
+.studio-duration-options {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* ── Media grid (scene images / videos) ─────────────────────── */
+.studio-media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.studio-media-card {
+  background: var(--vb-surface-low);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.studio-media-card img,
+.studio-media-card video {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  max-height: 260px;
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.studio-media-card label,
+.studio-media-card .studio-input,
+.studio-media-card .studio-btn {
+  margin: 0 0.5rem;
+}
+
+.studio-media-card label {
+  font-size: 0.8125rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--vb-on-surface-variant);
+}
+
+.studio-media-card .studio-input {
+  font-size: 0.8125rem;
+  padding: 0.35rem 0.5rem;
+}
+
+.studio-media-card .studio-btn {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+}
+
+.studio-scene-image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  background: var(--vb-surface-container);
+  color: var(--vb-on-surface-variant);
+  font-size: 0.875rem;
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.studio-scene-image-error {
+  background: rgba(200, 50, 50, 0.12);
+  color: #e06060;
+  padding: 0.75rem;
+  font-size: 0.8rem;
+  text-align: center;
+  word-break: break-word;
+}
+
+@media (max-width: 600px) {
+  .studio-media-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  .studio-media-card img,
+  .studio-media-card video {
+    max-height: 180px;
+  }
+}
+
+@media (max-width: 400px) {
+  .studio-media-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Auth: divider + social login buttons ───────────────────── */
+/* Stitch signin.html: border-t border-outline-variant/30 "Or continue with" */
+.studio-auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+  color: var(--vb-on-surface-variant);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.studio-auth-divider::before,
+.studio-auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(181, 172, 220, 0.3);
+}
+
+/* Stitch: bg-surface-container-low rounded-full, two social pill buttons */
+.studio-auth-socials {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.studio-auth-social-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  border: none;
+  border-radius: 9999px;
+  background: var(--vb-surface-low);
+  color: var(--vb-on-surface);
+  font-family: var(--studio-font-heading);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.studio-auth-social-btn:hover {
+  background: var(--vb-surface-container);
+  transform: scale(1.02);
+}
+
+/* ── Global mobile responsiveness ───────────────────────────── */
+@media (max-width: 600px) {
+  /* Full-width primary action buttons */
+  .studio-step .studio-btn-primary,
+  .studio-step .studio-btn-primary-lg,
+  .studio-step .studio-btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Inputs & selects full width */
+  .studio-input,
+  .studio-select,
+  .studio-textarea {
+    font-size: 16px; /* prevents iOS zoom on focus */
+  }
+
+  /* Step field hint smaller */
+  .studio-field-hint {
+    font-size: 0.8rem;
+  }
+
+  /* Nav buttons row — stack if needed */
+  .studio-nav {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .studio-nav .studio-btn-primary,
+  .studio-nav .studio-btn-primary-lg {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .studio-field-hint {
+    font-size: 0.75rem;
+  }
+  .studio-btn-primary,
+  .studio-btn-primary-lg {
+    padding: 0.65rem 1.25rem;
+    font-size: 0.875rem;
+  }
+}

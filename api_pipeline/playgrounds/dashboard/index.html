@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TVD X1 Pipeline Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+<link rel="stylesheet" href="styles/theme.css">
+<link rel="stylesheet" href="styles/layout.css">
+<link rel="stylesheet" href="styles/form.css">
+<link rel="stylesheet" href="styles/buttons.css">
+<link rel="stylesheet" href="styles/status.css">
+<link rel="stylesheet" href="styles/event-log.css">
+<link rel="stylesheet" href="styles/output.css">
+<link rel="stylesheet" href="styles/lightbox.css">
+<link rel="stylesheet" href="styles/upload.css">
+<link rel="stylesheet" href="styles/simulation.css">
+<link rel="stylesheet" href="styles/collapsible.css">
+<link rel="stylesheet" href="styles/fallback-logs.css">
+<link rel="stylesheet" href="styles/waiting-overlay.css">
+</head>
+<body>
+
+<div class="header">
+  <h1>TVD X1 Pipeline Dashboard</h1>
+  <span class="subtitle">Real-time video generation monitor</span>
+  <div class="server-config">
+    <label>API Key:</label>
+    <input type="password" id="apiKeyInput" placeholder="sk-tvd-..." style="min-width:260px;font-family:monospace;font-size:11px" onchange="onApiKeyChange()">
+    <label style="margin-left:8px">Server:</label>
+    <select id="serverSelect" onchange="onServerSelect()">
+      <option value="auto">Auto (this origin)</option>
+      <option value="http://localhost:8000">localhost:8000</option>
+      <option value="http://your-server-ip:8000">your-server-ip:8000 (Tailscale)</option>
+      <option value="custom">Custom...</option>
+    </select>
+    <input type="text" id="serverCustom" placeholder="http://host:port" style="display:none" onchange="onCustomServer()">
+    <div class="server-status" id="serverStatus" title="Checking..."></div>
+  </div>
+</div>
+
+<div class="main">
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div id="pipelinePanel">
+    <div class="sim-toggle" id="simToggle">
+      <div class="checkbox-row">
+        <input type="checkbox" id="simulationMode" onchange="onSimulationToggle()">
+        <label for="simulationMode" style="font-weight:600;color:#c084fc">Simulation Mode</label>
+      </div>
+      <div class="field-hint" style="margin-top:4px">Run without calling real AI services — instant results with placeholder outputs.</div>
+      <div id="simOptionsRow" style="display:none; margin-top:8px;">
+        <label style="font-size:12px; color:var(--text2)">Simulation Type</label>
+        <div style="display:flex; gap:8px; margin-top:4px;">
+          <label style="display:flex; align-items:center; gap:4px; cursor:pointer; padding:6px 12px; border-radius:8px; border:1px solid var(--border); font-size:13px;"
+                 id="simTypeWrapperLabel">
+            <input type="radio" name="simType" value="wrapper" id="simTypeWrapper" checked onchange="onSimTypeChange()" style="accent-color:#a855f7">
+            Wrapper (Type 1)
+          </label>
+          <label style="display:flex; align-items:center; gap:4px; cursor:pointer; padding:6px 12px; border-radius:8px; border:1px solid var(--border); font-size:13px;"
+                 id="simTypeMonolithLabel">
+            <input type="radio" name="simType" value="monolith" id="simTypeMonolith" onchange="onSimTypeChange()" style="accent-color:#f97316">
+            Wrapper + Monolith
+          </label>
+        </div>
+        <div id="simTypeHint" class="field-hint" style="margin-top:4px">Mock services in the wrapper layer. Monolith is not touched. Fastest option for dashboard/SSE testing.</div>
+        <div style="margin-top:8px;">
+          <label style="font-size:12px; color:var(--text2)">Simulation Duration</label>
+          <div style="display:flex; gap:8px; align-items:center; margin-top:4px;">
+            <select id="simDuration" onchange="onSimDurationChange()"
+                    style="padding:6px 10px; border-radius:8px; border:1px solid var(--border); background:var(--bg2); color:var(--text1); font-size:13px; min-width:140px;">
+              <option value="none" selected>None (instant)</option>
+              <option value="real">Real (~12 min)</option>
+              <option value="30s">30s</option>
+              <option value="1m">1m</option>
+              <option value="2m">2m</option>
+              <option value="custom">Custom...</option>
+            </select>
+            <input type="text" id="simDurationCustom" placeholder="e.g. 25s, 1.5m"
+                   style="display:none; padding:6px 10px; border-radius:8px; border:1px solid var(--border); background:var(--bg2); color:var(--text1); font-size:13px; width:100px;">
+          </div>
+          <div class="field-hint">None = instant results. Real = production-speed delays (~12 min). Custom durations scale real timings proportionally.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Video Configuration</h3>
+
+      <div class="form-row">
+        <label>Video Type <span class="tag-required">required</span></label>
+        <select id="videoType">
+          <option value="product video">Product Video</option>
+          <option value="influencer">Influencer</option>
+          <option value="personal-brand">Personal Brand</option>
+          <option value="ugc-real">UGC Real</option>
+        </select>
+        <div class="field-hint">Product Video = polished showcase. Influencer = first-person UGC/Instagram style. Personal Brand = professional self-promotion.</div>
+      </div>
+      <div class="form-row" id="offerTypeRow" data-pipelines="ugc-real">
+        <label>Offer Type <span class="tag-required">required</span></label>
+        <select id="offerType">
+          <option value="physical_product">Physical product</option>
+          <option value="digital_product">Digital product</option>
+          <option value="service">Service</option>
+        </select>
+        <div class="field-hint">UGC Real only. Drives intake validation and visual planning logic.</div>
+      </div>
+
+      <div class="form-row">
+        <label>Prompt <span class="tag-required">required</span></label>
+        <textarea id="prompt" placeholder="e.g. JBL Boombox 4 wireless speaker, waterproof, 24h battery" oninput="updatePromptCounter()"></textarea>
+        <div id="promptCounter" style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-top:4px; color:#6e7681;">
+          <span id="promptMode">VO mode: <strong>generic</strong> — VO generated from AI-parsed content</span>
+          <span id="promptChars">0 chars</span>
+        </div>
+        <div class="field-hint">Describe <strong>what the product is</strong> and its key features. The AI decides the creative direction, scenes, voiceover, and visuals automatically. You can optionally add guidance like target audience, setting, or tone — but it's not required.<br><span class="example">Short: "JBL Boombox 4 wireless speaker, waterproof, 24h battery"<br>Detailed: "JBL Boombox 4 wireless speaker, waterproof, 24h battery. Show it at a beach party, highlight bass quality and durability. Target: young adults who love outdoor music."</span></div>
+      </div>
+
+      <div class="form-row" style="display:flex; gap:10px;">
+        <div style="flex:1">
+          <label>Duration (s) <span class="tag-optional">optional</span></label>
+          <input type="number" id="duration" value="20" min="10" max="120">
+          <div class="field-hint">Target video length in seconds. Default: 20. Range: 10-120.</div>
+        </div>
+        <div style="flex:1">
+          <label>Language <span class="tag-optional">optional</span></label>
+          <input type="text" id="language" value="en" placeholder="en" list="languageList">
+          <datalist id="languageList">
+            <!-- Major Western European -->
+            <option value="en">English</option>
+            <option value="en-US">American English</option>
+            <option value="en-GB">British English</option>
+            <option value="en-AU">Australian English</option>
+            <option value="es">Spanish</option>
+            <option value="es-MX">Mexican Spanish</option>
+            <option value="fr">French</option>
+            <option value="fr-CA">Canadian French</option>
+            <option value="de">German</option>
+            <option value="it">Italian</option>
+            <option value="pt">Portuguese</option>
+            <option value="pt-BR">Brazilian Portuguese</option>
+            <option value="nl">Dutch</option>
+            <option value="ca">Catalan</option>
+            <option value="eu">Basque</option>
+            <option value="gl">Galician</option>
+            <!-- Scandinavian -->
+            <option value="sv">Swedish</option>
+            <option value="no">Norwegian</option>
+            <option value="da">Danish</option>
+            <option value="fi">Finnish</option>
+            <option value="is">Icelandic</option>
+            <!-- Eastern European -->
+            <option value="ru">Russian</option>
+            <option value="pl">Polish</option>
+            <option value="uk">Ukrainian</option>
+            <option value="cs">Czech</option>
+            <option value="sk">Slovak</option>
+            <option value="hu">Hungarian</option>
+            <option value="ro">Romanian</option>
+            <option value="bg">Bulgarian</option>
+            <option value="hr">Croatian</option>
+            <option value="sr">Serbian</option>
+            <option value="sl">Slovenian</option>
+            <option value="bs">Bosnian</option>
+            <option value="mk">Macedonian</option>
+            <option value="sq">Albanian</option>
+            <option value="be">Belarusian</option>
+            <option value="lt">Lithuanian</option>
+            <option value="lv">Latvian</option>
+            <option value="et">Estonian</option>
+            <!-- Southern European / Mediterranean -->
+            <option value="el">Greek</option>
+            <option value="tr">Turkish</option>
+            <option value="mt">Maltese</option>
+            <!-- Celtic / British Isles -->
+            <option value="ga">Irish</option>
+            <option value="cy">Welsh</option>
+            <!-- Middle Eastern -->
+            <option value="he">Hebrew</option>
+            <option value="ar">Arabic</option>
+            <option value="fa">Persian</option>
+            <option value="ku">Kurdish</option>
+            <option value="ps">Pashto</option>
+            <!-- South Asian -->
+            <option value="hi">Hindi</option>
+            <option value="ur">Urdu</option>
+            <option value="bn">Bengali</option>
+            <option value="pa">Punjabi</option>
+            <option value="gu">Gujarati</option>
+            <option value="mr">Marathi</option>
+            <option value="ta">Tamil</option>
+            <option value="te">Telugu</option>
+            <option value="kn">Kannada</option>
+            <option value="ml">Malayalam</option>
+            <option value="si">Sinhala</option>
+            <option value="ne">Nepali</option>
+            <!-- East Asian -->
+            <option value="ja">Japanese</option>
+            <option value="ko">Korean</option>
+            <option value="zh">Chinese</option>
+            <option value="zh-CN">Simplified Chinese</option>
+            <option value="zh-TW">Traditional Chinese</option>
+            <option value="mn">Mongolian</option>
+            <!-- Southeast Asian -->
+            <option value="th">Thai</option>
+            <option value="vi">Vietnamese</option>
+            <option value="id">Indonesian</option>
+            <option value="ms">Malay</option>
+            <option value="tl">Filipino</option>
+            <option value="my">Burmese</option>
+            <option value="km">Khmer</option>
+            <option value="lo">Lao</option>
+            <!-- Central Asian / Caucasus -->
+            <option value="ka">Georgian</option>
+            <option value="hy">Armenian</option>
+            <option value="az">Azerbaijani</option>
+            <option value="kk">Kazakh</option>
+            <option value="uz">Uzbek</option>
+            <option value="tg">Tajik</option>
+            <option value="ky">Kyrgyz</option>
+            <option value="tk">Turkmen</option>
+            <!-- African -->
+            <option value="sw">Swahili</option>
+            <option value="am">Amharic</option>
+            <option value="ha">Hausa</option>
+            <option value="yo">Yoruba</option>
+            <option value="ig">Igbo</option>
+            <option value="zu">Zulu</option>
+            <option value="xh">Xhosa</option>
+            <option value="af">Afrikaans</option>
+          </datalist>
+          <div class="field-hint">ISO language code for voiceover and subtitles.<br><span class="example">e.g. <code>en</code>, <code>he</code>, <code>es</code>, <code>de</code>, <code>fr</code>, <code>ar</code></span></div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>Style <span class="tag-optional">optional</span></label>
+        <select id="style">
+          <option value="Auto">Auto (default)</option><!-- label updated dynamically by form.js -->
+          <option value="Cinematic photography">Cinematic Photography</option>
+          <option value="Modern flat 2d">Modern Flat 2D</option>
+          <option value="Minimal line art">Minimal Line Art</option>
+          <option value="Futuristic isometric Tech Glow">Futuristic Isometric Tech Glow</option>
+          <option value="Modern semi flat 2d">Modern Semi Flat 2D</option>
+          <option value="Soft 3d clay">Soft 3D Clay</option>
+          <option value="isometric soft vector">Isometric Soft Vector</option>
+          <option value="Paper Cut">Paper Cut</option>
+        </select>
+        <div class="field-hint">Visual style for generated images. <strong>Auto</strong>: ultra-photorealistic for Influencer/Personal Brand, cinematic for Product.</div>
+      </div>
+
+      <div class="form-row">
+        <label>Output Tier <span class="tag-optional">optional</span></label>
+        <select id="outputResolution" onchange="updateTierDefaults()">
+          <option value="720p_low" selected>720p Low (default)</option>
+          <option value="720p_high">720p High</option>
+          <option value="1080p_low">1080p Low</option>
+          <option value="1080p_high">1080p High</option>
+          <option value="4k_low">4K Low</option>
+          <option value="4k_high">4K High</option>
+        </select>
+        <div class="field-hint">Controls image resolution, video resolution/model, and the default animation model (when set to Auto). Higher tiers cost more.</div>
+      </div>
+
+      <div class="form-row">
+        <label>Video Model <span class="tag-optional">optional</span></label>
+        <select id="animationModel" onchange="onAnimationModelChange()">
+          <option value="auto">Auto</option>
+        </select>
+        <div class="field-hint">Auto uses the model from the Output Tier. Pick a specific provider to override.</div>
+      </div>
+
+      <div class="form-row" style="display:flex; gap:10px;">
+        <div style="flex:1">
+          <label>Video Provider</label>
+          <select id="overrideVideoProvider">
+            <option value="">Auto</option>
+            <option value="direct">direct</option>
+            <option value="kie">kie</option>
+          </select>
+        </div>
+        <div style="flex:1">
+          <label>Video Resolution</label>
+          <select id="overrideVideoResolution">
+            <option value="">Auto</option>
+            <option value="720p">720p</option>
+            <option value="1080p">1080p</option>
+            <option value="4k">4k</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row" id="imageApiRow">
+        <label>Image Model <span class="tag-optional">optional</span></label>
+        <select id="imageApi" onchange="onImageModelChange()">
+          <option value="auto">Auto</option>
+          <option value="kie">Nano Banana Pro (Kie.ai)</option>
+          <option value="kie-flash">Gemini 3 Flash (Kie.ai)</option>
+          <option value="google">Gemini 3 Pro (Vertex AI)</option>
+          <option value="google-31-flash">Gemini 3.1 Flash (Vertex AI)</option>
+        </select>
+        <div class="field-hint">Image generation backend. Nano Banana = high quality via Kie.ai. Flash = faster/cheaper variant. Gemini = Google native image gen.</div>
+      </div>
+
+      <div class="form-row" style="display:flex; gap:10px;">
+        <div style="flex:1">
+          <label>Image Provider</label>
+          <select id="imageProvider">
+            <option value="">Auto</option>
+            <option value="direct">direct</option>
+            <option value="kie">kie</option>
+          </select>
+        </div>
+        <div style="flex:1">
+          <label>Image Resolution</label>
+          <select id="imageResolution">
+            <option value="">Auto</option>
+            <option value="1K">1K</option>
+            <option value="2K">2K</option>
+            <option value="4K">4K</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row" data-pipelines="product influencer personal-brand" style="display:flex; gap:10px;">
+        <div style="flex:1">
+          <label>Sound Sync Method <span class="tag-optional">optional</span></label>
+          <select id="soundSyncMethod" onchange="toggleBeatSyncStrategy()">
+            <option value="beat_sync">Beat Sync (default)</option>
+            <option value="none">None</option>
+          </select>
+          <div class="field-hint">Audio-video sync strategy. <strong>Beat Sync</strong>: VO word timestamps drive per-scene durations, videos over-generated and FFmpeg-trimmed for frame-perfect sync (~15s extra). <strong>None</strong>: VO is overlaid without adjusting scene lengths.</div>
+        </div>
+        <div style="flex:1;display:none" id="beatSyncStrategyWrapper">
+          <label>Beat Sync Strategy <span class="tag-optional">optional</span></label>
+          <select id="beatSyncStrategy">
+            <option value="phrase_start">Phrase Start (default)</option>
+            <option value="continuous">Continuous</option>
+          </select>
+          <div class="field-hint">How scene boundaries align to VO words. <strong>Phrase Start</strong>: cut at next phrase start (natural). <strong>Continuous</strong>: gapless tiling from prev scene end.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section" data-pipelines="product">
+      <h3>Product Images <span class="tag-optional">optional</span></h3>
+      <div class="field-hint" style="margin-bottom:8px">URLs to product photos. Nano Banana Pro regenerates an isolated product image on a clean white background from these references, used across all scenes. Skip if your images are already clean — saves time and cost.<br><span class="example">e.g. <code>https://example.com/product-front.jpg</code></span></div>
+      <div class="url-list" id="productImageList">
+        <div class="url-input-row">
+          <input type="url" placeholder="https://example.com/product-photo.jpg" class="product-img-url" autocomplete="one-time-code">
+          <button class="upload-btn" title="Upload file" onclick="uploadFile(this)">&#8682;</button>
+          <button class="remove-btn" title="Remove" onclick="removeUrlRow(this)">&times;</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center">
+        <button class="add-url-btn" onclick="addUrlInput('productImageList', 'product-img-url')">+ Add Image URL</button>
+        <button class="add-url-btn" onclick="uploadMultipleFiles('productImageList', 'product-img-url')" style="border-color:var(--accent);color:var(--accent2)">&#8682; Upload Multiple</button>
+      </div>
+      <div class="form-row" style="margin-top:10px">
+        <label>Product Image Mode <span class="tag-optional">optional</span></label>
+        <select id="productImageMode">
+          <option value="auto">Auto — evaluate each image (Recommended)</option>
+          <option value="force_clean">Force Clean — always regenerate</option>
+          <option value="clean">Already Clean — skip regeneration</option>
+          <option value="none">None (skip)</option>
+        </select>
+        <div class="field-hint">Auto: Gemini scores each image's cleanliness (isolated product, plain background). Clean images pass through; dirty ones are regenerated via Nano Banana. Saves cost when images are already professional product shots.</div>
+      </div>
+    </div>
+
+    <div class="form-section" id="influencerSection" data-pipelines="influencer personal-brand" style="display:none;">
+      <h3>Influencer Options</h3>
+      <div class="form-row">
+        <label>Gender <span class="tag-optional">optional</span></label>
+        <select id="gender">
+          <option value="f">Female</option>
+          <option value="m">Male</option>
+        </select>
+        <div class="field-hint">Gender of the auto-generated influencer. Also affects voice selection (male/female). Default: female.</div>
+      </div>
+      <div class="form-row">
+        <label>Reference Image URLs <span class="tag-optional">optional</span></label>
+        <div class="field-hint" style="margin-bottom:6px">Product/environment reference photos. Analyzed by Gemini and used as visual context for scene generation.<br><span class="example">e.g. photos of the product, packaging, or the location where the UGC video should be set</span></div>
+        <div class="url-list" id="refImageList">
+          <div class="url-input-row">
+            <input type="url" placeholder="https://example.com/product-ref.jpg" class="ref-img-url" autocomplete="one-time-code">
+            <button class="upload-btn" title="Upload file" onclick="uploadFile(this)">&#8682;</button>
+            <button class="remove-btn" title="Remove" onclick="removeUrlRow(this)">&times;</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;justify-content:center">
+          <button class="add-url-btn" onclick="addUrlInput('refImageList', 'ref-img-url')">+ Add Image URL</button>
+          <button class="add-url-btn" onclick="uploadMultipleFiles('refImageList', 'ref-img-url')" style="border-color:var(--accent);color:var(--accent2)">&#8682; Upload Multiple</button>
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Asset URLs <span class="tag-optional">optional</span></label>
+        <div class="field-hint" style="margin-bottom:6px">Image or video URLs inserted as-is between scenes (max 3s each). Use for real product footage, B-roll, or branded clips.<br><span class="example">e.g. <code>https://example.com/product-closeup.mp4</code></span></div>
+        <div class="url-list" id="assetList">
+          <div class="url-input-row">
+            <input type="url" placeholder="https://example.com/clip.mp4" class="asset-url" style="flex:1" autocomplete="one-time-code">
+            <select class="asset-type" style="width:80px;flex:none;font-size:11px" title="Asset type hint">
+              <option value="auto">Auto</option>
+              <option value="image">Image</option>
+              <option value="video">Video</option>
+            </select>
+            <label style="display:flex;align-items:center;gap:3px;flex:none;font-size:11px;white-space:nowrap" title="Preserve original audio in video assets"><input type="checkbox" class="asset-keep-audio"> Audio</label>
+            <button class="upload-btn" title="Upload file" onclick="uploadFile(this)">&#8682;</button>
+            <button class="remove-btn" title="Remove" onclick="removeUrlRow(this)">&times;</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;justify-content:center">
+          <button class="add-url-btn" onclick="addAssetInput()">+ Add Asset URL</button>
+          <button class="add-url-btn" onclick="uploadMultipleAssets()" style="border-color:var(--accent);color:var(--accent2)">&#8682; Upload Multiple</button>
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Enrich CTA with Influencer <span class="tag-optional">optional</span></label>
+        <select id="enrichCtaInfluencer">
+          <option value="false" selected>No — clean logo+slogan only</option>
+          <option value="true">Yes — apply influencer enrichment to CTA scene</option>
+        </select>
+        <div class="field-hint">Whether to apply influencer image enrichment to the final CTA scene. Default: off (clean ending card).</div>
+      </div>
+      <div class="form-row" data-pipelines="influencer">
+        <label>Remove Character Background <span class="tag-optional">optional</span></label>
+        <select id="removeCharacterBg">
+          <option value="false" selected>No (default)</option>
+          <option value="true">Yes — remove background before NB2 compositing</option>
+        </select>
+        <div class="field-hint">Remove the character image background (fal.ai birefnet) before NB2 venue compositing. Prevents venue blending when the character photo has a venue background.</div>
+      </div>
+      <div class="form-row" data-pipelines="influencer">
+        <div class="checkbox-row">
+          <input type="checkbox" id="generateExtended">
+          <label for="generateExtended">Generate Extended Version</label>
+        </div>
+        <div class="field-hint">Create a second, longer video using full-length raw clips with a new VO. Same clips, no extra generation cost. Extended video URL appears in intermediates.</div>
+      </div>
+      <div class="form-row" data-pipelines="influencer">
+        <label>Asset Mode <span class="tag-optional">optional</span></label>
+        <select id="assetMode" onchange="onAssetModeChange()">
+          <option value="smart">Smart (default)</option>
+          <option value="legacy">Legacy (hardcoded 3s trim)</option>
+        </select>
+        <div class="field-hint">Legacy: hardcoded 3s trim, even spacing. Smart: LLM analyzes assets and places them in matching scenes.</div>
+      </div>
+      <div class="form-row" data-pipelines="influencer" id="voDurationHintsRow">
+        <label>VO Duration Hints <span class="tag-optional">optional</span></label>
+        <select id="voDurationHints">
+          <option value="false" selected>Off (default)</option>
+          <option value="true">On</option>
+        </select>
+        <div class="field-hint">When On, the VO LLM receives qualitative clip length tags ([Brief], [Standard], [Extended]) to nudge longer narration for long assets. For A/B testing.</div>
+      </div>
+      <div class="form-row" data-pipelines="influencer">
+        <label>Min Influencer Clip Ratio <span class="tag-optional">optional</span></label>
+        <input type="number" id="minInfluencerClipRatio" value="0.10" min="0" max="1" step="0.05">
+        <div class="field-hint">Minimum fraction of clips showing the influencer (0.0–1.0). Default: 0.10.</div>
+      </div>
+      <div class="form-row" data-pipelines="influencer">
+        <label>Max Influencer Clip Ratio <span class="tag-optional">optional</span></label>
+        <input type="number" id="maxInfluencerClipRatio" value="0.20" min="0" max="1" step="0.05">
+        <div class="field-hint">Maximum fraction of clips showing the influencer (0.0–1.0). Default: 0.20. Increase for known-figure influencers.</div>
+      </div>
+      <div class="form-row" data-pipelines="influencer">
+        <label>Highlights <span class="tag-optional">optional</span></label>
+        <textarea id="highlights" rows="3" placeholder="One highlight per line, e.g.:&#10;Cat-themed decor everywhere&#10;Interactive origami crafting"></textarea>
+        <div class="field-hint">Unique business highlights to emphasize in VO and visuals. One per line. If empty, auto-extracted from prompt.</div>
+      </div>
+      <h4 style="margin-top:16px;color:var(--text2);font-size:13px" data-pipelines="influencer">End Card (Business Info)</h4>
+      <div class="form-row" data-pipelines="influencer">
+        <label>Business Name <span class="tag-required">required</span></label>
+        <input type="text" id="businessName" placeholder="e.g. OISHI HOUSE">
+        <div class="field-hint">Business name displayed on the ~2s end card overlay. Provides a professional outro and prevents VO cutoff.</div>
+      </div>
+      <div class="form-row" data-pipelines="influencer">
+        <label>Business Address <span class="tag-optional">optional</span></label>
+        <input type="text" id="businessAddress" placeholder="e.g. Spalena St, Prague">
+        <div class="field-hint">Address displayed on the end card.</div>
+      </div>
+      <div class="form-row" data-pipelines="influencer">
+        <label>Business Phone <span class="tag-optional">optional</span></label>
+        <input type="text" id="businessPhone" placeholder="e.g. +420 123 456 789">
+        <div class="field-hint">Phone number displayed on the end card.</div>
+      </div>
+      <div class="form-row" data-pipelines="influencer">
+        <label>Business Website <span class="tag-optional">optional</span></label>
+        <input type="text" id="businessWebsite" placeholder="e.g. www.oishi-house.com">
+        <div class="field-hint">Website displayed on the end card.</div>
+      </div>
+      <div class="form-row" data-pipelines="influencer">
+        <label>End Card Name Color <span class="tag-optional">optional</span></label>
+        <input type="text" id="endCardColor" placeholder="e.g. pink, gold, #FF6B9D" value="white">
+        <div class="field-hint">Accent color for the business name on the end card. Preset: white, pink, gold, cyan, coral, lime, violet — or any hex color.</div>
+      </div>
+      <div class="form-row" data-pipelines="influencer">
+        <label>End Card Detail Color <span class="tag-optional">optional</span></label>
+        <input type="text" id="endCardDetailColor" placeholder="e.g. white, #CCCCCC" value="white">
+        <div class="field-hint">Color for the address and phone on the end card. Defaults to white.</div>
+      </div>
+      <div class="form-row" data-pipelines="influencer">
+        <label>End Card Position <span class="tag-optional">optional</span></label>
+        <select id="endCardPosition">
+          <option value="bottom">Bottom</option>
+          <option value="top">Top</option>
+          <option value="middle" selected>Middle</option>
+        </select>
+        <div class="field-hint">Vertical position of the end card text. Use 'top' if the subject is at the bottom of the frame.</div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Additional Settings <span class="tag-optional">all optional</span></h3>
+      <div class="form-row">
+        <label>Character/Influencer URL <span class="tag-optional">optional</span></label>
+        <div class="single-url-row">
+          <input type="url" id="characterUrl" placeholder="https://example.com/person-photo.jpg" autocomplete="one-time-code">
+          <button class="upload-btn" title="Upload file" onclick="uploadFile(this)">&#8682;</button>
+        </div>
+        <div class="field-hint">URL to a photo of a specific person. The AI will use their appearance in generated scenes.<br><span class="example">e.g. a headshot or portrait photo of the actor/influencer you want in the video</span></div>
+      </div>
+      <div class="form-row" id="character2Row" data-pipelines="influencer personal-brand" style="display:none;">
+        <label>Character 2 URL <span class="tag-optional">optional</span></label>
+        <div class="single-url-row">
+          <input type="url" id="character2Url" placeholder="https://example.com/person2-photo.jpg" autocomplete="one-time-code">
+          <button class="upload-btn" title="Upload file" onclick="uploadFile(this)">&#8682;</button>
+        </div>
+        <div class="field-hint">Second character/person photo. Used in multi-character scenes.</div>
+      </div>
+      <div class="form-row" id="character3Row" data-pipelines="influencer personal-brand" style="display:none;">
+        <label>Character 3 URL <span class="tag-optional">optional</span></label>
+        <div class="single-url-row">
+          <input type="url" id="character3Url" placeholder="https://example.com/person3-photo.jpg" autocomplete="one-time-code">
+          <button class="upload-btn" title="Upload file" onclick="uploadFile(this)">&#8682;</button>
+        </div>
+        <div class="field-hint">Third character/person photo. Used in multi-character scenes.</div>
+      </div>
+      <div class="form-row">
+        <label>Character Description <span class="tag-optional">optional</span></label>
+        <textarea id="characterDescription" placeholder="A 30-year-old woman with brown hair, casual outfit"></textarea>
+        <div class="field-hint">Text description of the person to show in scenes. <strong>Bypasses AI image analysis</strong> &mdash; use this instead of Character URL if you want to describe the person manually.<br><span class="example">e.g. "A young man, mid-20s, athletic build, wearing a white t-shirt and jeans"</span></div>
+      </div>
+      <div class="form-row">
+        <label>Logo URL <span class="tag-optional">optional</span></label>
+        <div class="single-url-row">
+          <input type="url" id="logoUrl" placeholder="https://example.com/brand-logo.png" autocomplete="one-time-code">
+          <button class="upload-btn" title="Upload file" onclick="uploadFile(this)">&#8682;</button>
+        </div>
+        <div class="field-hint">Brand logo image URL. Integrated into the final CTA (call-to-action) scene.<br><span class="example">e.g. a transparent PNG of your brand logo</span></div>
+      </div>
+      <div class="form-row">
+        <label>Slogan <span class="tag-optional">optional</span></label>
+        <input type="text" id="sloganText" placeholder="Feel the beat everywhere">
+        <div class="field-hint">Brand tagline displayed in the CTA ending scene alongside the logo.<br><span class="example">e.g. "Just Do It", "Think Different", "Feel the beat everywhere"</span></div>
+      </div>
+      <div class="form-row">
+        <label>Voice ID (ElevenLabs) <span class="tag-optional">optional</span></label>
+        <input type="text" id="voiceId" placeholder="Auto-selected based on gender + language">
+        <div class="field-hint">Specific ElevenLabs voice ID for the voiceover. If empty, a random matching voice is picked based on gender and language.<br><span class="example">e.g. <code>21m00Tcm4TlvDq8ikWAM</code></span></div>
+      </div>
+      <div class="form-row">
+        <label>Country <span class="tag-optional">optional</span></label>
+        <input type="text" id="country" placeholder="usa" list="countryList">
+        <datalist id="countryList">
+          <option value="usa">USA</option>
+          <option value="israel">Israel</option>
+          <option value="uk">United Kingdom</option>
+          <option value="germany">Germany</option>
+          <option value="france">France</option>
+          <option value="spain">Spain</option>
+          <option value="italy">Italy</option>
+          <option value="brazil">Brazil</option>
+          <option value="japan">Japan</option>
+          <option value="south korea">South Korea</option>
+          <option value="china">China</option>
+          <option value="india">India</option>
+          <option value="turkey">Turkey</option>
+          <option value="russia">Russia</option>
+          <option value="poland">Poland</option>
+          <option value="thailand">Thailand</option>
+          <option value="vietnam">Vietnam</option>
+          <option value="mexico">Mexico</option>
+          <option value="colombia">Colombia</option>
+          <option value="argentina">Argentina</option>
+          <option value="uae">UAE</option>
+          <option value="saudi arabia">Saudi Arabia</option>
+          <option value="egypt">Egypt</option>
+          <option value="morocco">Morocco</option>
+          <option value="portugal">Portugal</option>
+          <option value="netherlands">Netherlands</option>
+          <option value="sweden">Sweden</option>
+          <option value="australia">Australia</option>
+          <option value="canada">Canada</option>
+          <option value="norway">Norway</option>
+          <option value="nigeria">Nigeria</option>
+        </datalist>
+        <div class="field-hint">Target country for cultural adaptation. Affects influencer appearance and VO tone.<br><span class="example">e.g. <code>usa</code>, <code>israel</code>, <code>germany</code>, <code>japan</code>, <code>brazil</code></span></div>
+      </div>
+      <div class="form-row">
+        <label>Customer ID <span class="tag-optional">optional</span></label>
+        <input type="text" id="customerId" placeholder="e.g. cust_abc123">
+        <div class="field-hint">Optional customer/tenant identifier for job tracking and billing. Passed through to Supabase job metadata.</div>
+      </div>
+      <div class="form-row">
+        <label>Video Reference URL <span class="tag-optional">optional</span></label>
+        <div class="single-url-row">
+          <input type="url" id="videoReferenceUrl" placeholder="https://example.com/reference-ad.mp4" autocomplete="one-time-code">
+          <button class="upload-btn" title="Upload file" onclick="uploadFile(this)">&#8682;</button>
+        </div>
+        <div class="field-hint">URL to an existing video whose structure/pacing should be mimicked. The AI analyzes its scene flow and timing.<br><span class="example">e.g. a competitor's ad or a style reference video you want to emulate</span></div>
+      </div>
+      <div class="form-row">
+        <div class="checkbox-row">
+          <input type="checkbox" id="addSubtitles" checked>
+          <label for="addSubtitles">Add Subtitles (ZapCap)</label>
+        </div>
+        <div class="field-hint">Burn animated subtitles into the final video using ZapCap. Recommended for social media.</div>
+      </div>
+      <div class="form-row">
+        <div class="checkbox-row">
+          <input type="checkbox" id="subtitleEmoji" checked>
+          <label for="subtitleEmoji">Subtitle Emoji & Keywords</label>
+        </div>
+        <div class="field-hint">Enrich subtitles with emoji and keyword highlighting via LLM. Only applies when subtitles are enabled.</div>
+      </div>
+      <div class="form-row">
+        <label>Subtitle Position <span class="tag-optional">optional</span></label>
+        <select id="subtitlePosition">
+          <option value="top">Top</option>
+          <option value="middle" selected>Middle</option>
+          <option value="bottom">Bottom</option>
+        </select>
+        <div class="field-hint">Vertical position of subtitles on the video.</div>
+      </div>
+      <div class="form-row">
+        <div class="checkbox-row">
+          <input type="checkbox" id="qualityCheck" checked>
+          <label for="qualityCheck">Image Quality Gate</label>
+        </div>
+        <div class="field-hint">Gemini scores each generated image (1-10). Images scoring below 5 are regenerated once. Improves quality but adds ~5s per scene.</div>
+      </div>
+      <div class="form-row">
+        <div class="checkbox-row">
+          <input type="checkbox" id="generateVo" checked>
+          <label for="generateVo">Generate Voiceover</label>
+        </div>
+        <div class="field-hint">Generate AI voiceover narration for the video. Uncheck to produce a video with music only (no spoken narration). Works for all pipeline types.</div>
+      </div>
+      <div class="form-row">
+        <label>Film Grain <span class="tag-optional">optional</span></label>
+        <select id="filmGrain">
+          <option value="default">Default (per pipeline)</option>
+          <option value="true">On</option>
+          <option value="false">Off</option>
+        </select>
+        <div class="field-hint">Adds subtle film grain to the final video for a more organic, less AI-generated look. Default: On for influencer/personal-brand, Off for product.</div>
+      </div>
+      <div class="form-row" data-pipelines="influencer">
+        <label>Surprise Mode <span class="tag-optional">optional</span></label>
+        <select id="surpriseMode">
+          <option value="">Default (from config)</option>
+          <option value="2">At least 2 surprises</option>
+          <option value="1">At least 1 surprise</option>
+          <option value="3">At least 3 surprises</option>
+          <option value="all">All surprises</option>
+          <option value="none">No surprises</option>
+        </select>
+        <div class="field-hint">Controls how many surprise animation variants (whimsical elements coming alive) are used. Default: 2.</div>
+      </div>
+      <div class="form-row">
+        <label>Dissolve (s) <span class="tag-optional">optional</span></label>
+        <input type="number" id="dissolveSeconds" value="0.4" min="0" max="2" step="0.1">
+        <div class="field-hint">Transition duration in seconds between scenes. 0 = hard cut, 0.4 = gentle dissolve (default). Range: 0-2.0.</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="startBtn" onclick="startJob()">Start Pipeline</button>
+      <button class="btn btn-warning" id="pauseBtn" onclick="pauseJob()" disabled>Pause</button>
+      <button class="btn btn-danger" id="abortBtn" onclick="abortJob()" style="display:none">Abort</button>
+      <button class="btn btn-success" id="resumeBtn" onclick="resumeJob()" style="display:none">Resume</button>
+    </div>
+    <div class="restart-row" id="restartRow" style="display:none">
+      <select id="restartStep"></select>
+      <button class="btn btn-primary" id="restartBtn" onclick="restartJob()">Restart</button>
+    </div>
+    </div><!-- /pipelinePanel -->
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="status-bar">
+      <div class="status-top">
+        <span class="status-badge badge-idle" id="statusBadge">
+          <span class="status-dot"></span>
+          <span id="statusText">Idle</span>
+        </span>
+        <span class="job-id-display" id="jobIdDisplay"></span>
+        <button class="btn-copy-id" id="copyJobIdBtn" onclick="copyJobId()" title="Copy Job ID" style="display:none">&#x1F4CB;</button>
+      </div>
+      <div class="active-jobs-row">
+        <select id="activeJobsSelect" onchange="selectActiveJob()">
+          <option value="">-- Select active job --</option>
+        </select>
+        <button class="btn-monitor btn-refresh" id="refreshJobsBtn" onclick="refreshActiveJobs()" title="Refresh active jobs">REFRESH</button>
+      </div>
+      <div class="monitor-row">
+        <input type="text" id="monitorJobId" placeholder="Paste job ID to monitor..."
+               onkeydown="if(event.key==='Enter') monitorJob()">
+        <button class="btn-monitor" id="monitorBtn" onclick="monitorJob()">Monitor</button>
+      </div>
+      <div class="progress-container">
+        <div class="progress-fill" id="progressFill" style="width:0%">
+          <span class="progress-text" id="progressText">0%</span>
+        </div>
+      </div>
+      <div id="costDisplay" style="text-align:right;font-size:0.85rem;color:var(--green);margin-top:4px;min-height:1.2em;font-family:monospace;"></div>
+      <div id="queueDisplay" style="text-align:right;font-size:0.85rem;color:#c084fc;margin-top:2px;min-height:1.2em;font-family:monospace;display:none;"></div>
+    </div>
+
+    <div class="event-log-container">
+      <div class="event-log-header">
+        <h3>Event Log</h3>
+        <span class="event-count" id="eventCount">0 events</span>
+      </div>
+      <div class="event-log" id="eventLog"></div>
+    </div>
+
+    <div class="output-section" id="outputSection">
+      <h3 class="section-toggle" onclick="toggleSection(this)">Output</h3>
+      <div class="section-body">
+        <div class="output-links" id="outputLinks"></div>
+      </div>
+    </div>
+
+    <div class="logs-section" id="logsSection">
+      <h3 class="section-toggle" onclick="toggleSection(this)">Issues, Warnings, Fallbacks <span class="log-count" id="logCount">0</span></h3>
+      <div class="section-body">
+        <div class="fallback-list" id="fallbackList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <div class="lightbox-content" id="lightboxContent" onclick="event.stopPropagation()"></div>
+</div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

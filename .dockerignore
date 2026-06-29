@@ -1,0 +1,7 @@
+__pycache__
+*.pyc
+.git
+.gitignore
+nul
+api_pipeline/video_results/*.mp4
+Comp_Videos/__pycache__

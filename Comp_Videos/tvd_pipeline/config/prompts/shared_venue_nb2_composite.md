@@ -1,0 +1,1 @@
+Image 1: {venue_description} Image 2: {influencer_description} Put the person from image 2 into the venue from image 1. {director_description} Use the exact same venue, don't change venue.

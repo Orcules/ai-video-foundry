@@ -1,0 +1,16 @@
+{
+  "background_removal": {
+    "endpoint": "fal-ai/birefnet",
+    "poll_interval": 2,
+    "max_poll_time": 60
+  },
+  "reference_to_video": {
+    "endpoint": "https://queue.fal.run/fal-ai/veo3.1/reference-to-video",
+    "poll_interval": 3,
+    "max_poll_time": 300,
+    "aspect_ratio": "9:16",
+    "resolution": "720p",
+    "generate_audio": false,
+    "safety_tolerance": "5"
+  }
+}

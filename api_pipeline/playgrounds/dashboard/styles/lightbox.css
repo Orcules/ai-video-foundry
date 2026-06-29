@@ -1,0 +1,35 @@
+.lightbox-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+.lightbox-overlay.active { display: flex; }
+.lightbox-close {
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 32px;
+  cursor: pointer;
+  z-index: 10000;
+  line-height: 1;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.15); }
+.lightbox-content img {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 8px;
+}
+.lightbox-content video {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 8px;
+}

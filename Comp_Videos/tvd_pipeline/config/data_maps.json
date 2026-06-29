@@ -1,0 +1,368 @@
+{
+  "language_names": {
+    "en": "English", "de": "German", "es": "Spanish", "fr": "French",
+    "it": "Italian", "pt": "Portuguese", "nl": "Dutch", "ru": "Russian",
+    "zh": "Chinese", "ja": "Japanese", "ko": "Korean", "ar": "Arabic",
+    "pl": "Polish", "hu": "Hungarian", "cs": "Czech", "sk": "Slovak",
+    "ro": "Romanian", "bg": "Bulgarian", "uk": "Ukrainian", "hr": "Croatian",
+    "sr": "Serbian", "sl": "Slovenian", "bs": "Bosnian", "mk": "Macedonian",
+    "sq": "Albanian", "el": "Greek", "tr": "Turkish", "lt": "Lithuanian",
+    "lv": "Latvian", "et": "Estonian", "fi": "Finnish", "sv": "Swedish",
+    "no": "Norwegian", "da": "Danish", "is": "Icelandic", "ga": "Irish",
+    "cy": "Welsh", "mt": "Maltese", "ca": "Catalan", "eu": "Basque",
+    "gl": "Galician", "be": "Belarusian", "ka": "Georgian", "hy": "Armenian",
+    "az": "Azerbaijani", "kk": "Kazakh", "uz": "Uzbek", "tg": "Tajik",
+    "ky": "Kyrgyz", "tk": "Turkmen", "mn": "Mongolian",
+    "he": "Hebrew", "fa": "Persian", "ur": "Urdu", "hi": "Hindi",
+    "bn": "Bengali", "pa": "Punjabi", "gu": "Gujarati", "mr": "Marathi",
+    "ta": "Tamil", "te": "Telugu", "kn": "Kannada", "ml": "Malayalam",
+    "si": "Sinhala", "ne": "Nepali", "ps": "Pashto", "ku": "Kurdish",
+    "th": "Thai", "vi": "Vietnamese", "id": "Indonesian", "ms": "Malay",
+    "tl": "Filipino", "my": "Burmese", "km": "Khmer", "lo": "Lao",
+    "sw": "Swahili", "am": "Amharic", "ha": "Hausa", "yo": "Yoruba",
+    "ig": "Igbo", "zu": "Zulu", "xh": "Xhosa", "af": "Afrikaans",
+    "pt-BR": "Brazilian Portuguese", "zh-CN": "Simplified Chinese",
+    "zh-TW": "Traditional Chinese", "en-US": "American English",
+    "en-GB": "British English", "en-AU": "Australian English",
+    "es-MX": "Mexican Spanish",
+    "fr-CA": "Canadian French"
+  },
+
+  "region_mapping": {
+    "es": "latam", "pt": "latam", "pt-BR": "latam",
+    "de": "western_europe", "fr": "western_europe", "it": "western_europe",
+    "nl": "western_europe", "da": "western_europe", "sv": "western_europe",
+    "no": "western_europe", "fi": "western_europe",
+    "hu": "eastern_europe", "pl": "eastern_europe", "cs": "eastern_europe",
+    "sk": "eastern_europe", "ro": "eastern_europe", "bg": "eastern_europe",
+    "uk": "eastern_europe", "ru": "eastern_europe",
+    "zh": "east_asia", "ja": "east_asia", "ko": "east_asia",
+    "zh-TW": "east_asia", "zh-CN": "east_asia",
+    "th": "southeast_asia", "vi": "southeast_asia", "id": "southeast_asia",
+    "ms": "southeast_asia", "tl": "southeast_asia",
+    "ar": "metap", "tr": "metap", "he": "metap", "fa": "metap",
+    "hi": "metap", "ur": "metap", "bn": "metap",
+    "en": "namer", "en-US": "namer", "en-GB": "western_europe",
+    "en-AU": "namer"
+  },
+
+  "cultural_styles": {
+    "latam": {
+      "ethnicity": "Latin American/Hispanic features, warm skin tones, dark hair",
+      "environment": "vibrant colors, colonial architecture, tropical or urban Latin settings",
+      "style": "warm, family-oriented, emotional, passionate",
+      "clothing": "casual modern Latin American fashion, bright colors",
+      "names": "names like Sofia, Diego, Isabella, Carlos, Maria, Juan"
+    },
+    "western_europe": {
+      "ethnicity": "diverse Western European features, mix of skin tones",
+      "environment": "modern European cities, clean architecture, historic buildings",
+      "style": "professional, sophisticated, understated elegance",
+      "clothing": "smart casual European fashion, neutral and earth tones",
+      "names": "names like Emma, Liam, Sophie, Felix, Anna, Max"
+    },
+    "eastern_europe": {
+      "ethnicity": "Eastern European/Slavic features, fair to medium skin tones",
+      "environment": "Eastern European cities, mix of historic and Soviet-era architecture",
+      "style": "practical, direct, resilient, no-nonsense",
+      "clothing": "practical European fashion, darker colors, layered outfits",
+      "names": "names like Katya, Ivan, Marta, Pavel, Olga, Dmitri"
+    },
+    "east_asia": {
+      "ethnicity": "East Asian features, Chinese/Japanese/Korean appearance",
+      "environment": "modern Asian cities, blend of traditional and ultra-modern",
+      "style": "refined, tech-savvy, minimalist, respectful",
+      "clothing": "modern Asian fashion, clean lines, often monochromatic",
+      "names": "names like Wei, Yuki, Min-ji, Kenji, Mei, Hiroshi"
+    },
+    "southeast_asia": {
+      "ethnicity": "Southeast Asian features, warm skin tones",
+      "environment": "tropical settings, bustling markets, modern Asian cities",
+      "style": "friendly, community-oriented, vibrant",
+      "clothing": "light fabrics, bright colors, tropical-appropriate fashion",
+      "names": "names like Anh, Putri, Somchai, Maria, Budi, Linh"
+    },
+    "metap": {
+      "ethnicity": "Middle Eastern, South Asian, or African features as appropriate",
+      "environment": "diverse - from modern Gulf cities to traditional markets",
+      "style": "respectful, family-values, hospitable",
+      "clothing": "modest modern fashion, appropriate for the specific culture",
+      "names": "names like Ahmed, Fatima, Priya, Rahul, Amina, Yusuf"
+    },
+    "namer": {
+      "ethnicity": "diverse North American features, multicultural mix",
+      "environment": "American suburbs, modern offices, diverse urban settings",
+      "style": "confident, aspirational, diverse, inclusive",
+      "clothing": "casual American fashion, athleisure, diverse styles",
+      "names": "names like Jessica, Michael, Ashley, Brandon, Emily, Tyler"
+    }
+  },
+
+  "hook_styles": {
+    "latam": "emotional appeal, family benefits, passionate language, urgency",
+    "western_europe": "factual benefits, professional tone, quality focus",
+    "eastern_europe": "practical advantages, value proposition, direct approach",
+    "east_asia": "social proof, technology benefits, quality assurance",
+    "southeast_asia": "community benefits, friendly tone, accessible language",
+    "metap": "family benefits, trust-building, respectful tone",
+    "namer": "aspirational messaging, personal success, opportunity focus"
+  },
+
+  "brand_replacements": {
+    "\\bMickey Mouse\\b": "beloved cartoon mascot character",
+    "\\bMickey\\b": "cartoon mascot",
+    "\\bMinnie Mouse\\b": "cartoon character with polka dot bow",
+    "\\bMinnie\\b": "cartoon character",
+    "\\bDonald Duck\\b": "cartoon duck character",
+    "\\bGoofy\\b": "tall cartoon dog character",
+    "\\bDumbo\\b": "flying elephant",
+    "\\bSleeping Beauty\\b": "fairytale princess",
+    "\\bCinderella\\b": "fairytale princess",
+    "\\bDisney\\b": "magical theme park",
+    "\\bDisneyland\\b": "magical theme park",
+    "\\bDisney World\\b": "magical theme park resort",
+    "\\bMagic Kingdom\\b": "fantasy kingdom",
+    "\\bEPCOT\\b": "futuristic theme park",
+    "\\bUniversal Studios\\b": "movie theme park",
+    "\\bHarry Potter\\b": "wizard character",
+    "\\bHogwarts\\b": "magical castle school",
+    "\\bMarvel\\b": "superhero",
+    "\\bStar Wars\\b": "space fantasy",
+    "\\bPixar\\b": "animated",
+    "\\bSpace Mountain\\b": "indoor roller coaster in the dark",
+    "\\bBig Thunder\\b": "wild west roller coaster",
+    "\\bPirates of the Caribbean\\b": "pirate adventure boat ride",
+    "\\bIt's a Small World\\b": "colorful boat ride through miniature scenes"
+  },
+
+  "talking_replacements": {
+    "\\btalking\\b": "reacting with excitement",
+    "\\bspeaking\\b": "looking amazed",
+    "\\bspeaks\\b": "reacts with surprise",
+    "\\btalks\\b": "shows excitement",
+    "\\baddressing the camera\\b": "looking at the camera with a surprised expression",
+    "\\baddresses the camera\\b": "gazes at the camera with delight",
+    "\\bsaying\\b": "expressing excitement",
+    "\\bsays\\b": "shows delight",
+    "\\bnarrating\\b": "observing with wonder",
+    "\\bnarrates\\b": "observes with wonder",
+    "\\bher lips move\\b": "her expression shifts to amazement",
+    "\\bhis lips move\\b": "his expression shifts to amazement",
+    "\\blip movements\\b": "facial expressions",
+    "\\bmouth moves\\b": "expression changes",
+    "\\bmouth moving\\b": "expression shifting",
+    "\\bstarts to speak\\b": "reacts with surprise",
+    "\\bbegins to speak\\b": "shows amazement",
+    "\\bvocal\\b": "expressive",
+    "\\bholding a phone\\b": "gesturing with excitement",
+    "\\bholding phone\\b": "gesturing with excitement",
+    "\\bholding her phone\\b": "gesturing with her hands",
+    "\\bholding his phone\\b": "gesturing with his hands",
+    "\\bwith phone\\b": "with open hands",
+    "\\bwith a phone\\b": "with open hands",
+    "\\bphone in hand\\b": "hands free and expressive",
+    "\\btaking a selfie\\b": "looking around with delight",
+    "\\btaking selfie\\b": "looking around with delight",
+    "\\bfilming\\b": "exploring the scene",
+    "\\brecording\\b": "experiencing the moment",
+    "\\bvlogging\\b": "enjoying the atmosphere",
+    "\\bholding up\\b": "showing off",
+    "\\bpulls out\\b": "reaches toward",
+    "\\btakes out\\b": "reaches toward"
+  },
+
+  "style_prompts": {
+    "gemini_image": {
+      "Modern flat 2d": [
+        "MANDATORY STYLE: Modern flat 2D illustration. Clean vector graphics, bold solid colors, minimal shadows, geometric shapes, digital art aesthetic. Every element must look like a flat 2D vector illustration, NOT a photograph. ",
+        "\n\nSTYLE REMINDER: This MUST be a flat 2D vector illustration \u2013 no photorealism, no 3D rendering, no photographs. Clean lines, solid fills, minimal gradients."
+      ],
+      "Minimal line art": [
+        "MANDATORY STYLE: Minimal line art illustration. Elegant single-weight continuous lines, monochromatic or very limited color palette (1-3 colors max), clean white or light background, hand-drawn artistic look, simplistic beauty with negative space. ",
+        "\n\nSTYLE REMINDER: This MUST be minimal line art \u2013 thin elegant lines, mostly white space, very few colors. NOT a photograph or detailed rendering."
+      ],
+      "Futuristic isometric Tech Glow": [
+        "MANDATORY STYLE: Futuristic isometric 3D with tech glow effects. Neon accents on dark background, cyberpunk aesthetic, glowing edges and outlines, holographic elements, tech UI overlays, isometric camera angle. ",
+        "\n\nSTYLE REMINDER: This MUST have isometric perspective, dark background, neon glow effects, and futuristic tech aesthetic throughout."
+      ],
+      "Modern semi flat 2d": [
+        "MANDATORY STYLE: Modern semi-flat 2D illustration. Soft gradients, subtle drop shadows, contemporary digital illustration, clean design, vibrant yet harmonious color palette, slightly rounded shapes. ",
+        "\n\nSTYLE REMINDER: This MUST be a semi-flat 2D illustration with soft gradients \u2013 not photorealistic, not fully flat."
+      ],
+      "Cinematic photography": [
+        "MANDATORY STYLE: Cinematic photography. Dramatic lighting with strong contrast, shallow depth of field (f/1.4-2.8), professional color grading (teal-orange or moody tones), film-like quality, anamorphic lens flares, high production value, shot on Arri Alexa or RED camera. ",
+        "\n\nSTYLE REMINDER: This MUST look like a still from a high-budget film \u2013 dramatic lighting, shallow DoF, cinematic color grading."
+      ],
+      "Soft 3d clay": [
+        "MANDATORY STYLE: Soft 3D clay render (claymation). Smooth rounded shapes, matte clay materials with subtle fingerprint texture, pastel colors, Pixar/Disney-like aesthetic, charming and friendly, soft ambient occlusion, studio lighting. ",
+        "\n\nSTYLE REMINDER: This MUST look like a 3D clay/plasticine render \u2013 round soft shapes, matte pastel materials, charming Pixar aesthetic."
+      ],
+      "isometric soft vector": [
+        "MANDATORY STYLE: Isometric soft vector illustration. Clean geometric isometric perspective (30\u00b0 angle), pastel color palette, minimal flat shadows, infographic-style clarity, modern digital art, no perspective distortion. ",
+        "\n\nSTYLE REMINDER: This MUST be an isometric vector illustration \u2013 strict isometric angle, clean geometric shapes, pastel colors."
+      ],
+      "Paper Cut": [
+        "MANDATORY STYLE: Paper cut art (paper craft). Layered cut paper effect with visible depth between layers, subtle shadows between paper layers, colorful craft paper textures, whimsical handmade aesthetic, 3D paper diorama look. ",
+        "\n\nSTYLE REMINDER: This MUST look like paper cut art \u2013 visible paper layers with shadows between them, craft paper textures, handmade feel."
+      ]
+    },
+    "kie": {
+      "Modern flat 2d": [
+        "MANDATORY STYLE: Modern flat 2D illustration. Clean vector graphics, bold solid colors, minimal shadows, geometric shapes, digital art aesthetic. Every element must look like a flat 2D vector illustration, NOT a photograph. ",
+        "\n\nSTYLE REMINDER: This MUST be a flat 2D vector illustration \u2013 no photorealism, no 3D rendering, no photographs."
+      ],
+      "Minimal line art": [
+        "MANDATORY STYLE: Minimal line art illustration. Elegant single-weight continuous lines, monochromatic or very limited color palette (1-3 colors max), clean white or light background, hand-drawn artistic look, simplistic beauty. ",
+        "\n\nSTYLE REMINDER: This MUST be minimal line art \u2013 thin elegant lines, mostly white space, very few colors. NOT a photograph."
+      ],
+      "Futuristic isometric Tech Glow": [
+        "MANDATORY STYLE: Futuristic isometric 3D with tech glow effects. Neon accents on dark background, cyberpunk aesthetic, glowing edges, holographic elements, isometric camera angle. ",
+        "\n\nSTYLE REMINDER: This MUST have isometric perspective, dark background, neon glow effects, and futuristic tech aesthetic."
+      ],
+      "Modern semi flat 2d": [
+        "MANDATORY STYLE: Modern semi-flat 2D illustration. Soft gradients, subtle shadows, contemporary illustration, clean design, vibrant yet harmonious colors. ",
+        "\n\nSTYLE REMINDER: This MUST be a semi-flat 2D illustration with soft gradients \u2013 not photorealistic."
+      ],
+      "Cinematic photography": [
+        "MANDATORY STYLE: Cinematic photography. Dramatic lighting, shallow depth of field, professional color grading, film-like quality, anamorphic lens, high production value. ",
+        "\n\nSTYLE REMINDER: This MUST look like a still from a high-budget film \u2013 dramatic lighting, shallow DoF, cinematic color grading."
+      ],
+      "Soft 3d clay": [
+        "MANDATORY STYLE: Soft 3D clay render (claymation). Smooth rounded shapes, matte clay materials, pastel colors, Pixar-like aesthetic, charming and friendly, studio lighting. ",
+        "\n\nSTYLE REMINDER: This MUST look like a 3D clay/plasticine render \u2013 round soft shapes, matte pastel materials."
+      ],
+      "isometric soft vector": [
+        "MANDATORY STYLE: Isometric soft vector illustration. Clean geometric isometric perspective, pastel colors, minimal shadows, infographic-style, modern digital art. ",
+        "\n\nSTYLE REMINDER: This MUST be an isometric vector illustration \u2013 strict isometric angle, clean shapes, pastels."
+      ],
+      "Paper Cut": [
+        "MANDATORY STYLE: Paper cut art (paper craft). Layered cut paper effect, subtle shadows between layers, colorful craft paper textures, whimsical handmade aesthetic. ",
+        "\n\nSTYLE REMINDER: This MUST look like paper cut art \u2013 visible paper layers with shadows, craft textures."
+      ]
+    },
+    "scene_config": {
+      "Auto": {
+        "prefix": "Ultra photorealistic professional photograph, shot on Canon EOS R5, [LENS]mm lens, [LIGHTING].",
+        "forbidden": ["illustration", "vector", "cartoon", "clay", "render", "flat 2D", "paper cut", "isometric"],
+        "instruction": "Every first_prompt must start with the photorealistic prefix above. Describe REAL textures, lighting, skin pores, fabric weave."
+      },
+      "Cinematic photography": {
+        "prefix": "Cinematic photograph, shot on Arri Alexa, [LENS]mm anamorphic lens, dramatic [LIGHTING].",
+        "forbidden": ["illustration", "vector", "cartoon", "clay", "render", "flat 2D", "paper cut", "isometric"],
+        "instruction": "Every first_prompt must start with the cinematic prefix above. Use dramatic lighting, shallow DoF, film-like color grading."
+      },
+      "Modern flat 2d": {
+        "prefix": "Modern flat 2D digital illustration, clean vector composition, bold solid colors, [COLOR PALETTE].",
+        "forbidden": ["photorealistic", "photograph", "camera", "Canon", "lens", "depth of field", "bokeh", "skin pores", "fabric texture", "film grain", "shot on"],
+        "instruction": "Every first_prompt must start with the flat 2D prefix above. Use geometric shapes, solid fills, minimal shadows. NOT a photograph."
+      },
+      "Modern semi flat 2d": {
+        "prefix": "Modern semi-flat 2D digital illustration, soft gradients, subtle shadows, [COLOR PALETTE].",
+        "forbidden": ["photorealistic", "photograph", "camera", "Canon", "lens", "depth of field", "bokeh", "skin pores", "film grain", "shot on"],
+        "instruction": "Every first_prompt must start with the semi-flat 2D prefix above. Use soft gradients and rounded shapes. NOT a photograph."
+      },
+      "Minimal line art": {
+        "prefix": "Elegant minimal line art illustration, single-weight continuous lines, [COLOR PALETTE \u2014 max 3 colors].",
+        "forbidden": ["photorealistic", "photograph", "camera", "Canon", "lens", "depth of field", "bokeh", "skin pores", "texture", "film grain", "shot on"],
+        "instruction": "Every first_prompt must start with the line art prefix above. Thin elegant lines, white space, very few colors. NOT a photograph."
+      },
+      "Futuristic isometric Tech Glow": {
+        "prefix": "Futuristic isometric 3D scene, neon glow on dark background, cyberpunk aesthetic, [NEON COLOR].",
+        "forbidden": ["photorealistic", "photograph", "camera", "Canon", "lens", "natural lighting", "skin pores", "film grain", "shot on"],
+        "instruction": "Every first_prompt must start with the isometric tech prefix above. Use dark backgrounds, neon accents, holographic elements, isometric angle."
+      },
+      "Soft 3d clay": {
+        "prefix": "Soft 3D clay render (claymation), smooth rounded shapes, matte pastel materials, [COLOR PALETTE].",
+        "forbidden": ["photorealistic", "photograph", "camera", "Canon", "lens", "depth of field", "skin pores", "film grain", "shot on", "real texture"],
+        "instruction": "Every first_prompt must start with the clay render prefix above. Pixar-like charm, rounded shapes, matte pastel materials. NOT a photograph."
+      },
+      "isometric soft vector": {
+        "prefix": "Isometric soft vector illustration, clean geometric perspective, pastel palette, [COLOR PALETTE].",
+        "forbidden": ["photorealistic", "photograph", "camera", "Canon", "lens", "depth of field", "bokeh", "skin pores", "film grain", "shot on"],
+        "instruction": "Every first_prompt must start with the isometric vector prefix above. Strict isometric angle, clean shapes, pastel colors. NOT a photograph."
+      },
+      "Paper Cut": {
+        "prefix": "Paper cut art (paper craft), layered cut paper effect, colorful craft textures, [COLOR PALETTE].",
+        "forbidden": ["photorealistic", "photograph", "camera", "Canon", "lens", "depth of field", "bokeh", "skin pores", "film grain", "shot on"],
+        "instruction": "Every first_prompt must start with the paper cut prefix above. Visible paper layers with shadows, craft textures, handmade feel. NOT a photograph."
+      }
+    }
+  },
+
+  "speech_rates_wps": {
+    "en": 2.5, "es": 2.8, "fr": 2.7, "de": 2.5,
+    "it": 2.8, "pt": 2.7, "ja": 4.0, "ko": 3.5,
+    "zh": 2.0, "ar": 2.3, "he": 2.5, "ru": 2.5,
+    "hi": 2.8, "th": 3.0, "vi": 3.0, "el": 3.2,
+    "tr": 2.8, "pl": 2.6, "nl": 2.5, "sv": 2.4
+  },
+
+  "text_translations": {
+    "sale": {
+      "en": "SALE", "he": "\u05de\u05d1\u05e6\u05e2", "da": "TILBUD", "tr": "\u0130ND\u0130R\u0130M",
+      "de": "ANGEBOT", "fr": "PROMO", "es": "OFERTA", "it": "OFFERTA",
+      "nl": "AANBIEDING", "pt": "PROMO\u00c7\u00c3O", "ru": "\u0421\u041a\u0418\u0414\u041a\u0410",
+      "ar": "\u0639\u0631\u0636", "ja": "\u30bb\u30fc\u30eb", "ko": "\ud560\uc778", "zh": "\u4fc3\u9500"
+    },
+    "apply": {
+      "en": "APPLY", "he": "\u05d4\u05d2\u05e9 \u05de\u05d5\u05e2\u05de\u05d3\u05d5\u05ea", "da": "ANS\u00d8G", "tr": "BA\u015eVUR",
+      "de": "BEWERBEN", "fr": "POSTULER", "es": "APLICAR", "it": "CANDIDATI",
+      "nl": "SOLLICITEER", "pt": "APLICAR", "ru": "\u041f\u041e\u0414\u0410\u0422\u042c",
+      "ar": "\u062a\u0642\u062f\u0645", "ja": "\u5fdc\u52df", "ko": "\uc9c0\uc6d0", "zh": "\u7533\u8bf7"
+    },
+    "try": {
+      "en": "TRY NOW", "he": "\u05e0\u05e1\u05d4 \u05e2\u05db\u05e9\u05d9\u05d5", "da": "PR\u00d8V NU", "tr": "\u015e\u0130MD\u0130 DENE",
+      "de": "JETZT TESTEN", "fr": "ESSAYER", "es": "PROBAR", "it": "PROVA ORA",
+      "nl": "PROBEER NU", "pt": "EXPERIMENTE", "ru": "\u041f\u041e\u041f\u0420\u041e\u0411\u0423\u0419",
+      "ar": "\u062c\u0631\u0628 \u0627\u0644\u0622\u0646", "ja": "\u4eca\u3059\u3050\u8a66\u3059", "ko": "\uc9c0\uae08 \uc2dc\ub3c4", "zh": "\u7acb\u5373\u5c1d\u8bd5"
+    },
+    "learn": {
+      "en": "LEARN MORE", "he": "\u05dc\u05de\u05d3 \u05e2\u05d5\u05d3", "da": "L\u00c6R MERE", "tr": "DAHA FAZLA",
+      "de": "MEHR ERFAHREN", "fr": "EN SAVOIR PLUS", "es": "SABER M\u00c1S", "it": "SCOPRI DI PI\u00d9",
+      "nl": "MEER INFO", "pt": "SAIBA MAIS", "ru": "\u0423\u0417\u041d\u0410\u0422\u042c \u0411\u041e\u041b\u042c\u0428\u0415",
+      "ar": "\u0627\u0639\u0631\u0641 \u0627\u0644\u0645\u0632\u064a\u062f", "ja": "\u8a73\u3057\u304f\u898b\u308b", "ko": "\ub354 \uc54c\uc544\ubcf4\uae30", "zh": "\u4e86\u89e3\u66f4\u591a"
+    }
+  },
+
+  "context_detection_keywords": {
+    "sale": ["sale", "discount", "off", "%", "\u05de\u05d1\u05e6\u05e2", "\u05d4\u05e0\u05d7\u05d4", "rabat", "indirim", "promo", "offer", "deal"],
+    "job": ["job", "career", "work", "hiring", "employment", "\u05e2\u05d1\u05d5\u05d3\u05d4", "\u05de\u05e9\u05e8\u05d4", "\u05e7\u05e8\u05d9\u05d9\u05e8\u05d4", "job opening"],
+    "health": ["health", "wellness", "supplement", "vitamin", "weight", "slim", "\u05d1\u05e8\u05d9\u05d0\u05d5\u05ea", "\u05d3\u05d9\u05d0\u05d8\u05d4"],
+    "learning": ["learn", "course", "training", "education", "tutorial", "\u05e7\u05d5\u05e8\u05e1", "\u05dc\u05d9\u05de\u05d5\u05d3"]
+  },
+
+  "country_ethnicity_map": {
+    "_comment": "Maps country name (lowercased) to ethnicity description for influencer generation.",
+    "israel": "Israeli/Jewish - can be Ashkenazi, Sephardi, or Mizrahi, Mediterranean features",
+    "usa": "diverse American - can be Caucasian, African American, Hispanic, or Asian American",
+    "uk": "British - diverse, can be White British, British Asian, or British African",
+    "germany": "German/Central European - fair to light skin, varied hair colors",
+    "france": "French - diverse, can include European French, North African French",
+    "spain": "Spanish/Mediterranean - olive skin, dark hair, Southern European features",
+    "italy": "Italian/Mediterranean - olive skin, dark hair, Southern European features",
+    "brazil": "Brazilian - diverse, can be mixed race, African Brazilian, European Brazilian",
+    "japan": "Japanese - East Asian features, typically black hair",
+    "south korea": "Korean - East Asian features, K-beauty aesthetic, typically black hair",
+    "china": "Chinese - East Asian features, typically black hair",
+    "india": "Indian/South Asian - brown skin tones, dark hair, South Asian features",
+    "turkey": "Turkish - Mediterranean to Middle Eastern, olive skin, dark hair",
+    "russia": "Russian/Slavic - fair skin, varied hair colors, Eastern European features",
+    "poland": "Polish/Slavic - fair skin, varied hair colors, Eastern European features",
+    "thailand": "Thai/Southeast Asian - tan skin, dark hair, Southeast Asian features",
+    "vietnam": "Vietnamese - East/Southeast Asian features, typically black hair",
+    "mexico": "Mexican - Hispanic/Latino, warm skin tones, dark hair",
+    "colombia": "Colombian - Hispanic/Latino, diverse skin tones, dark hair",
+    "argentina": "Argentine - European-influenced Latin, lighter skin, varied features",
+    "uae": "Arab/Middle Eastern - olive to brown skin tones, dark hair",
+    "saudi arabia": "Arab/Middle Eastern - olive to brown skin tones, dark hair",
+    "egypt": "Egyptian/North African - olive to brown skin, dark hair",
+    "morocco": "Moroccan/North African - olive skin, dark hair, Berber or Arab features",
+    "portugal": "Portuguese - Southern European, olive skin, dark hair",
+    "netherlands": "Dutch - Northern European, fair skin, tall, varied hair colors",
+    "sweden": "Swedish - Scandinavian, fair skin, often blonde, Nordic features",
+    "norway": "Norwegian - Scandinavian, fair skin, Nordic features",
+    "australia": "Australian - diverse, can be Caucasian, Aboriginal, Asian Australian",
+    "canada": "Canadian - diverse, can be Caucasian, Asian, Indigenous, African Canadian",
+    "nigeria": "Nigerian/West African - dark skin tones, diverse ethnic features (Yoruba, Igbo, Hausa)"
+  }
+}

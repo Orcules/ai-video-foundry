@@ -1,0 +1,58 @@
+{
+  "_comment": "Concurrency and spacing for scene animations and images. Tune per provider quota (Vertex vs Kie). Env overrides: SCENE_VIDEO_VEO_MAX_CONCURRENT, etc. in config/__init__.py",
+  "scene_video": {
+    "veo_vertex": {
+      "max_concurrent": 2,
+      "delay_after_each_sec": 6,
+      "description": "Veo 3.x on Vertex AI — strict quota (~10/min typical)"
+    },
+    "kling_kie": {
+      "max_concurrent": 4,
+      "delay_after_each_sec": 3,
+      "description": "Kling 2.5/2.6 via Kie.ai — moderate parallel, short spacing"
+    },
+    "runway_kie": {
+      "max_concurrent": 4,
+      "delay_after_each_sec": 3,
+      "description": "Runway Gen4 Turbo via Kie.ai"
+    },
+    "kie_default": {
+      "max_concurrent": 4,
+      "delay_after_each_sec": 2,
+      "description": "Fallback for Kie video providers"
+    },
+    "none": {
+      "max_concurrent": 32,
+      "delay_after_each_sec": 0,
+      "description": "Animation model None — no video API calls"
+    }
+  },
+  "scene_image": {
+    "nano_banana_pro_kie": {
+      "parallel_workers": 12,
+      "stagger_seconds": 3,
+      "description": "Nano Banana Pro (Kie.ai). stagger_seconds: delay before starting each image (0=no stagger, 3=start 1 at 0s, 2 at 3s, 3 at 6s...) to avoid rate limits."
+    },
+    "gemini_3_flash_kie": {
+      "parallel_workers": 8,
+      "stagger_seconds": 3,
+      "description": "Gemini 3 Flash (Kie.ai). stagger_seconds: delay between starting each image request."
+    },
+    "gemini_3_pro_vertex": {
+      "parallel_workers": 1,
+      "description": "Gemini 3 Pro image (Vertex) — low RPM"
+    },
+    "nano_banana_2_vertex": {
+      "parallel_workers": 8,
+      "description": "NANO BANANA 2 / Gemini 3.1 Flash image on Vertex — tested OK at 10 parallel, 8 is safe headroom"
+    },
+    "gemini_31_flash_vertex": {
+      "parallel_workers": 4,
+      "description": "Gemini 3.1 Flash image preview (Vertex)"
+    },
+    "gemini_25_flash_vertex": {
+      "parallel_workers": 12,
+      "description": "Gemini 2.5 Flash image (Vertex) — high quota"
+    }
+  }
+}

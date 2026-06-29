@@ -1,0 +1,163 @@
+.form-section {
+  margin-bottom: 20px;
+}
+
+.form-section h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text2);
+  margin-bottom: 10px;
+}
+
+.form-row {
+  margin-bottom: 12px;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  color: var(--text2);
+  margin-bottom: 4px;
+}
+
+input, textarea, select {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--accent);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 160px;
+}
+
+select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b90a0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 30px;
+}
+
+.url-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.url-list input {
+  font-size: 12px;
+}
+
+.add-url-btn {
+  background: transparent;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  padding: 6px;
+  color: var(--text2);
+  cursor: pointer;
+  font-size: 12px;
+  width: 100%;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.add-url-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent2);
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+}
+
+.checkbox-row label {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* REQUIRED / OPTIONAL TAGS */
+.tag-required {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--red);
+  margin-left: 6px;
+}
+
+.tag-optional {
+  font-size: 9px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text2);
+  margin-left: 6px;
+  opacity: 0.7;
+}
+
+.field-hint {
+  font-size: 11px;
+  color: #6e7681;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.field-hint code {
+  font-family: 'Cascadia Code', 'Fira Code', monospace;
+  font-size: 10px;
+  background: #0d1117;
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: #a5d6ff;
+  border: 1px solid #21262d;
+}
+
+.field-hint .example {
+  color: #8b949e;
+  font-style: italic;
+}
+
+.url-input-row {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.url-input-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.single-url-row {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.single-url-row input {
+  flex: 1;
+  min-width: 0;
+}

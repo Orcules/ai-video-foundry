@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TVD X1 - Pipeline Explorer</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="layout">
+  <div class="header">
+    <h1 id="pipelineTitle">TVD X1 Product Video Pipeline</h1>
+    <span class="subtitle">Interactive flow explorer &mdash; Sheets vs Supabase &mdash; Input / Output per step</span>
+    <div class="pipeline-selector">
+      <button class="pipeline-btn active" data-pipeline="product" onclick="selectPipeline('product')">Product</button>
+      <button class="pipeline-btn" data-pipeline="influencer" onclick="selectPipeline('influencer')">Influencer</button>
+      <button class="pipeline-btn" data-pipeline="personal-brand" onclick="selectPipeline('personal-brand')">Personal-Brand</button>
+    </div>
+    <div class="preset-bar" id="presetBar">
+      <button class="preset-btn active" onclick="showPreset('all')">All Stages</button>
+      <button class="preset-btn" onclick="showPreset('generation')">Generation Only</button>
+      <button class="preset-btn" onclick="showPreset('assembly')">Assembly Only</button>
+      <button class="preset-btn" onclick="showPreset('quick')">Quick Overview</button>
+      <button class="preset-btn" id="diagramBtn" onclick="toggleFlowDiagram()">Flow Diagram</button>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <ul class="stage-list" id="stageList"></ul>
+    <div class="legend">
+      <h3>Categories</h3>
+      <div class="legend-item"><div class="legend-dot" style="background:#8957e5"></div> Text Parsing</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#da3633"></div> Image Generation</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#d29922"></div> Analysis</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#3fb950"></div> Voice / Audio</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#1f6feb"></div> Scene Planning</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f78166"></div> Parallel Generation</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#bc8cff"></div> Video Assembly</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#39d353"></div> Subtitles</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f778ba"></div> Storage / Final</div>
+    </div>
+  </div>
+
+  <div class="main-content" id="mainContent"></div>
+
+  <div class="prompt-area">
+    <div class="prompt-header">
+      <h3>Pipeline Summary Prompt</h3>
+      <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">Copy</button>
+    </div>
+    <div class="prompt-text" id="promptOutput"></div>
+  </div>
+</div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

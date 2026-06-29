@@ -1,0 +1,13 @@
+.sim-toggle {
+  background: rgba(168,85,247,0.08);
+  border: 1px solid rgba(168,85,247,0.25);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  transition: all 0.2s;
+}
+
+.sim-toggle.active {
+  background: rgba(168,85,247,0.15);
+  border-color: rgba(168,85,247,0.5);
+}

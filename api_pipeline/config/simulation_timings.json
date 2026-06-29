@@ -1,0 +1,15 @@
+{
+  "fixed_steps": {
+    "step_0":   5.0,
+    "step_1":   8.12,
+    "step_2":   10.0,
+    "step_2.5": 5.0,
+    "step_2.7": 10.67,
+    "step_3":   23.38,
+    "step_7.5": 6.57,
+    "step_8":   59.10,
+    "step_9":   43.46
+  },
+  "per_scene_seconds": 90.25,
+  "baseline_scene_count": 6
+}

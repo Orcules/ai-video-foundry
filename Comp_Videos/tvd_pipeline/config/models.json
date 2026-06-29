@@ -1,0 +1,369 @@
+{
+  "text_defaults": {
+    "parse_prompt": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview",
+      "_note": "GPT-4o not recommended — its validator fails to converge on detail check (flags rephrased Hebrew as missing)"
+    },
+    "generate_scenes": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "generate_vo": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "describe_character": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "generate_music_description": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "image_quality_check": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "image_cleanliness_check": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "analyze_reference_video": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "detect_product": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "analyze_video_structure": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "analyze_video_style": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "analyze_scene_frames": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "analyze_full_video": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "enhance_prompt_product": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "generate_opening_text": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "generate_vo_from_article": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "generate_image_prompt": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "analyze_reference_images": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "analyze_motion_variants": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "analyze_asset_video": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview",
+      "_note": "Must be Vertex — requires native video upload via GCS fileData. OpenAI GPT-4o does not support video file input."
+    },
+    "media_director": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview",
+      "_note": "Was gpt-5.4 + high reasoning (very slow). Flash keeps Director+Writer flow fast; set provider openai + gpt-5.4 if you need max planning quality."
+    },
+    "rephrase_blocked_prompt": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview",
+      "_note": "Was openai gpt-4o-mini but failed 401 when OPENAI_API_KEY isn't set; vertex is configured everywhere so it works in API/Studio mode."
+    },
+    "extract_highlights": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "end_card_scoring": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "analyze_venue_and_influencer": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "extract_venue_dna": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview",
+      "_note": "Text-only call — extracts locked venue visual DNA from image descriptions + prompt. Runs once per job when a venue location is detected."
+    },
+    "enrich_subtitles": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "enrich_subtitles_fallback": {
+      "provider": "openai",
+      "model": "gpt-4o"
+    },
+    "smart_crop": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "crop_by_generation_check": {
+      "provider": "openai",
+      "model": "gpt-5.4"
+    },
+    "extended_analyze_clip": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "extended_vo": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "ugc_real_parse_prompt": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "ugc_real_offer_analysis": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "ugc_real_creative_strategy": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "ugc_real_narrative_plan": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "ugc_real_scene_plan": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "ugc_real_grid_manifest": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "ugc_real_frame_classify": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "ugc_real_nine_cell_plan": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "ugc_real_style_dna": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    },
+    "ugc_real_master_grid": {
+      "provider": "vertex",
+      "model": "gemini-3-flash-preview"
+    }
+  },
+  "media_models": {
+    "kling_video": {
+      "provider": "kie",
+      "selected": "kling-2.6",
+      "warmup_skip": 0,
+      "versions": {
+        "kling-2.5": {
+          "model": "kling/v2-5-turbo-image-to-video-pro",
+          "supported_durations": [5, 10],
+          "image_field": "image_url",
+          "extra_params": {
+            "negative_prompt": "blur, distort, and low quality",
+            "cfg_scale": 0.5
+          }
+        },
+        "kling-2.6": {
+          "model": "kling-2.6/image-to-video",
+          "supported_durations": [5, 10],
+          "image_field": "image_urls",
+          "extra_params": {
+            "sound": false
+          }
+        }
+      }
+    },
+    "veo3_video": {
+      "provider": "google",
+      "selected": "veo-3.1-fast",
+      "warmup_skip": 1.0,
+      "versions": {
+        "veo-3.0":      { "model": "veo-3.0-generate-001",      "api_method": "rest", "supported_durations": [4, 6, 8] },
+        "veo-3.0-fast": { "model": "veo-3.0-fast-generate-001",  "api_method": "rest", "supported_durations": [4, 6, 8] },
+        "veo-3.1":      { "model": "veo-3.1-generate-001",       "api_method": "sdk",  "supported_durations": [4, 6, 8] },
+        "veo-3.1-fast": { "model": "veo-3.1-fast-generate-001",  "api_method": "sdk",  "supported_durations": [4, 6, 8] }
+      }
+    },
+    "seedance_video": {
+      "provider": "kie",
+      "selected": "seedance-2",
+      "warmup_skip": 0,
+      "versions": {
+        "seedance-2": {
+          "model": "bytedance/seedance-2",
+          "supported_durations": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+          "image_field": "reference_image_urls",
+          "extra_params": {
+            "resolution": "720p",
+            "aspect_ratio": "9:16",
+            "generate_audio": false
+          }
+        }
+      }
+    },
+    "runway_video": {
+      "provider": "kie",
+      "selected": "gen4.5-direct",
+      "warmup_skip": 0,
+      "versions": {
+        "gen4-turbo": {
+          "model": "runway",
+          "supported_durations": [5, 10],
+          "extra_params": {
+            "quality": "720p",
+            "waterMark": ""
+          }
+        },
+        "gen4-turbo-direct": {
+          "provider": "runway_direct",
+          "model": "gen4_turbo",
+          "supported_durations": [2, 3, 4, 5, 6, 7, 8, 9, 10],
+          "extra_params": {}
+        },
+        "gen4.5-direct": {
+          "provider": "runway_direct",
+          "model": "gen4.5",
+          "supported_durations": [2, 3, 4, 5, 6, 7, 8, 9, 10],
+          "extra_params": {}
+        }
+      }
+    },
+    "ref_to_video": {
+      "provider": "google",
+      "selected": "veo-3.1-ref-fast",
+      "warmup_skip": 0,
+      "versions": {
+        "veo-3.1-ref-fast": {
+          "model": "veo-3.1-fast-generate-001",
+          "api_method": "rest",
+          "supported_durations": [8],
+          "extra_params": {
+            "referenceType": "asset",
+            "durationSeconds": 8
+          }
+        },
+        "veo-3.1-ref": {
+          "model": "veo-3.1-generate-001",
+          "api_method": "rest",
+          "supported_durations": [8],
+          "extra_params": {
+            "referenceType": "asset",
+            "durationSeconds": 8
+          }
+        },
+        "veo-3.1-ref-fal": {
+          "provider": "fal",
+          "model": "fal-ai/veo3.1/reference-to-video",
+          "api_method": "rest",
+          "supported_durations": [8],
+          "extra_params": {}
+        }
+      }
+    },
+    "nano_banana_image": {
+      "provider": "kie",
+      "selected": "nb2",
+      "versions": {
+        "pro": {
+          "model": "nano-banana-pro",
+          "extra_params": {
+            "aspect_ratio": "9:16",
+            "resolution": "1K",
+            "output_format": "png"
+          }
+        },
+        "nb2": {
+          "model": "nano-banana-2",
+          "extra_params": {
+            "aspect_ratio": "9:16",
+            "resolution": "1K",
+            "output_format": "jpg"
+          }
+        }
+      }
+    },
+    "elevenlabs_tts": {
+      "provider": "elevenlabs",
+      "model": "eleven_v3"
+    },
+    "suno_music": {
+      "provider": "kie",
+      "model": "suno-v5"
+    },
+    "zapcap_subtitles": {
+      "provider": "zapcap",
+      "template_id": "your-zapcap-template-id"
+    }
+  },
+  "animation_models": {
+    "_comment": "Allowed animation_model values per pipeline. 'auto' resolves from the resolution tier at runtime. media_key links to media_models for dynamic version labels.",
+    "product": [
+      { "value": "auto",   "label": "Auto (from tier)" },
+      { "value": "google", "label": "Veo 3.1 Fast (Vertex AI)",       "media_key": "veo3_video" },
+      { "value": "kling",  "label": "Kling 2.5 (Kie.ai)",             "media_key": "kling_video" },
+      { "value": "runway", "label": "Runway Gen4 Turbo (Kie.ai)",     "media_key": "runway_video" },
+      { "value": "seedance", "label": "Seedance 2.0 (ByteDance via Kie.ai)", "media_key": "seedance_video" },
+      { "value": "none",   "label": "None" }
+    ],
+    "influencer": [
+      { "value": "auto",   "label": "Auto (from tier)" },
+      { "value": "google", "label": "Veo 3.1 Fast (Vertex AI)",       "media_key": "veo3_video" },
+      { "value": "kling",  "label": "Kling 2.5 (Kie.ai)",             "media_key": "kling_video" },
+      { "value": "runway", "label": "Runway Gen4 Turbo (Kie.ai)",     "media_key": "runway_video" },
+      { "value": "seedance", "label": "Seedance 2.0 (ByteDance via Kie.ai)", "media_key": "seedance_video" },
+      { "value": "none",   "label": "None" }
+    ],
+    "personal_brand": [
+      { "value": "auto",   "label": "Auto (from tier)" },
+      { "value": "google", "label": "Veo 3.1 Fast (Vertex AI)",       "media_key": "veo3_video" },
+      { "value": "kling",  "label": "Kling 2.5 (Kie.ai)",             "media_key": "kling_video" },
+      { "value": "runway", "label": "Runway Gen4 Turbo (Kie.ai)",     "media_key": "runway_video" },
+      { "value": "seedance", "label": "Seedance 2.0 (ByteDance via Kie.ai)", "media_key": "seedance_video" },
+      { "value": "none",   "label": "None" }
+    ],
+    "ugc_real": [
+      { "value": "auto",   "label": "Auto (from tier)" },
+      { "value": "google", "label": "Veo 3.1 Fast (Vertex AI)",       "media_key": "veo3_video" },
+      { "value": "kling",  "label": "Kling 2.5 (Kie.ai)",             "media_key": "kling_video" },
+      { "value": "runway", "label": "Runway Gen4 Turbo (Kie.ai)",     "media_key": "runway_video" },
+      { "value": "none",   "label": "None" }
+    ]
+  },
+  "image_models": {
+    "_comment": "Allowed image_api values for dashboard dropdowns.",
+    "all_pipelines": [
+      { "value": "kie",    "label": "Nano Banana Pro (Kie.ai)" },
+      { "value": "google", "label": "Gemini 3 Pro (Vertex AI)" },
+      { "value": "google-31-flash", "label": "Gemini 3.1 Flash (Vertex AI)" },
+      { "value": "nano-banana-2", "label": "Nano Banana 2 (Vertex AI)" },
+      { "value": "gemini-25-flash-image", "label": "Gemini 2.5 Pro (Vertex AI)" },
+      { "value": "flash",  "label": "Gemini 3 Flash (Kie.ai)" }
+    ]
+  }
+}

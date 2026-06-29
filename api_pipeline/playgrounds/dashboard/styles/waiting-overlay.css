@@ -1,0 +1,83 @@
+/* Generic wait layer — no API names in the UI */
+
+.dashboard-wait-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(15, 17, 23, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.dashboard-wait-overlay--visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.dashboard-wait-overlay__panel {
+  max-width: 20rem;
+  width: 100%;
+  padding: 1.75rem 1.5rem;
+  background: var(--surface, #1a1d27);
+  border: 1px solid var(--border, #2e3347);
+  border-radius: 10px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+  text-align: center;
+}
+
+.dashboard-wait-overlay__bars {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: flex-end;
+  height: 36px;
+  margin-bottom: 1rem;
+}
+
+.dashboard-wait-overlay__bars span {
+  width: 5px;
+  background: linear-gradient(180deg, var(--accent2, #818cf8), var(--accent, #6366f1));
+  border-radius: 2px;
+  animation: dashboardWaitBar 0.9s ease-in-out infinite;
+}
+
+.dashboard-wait-overlay__bars span:nth-child(1) { animation-delay: 0s; height: 40%; }
+.dashboard-wait-overlay__bars span:nth-child(2) { animation-delay: 0.12s; height: 70%; }
+.dashboard-wait-overlay__bars span:nth-child(3) { animation-delay: 0.24s; height: 100%; }
+.dashboard-wait-overlay__bars span:nth-child(4) { animation-delay: 0.36s; height: 55%; }
+.dashboard-wait-overlay__bars span:nth-child(5) { animation-delay: 0.48s; height: 85%; }
+
+@keyframes dashboardWaitBar {
+  0%, 100% { transform: scaleY(0.45); opacity: 0.65; }
+  50% { transform: scaleY(1); opacity: 1; }
+}
+
+.dashboard-wait-overlay__title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text, #e1e4ed);
+  margin-bottom: 0.4rem;
+}
+
+.dashboard-wait-overlay__sub {
+  font-size: 0.82rem;
+  color: var(--text2, #8b90a0);
+  line-height: 1.45;
+  min-height: 2.4em;
+}
+
+.dashboard-wait-overlay__hint {
+  margin-top: 0.85rem;
+  font-size: 0.72rem;
+  color: var(--text2, #8b90a0);
+  opacity: 0.85;
+}

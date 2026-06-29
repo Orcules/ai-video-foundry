@@ -1,0 +1,467 @@
+{
+  "version": "2.0.0",
+  "description": "Pricing configuration keyed by model:provider composite key. Edit values to match your billing rates.",
+  "models": {
+    "veo-3.1-fast:direct": {
+      "type": "duration",
+      "description": "Veo 3.1 Fast via Vertex AI (direct)",
+      "costPerSecond": 0.10,
+      "supportedDurations": [4, 6, 8],
+      "costVariants": { "720p": 0.10, "1080p": 0.10, "4k": 0.30 }
+    },
+    "veo-3.1-fast:kie": {
+      "type": "duration",
+      "description": "Veo 3.1 Fast via Kie.ai",
+      "costPerSecond": 0.14,
+      "supportedDurations": [4, 6, 8],
+      "costVariants": { "720p": 0.14, "1080p": 0.14, "4k": 0.40 }
+    },
+    "veo-3.0:direct": {
+      "type": "duration",
+      "description": "Veo 3.0 via Vertex AI (direct)",
+      "costPerSecond": 0.20,
+      "supportedDurations": [4, 6, 8],
+      "costVariants": { "720p": 0.20, "1080p": 0.20 }
+    },
+    "veo-3.0-fast:direct": {
+      "type": "duration",
+      "description": "Veo 3.0 Fast via Vertex AI (direct)",
+      "costPerSecond": 0.10,
+      "supportedDurations": [4, 6, 8],
+      "costVariants": { "720p": 0.10, "1080p": 0.10 }
+    },
+    "veo-3.1:direct": {
+      "type": "duration",
+      "description": "Veo 3.1 via Vertex AI (direct)",
+      "costPerSecond": 0.20,
+      "supportedDurations": [4, 6, 8],
+      "costVariants": { "720p": 0.20, "1080p": 0.20, "4k": 0.40 }
+    },
+    "veo-3.1-ref-fast:google": {
+      "type": "duration",
+      "description": "Vertex Veo 3.1 reference-to-video (fast)",
+      "costPerSecond": 0.15,
+      "supportedDurations": [8]
+    },
+    "veo-3.1-ref:google": {
+      "type": "duration",
+      "description": "Vertex Veo 3.1 reference-to-video (regular)",
+      "costPerSecond": 0.40,
+      "supportedDurations": [8]
+    },
+    "veo-3.1-ref-fal:fal": {
+      "type": "duration",
+      "description": "fal.ai Veo 3.1 reference-to-video",
+      "costPerSecond": 0.10,
+      "supportedDurations": [8]
+    },
+    "kling-2.5:kie": {
+      "type": "duration",
+      "description": "Kling V2.5 video via Kie.ai",
+      "costPerSecond": 0.042,
+      "supportedDurations": [5, 10]
+    },
+    "kling-2.6:kie": {
+      "type": "duration",
+      "description": "Kling V2.6 video via Kie.ai",
+      "costPerSecond": 0.055,
+      "supportedDurations": [5, 10]
+    },
+    "kling-2.6/image-to-video:kie": {
+      "type": "duration",
+      "description": "Kling V2.6 via Kie.ai (full API path alias)",
+      "costPerSecond": 0.055,
+      "supportedDurations": [5, 10]
+    },
+    "kling/v2-5-turbo-image-to-video-pro:kie": {
+      "type": "duration",
+      "description": "Kling V2.5 via Kie.ai (full API path alias)",
+      "costPerSecond": 0.042,
+      "supportedDurations": [5, 10]
+    },
+    "kling/ai-avatar-pro:kie": {
+      "type": "fixed",
+      "description": "Kling AI Avatar Pro lip-sync via Kie.ai",
+      "costPerUnit": 0.08,
+      "unitType": "clip"
+    },
+    "runway-gen4-turbo:direct": {
+      "type": "duration",
+      "description": "Runway Gen4 Turbo (direct API)",
+      "costPerSecond": 0.05,
+      "supportedDurations": [2, 3, 4, 5, 6, 7, 8, 9, 10]
+    },
+    "runway-gen4.5:direct": {
+      "type": "duration",
+      "description": "Runway Gen 4.5 (direct API)",
+      "costPerSecond": 0.12,
+      "supportedDurations": [2, 3, 4, 5, 6, 7, 8, 9, 10]
+    },
+    "runway:kie": {
+      "type": "duration",
+      "description": "Runway video via Kie.ai",
+      "costPerSecond": 0.05,
+      "supportedDurations": [5, 10]
+    },
+    "seedance-2:kie": {
+      "type": "duration",
+      "description": "ByteDance Seedance 2.0 via Kie.ai (multimodal refs, 4-15s)",
+      "costPerSecond": 0.09,
+      "supportedDurations": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    },
+    "bytedance/seedance-2:kie": {
+      "type": "duration",
+      "description": "ByteDance Seedance 2.0 via Kie.ai (full API path alias)",
+      "costPerSecond": 0.09,
+      "supportedDurations": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    },
+    "nano-banana-pro:kie": {
+      "type": "fixed",
+      "description": "Nano Banana Pro image generation via Kie.ai",
+      "costPerUnit": 0.09,
+      "unitType": "image",
+      "costVariants": { "1K": 0.09, "2K": 0.09, "4K": 0.12 }
+    },
+    "nano-banana-2:kie": {
+      "type": "fixed",
+      "description": "Nano Banana 2 image generation via Kie.ai",
+      "costPerUnit": 0.04,
+      "unitType": "image",
+      "costVariants": { "1K": 0.04, "2K": 0.06, "4K": 0.09 }
+    },
+    "gemini-3-pro-image:direct": {
+      "type": "fixed",
+      "description": "Gemini Pro image generation (direct Vertex AI)",
+      "costPerUnit": 0.04,
+      "unitType": "image"
+    },
+    "gemini-3-flash:kie": {
+      "type": "fixed",
+      "description": "Gemini Flash image generation via Kie.ai",
+      "costPerUnit": 0.02,
+      "unitType": "image"
+    },
+    "gemini-3.1-flash-image-preview:direct": {
+      "type": "fixed",
+      "description": "Gemini 3.1 Flash image generation (Vertex AI, high RPM)",
+      "costPerUnit": 0.02,
+      "unitType": "image"
+    },
+    "nano-banana-2:direct": {
+      "type": "fixed",
+      "description": "Nano Banana 2 image generation (Vertex AI)",
+      "costPerUnit": 0.02,
+      "unitType": "image"
+    },
+    "gemini-25-flash-image:direct": {
+      "type": "fixed",
+      "description": "Gemini 2.5 Flash image generation (Vertex AI, gemini-2.5-flash-image)",
+      "costPerUnit": 0.02,
+      "unitType": "image"
+    },
+    "gemini-2.5-flash:vertex": {
+      "type": "token",
+      "description": "Gemini 2.5 Flash — text generation + video analysis (Vertex AI)",
+      "inputCostPer1M": 0.15,
+      "outputCostPer1M": 0.60
+    },
+    "gemini-3-pro-preview:vertex": {
+      "type": "token",
+      "description": "Gemini 3 Pro Preview — text generation (Vertex AI)",
+      "inputCostPer1M": 2.00,
+      "outputCostPer1M": 12.00
+    },
+    "gemini-3-flash-preview:vertex": {
+      "type": "token",
+      "description": "Gemini 3 Flash Preview — text generation (Vertex AI)",
+      "inputCostPer1M": 0.50,
+      "outputCostPer1M": 3.00
+    },
+    "gemini-2.5-flash:vercel": {
+      "type": "token",
+      "description": "Gemini 2.5 Flash via Vercel AI Hub",
+      "inputCostPer1M": 0.20,
+      "outputCostPer1M": 0.80
+    },
+    "gpt-4o:openai": {
+      "type": "token",
+      "description": "OpenAI GPT-4o (direct API)",
+      "inputCostPer1M": 2.50,
+      "outputCostPer1M": 10.00
+    },
+    "gpt-4o:vercel": {
+      "type": "token",
+      "description": "GPT-4o via Vercel AI Hub",
+      "inputCostPer1M": 3.00,
+      "outputCostPer1M": 12.00
+    },
+    "gpt-4o-mini:openai": {
+      "type": "token",
+      "description": "OpenAI GPT-4o-mini (direct API)",
+      "inputCostPer1M": 0.15,
+      "outputCostPer1M": 0.60
+    },
+    "gpt-5-mini:openai": {
+      "type": "token",
+      "description": "OpenAI GPT-5-mini (direct API)",
+      "inputCostPer1M": 0.30,
+      "outputCostPer1M": 1.20
+    },
+    "gpt-5.4:openai": {
+      "type": "token",
+      "description": "OpenAI GPT-5.4 (direct API, reasoning model)",
+      "inputCostPer1M": 2.50,
+      "outputCostPer1M": 15.00
+    },
+    "eleven_v3:elevenlabs": {
+      "type": "character",
+      "description": "ElevenLabs TTS v3",
+      "costPerCharacter": 0.00022
+    },
+    "suno-v5:kie": {
+      "type": "fixed",
+      "description": "Suno music generation via Kie.ai",
+      "costPerUnit": 0.10,
+      "unitType": "generation"
+    },
+    "rendi:rendi": {
+      "type": "fixed",
+      "description": "Rendi FFmpeg-as-a-service operation (internal infra, not billable)",
+      "costPerUnit": 0,
+      "unitType": "operation"
+    },
+    "zapcap:zapcap": {
+      "type": "duration",
+      "description": "ZapCap subtitle burn-in",
+      "costPerSecond": 0.0015
+    },
+
+    "fal-ai/birefnet:fal": {
+      "type": "fixed",
+      "description": "fal.ai birefnet background removal",
+      "costPerUnit": 0.02,
+      "unitType": "image"
+    },
+
+    "_legacy_aliases_comment": "Legacy model-only keys for backward compatibility with sim_pipeline_runner. These map to the same pricing as the canonical model:provider keys above.",
+    "gemini-2.5-flash": {
+      "type": "token",
+      "inputCostPer1M": 0.15,
+      "outputCostPer1M": 0.60
+    },
+    "gemini-3-pro-preview": {
+      "type": "token",
+      "inputCostPer1M": 2.00,
+      "outputCostPer1M": 12.00
+    },
+    "gemini-3-flash-preview": {
+      "type": "token",
+      "inputCostPer1M": 0.50,
+      "outputCostPer1M": 3.00
+    },
+    "gpt-4o": {
+      "type": "token",
+      "inputCostPer1M": 2.50,
+      "outputCostPer1M": 10.00
+    },
+    "gpt-4o-mini": {
+      "type": "token",
+      "inputCostPer1M": 0.15,
+      "outputCostPer1M": 0.60
+    },
+    "gpt-5-mini": {
+      "type": "token",
+      "inputCostPer1M": 0.30,
+      "outputCostPer1M": 1.20
+    },
+    "gpt-5.4": {
+      "type": "token",
+      "inputCostPer1M": 2.50,
+      "outputCostPer1M": 15.00
+    },
+    "nano-banana-pro": {
+      "type": "fixed",
+      "costPerUnit": 0.09,
+      "unitType": "image",
+      "costVariants": { "1K": 0.09, "2K": 0.09, "4K": 0.12 }
+    },
+    "nano-banana-2": {
+      "type": "fixed",
+      "costPerUnit": 0.04,
+      "unitType": "image",
+      "costVariants": { "1K": 0.04, "2K": 0.06, "4K": 0.09 }
+    },
+    "veo-3.0-generate-001": {
+      "type": "duration",
+      "costPerSecond": 0.20,
+      "defaultDurationSeconds": 8,
+      "supportedDurations": [4, 6, 8],
+      "costVariants": { "720p": 0.20, "1080p": 0.20, "720p_audio": 0.40, "1080p_audio": 0.40 }
+    },
+    "veo-3.0-fast-generate-001": {
+      "type": "duration",
+      "costPerSecond": 0.10,
+      "defaultDurationSeconds": 8,
+      "supportedDurations": [4, 6, 8],
+      "costVariants": { "720p": 0.10, "1080p": 0.10 }
+    },
+    "veo-3.0-fast-generate-preview": {
+      "type": "duration",
+      "costPerSecond": 0.10,
+      "defaultDurationSeconds": 8,
+      "supportedDurations": [4, 6, 8],
+      "costVariants": { "720p": 0.10, "1080p": 0.10 }
+    },
+    "veo-3.1-fast-generate-preview": {
+      "type": "duration",
+      "costPerSecond": 0.10,
+      "defaultDurationSeconds": 8,
+      "supportedDurations": [4, 6, 8],
+      "costVariants": { "720p": 0.10, "1080p": 0.10, "4k": 0.30, "720p_audio": 0.15, "1080p_audio": 0.15, "4k_audio": 0.35 }
+    },
+    "veo-3.1-fast-generate-001": {
+      "type": "duration",
+      "costPerSecond": 0.10,
+      "defaultDurationSeconds": 8,
+      "supportedDurations": [4, 6, 8],
+      "costVariants": { "720p": 0.10, "1080p": 0.10, "4k": 0.30, "720p_audio": 0.15, "1080p_audio": 0.15, "4k_audio": 0.35 }
+    },
+    "veo-3.1-generate-001": {
+      "type": "duration",
+      "costPerSecond": 0.20,
+      "defaultDurationSeconds": 8,
+      "supportedDurations": [4, 6, 8],
+      "costVariants": { "720p": 0.20, "1080p": 0.20, "4k": 0.40 }
+    },
+    "eleven_v3": {
+      "type": "character",
+      "costPerCharacter": 0.00022
+    },
+    "kling-v2.5": {
+      "type": "duration",
+      "costPerSecond": 0.042,
+      "defaultDurationSeconds": 5,
+      "supportedDurations": [5, 10]
+    },
+    "kling-2.5": {
+      "type": "duration",
+      "costPerSecond": 0.042,
+      "defaultDurationSeconds": 5,
+      "supportedDurations": [5, 10]
+    },
+    "kling/v2-5-turbo-image-to-video-pro": {
+      "type": "duration",
+      "costPerSecond": 0.042,
+      "defaultDurationSeconds": 5,
+      "supportedDurations": [5, 10]
+    },
+    "veo-3.1-fast": {
+      "type": "duration",
+      "costPerSecond": 0.10,
+      "supportedDurations": [4, 6, 8],
+      "costVariants": { "720p": 0.10, "1080p": 0.10, "4k": 0.30 }
+    },
+    "veo-3.1": {
+      "type": "duration",
+      "costPerSecond": 0.20,
+      "supportedDurations": [4, 6, 8],
+      "costVariants": { "720p": 0.20, "1080p": 0.20, "4k": 0.40 }
+    },
+    "veo-3.0": {
+      "type": "duration",
+      "costPerSecond": 0.20,
+      "supportedDurations": [4, 6, 8],
+      "costVariants": { "720p": 0.20, "1080p": 0.20 }
+    },
+    "veo-3.0-fast": {
+      "type": "duration",
+      "costPerSecond": 0.10,
+      "supportedDurations": [4, 6, 8],
+      "costVariants": { "720p": 0.10, "1080p": 0.10 }
+    },
+    "kling-2.6": {
+      "type": "duration",
+      "costPerSecond": 0.055,
+      "supportedDurations": [5, 10]
+    },
+    "kling-2.6/image-to-video": {
+      "type": "duration",
+      "costPerSecond": 0.055,
+      "defaultDurationSeconds": 5,
+      "supportedDurations": [5, 10]
+    },
+    "runway": {
+      "type": "duration",
+      "costPerSecond": 0.05,
+      "defaultDurationSeconds": 5,
+      "supportedDurations": [5, 10]
+    },
+    "runway-gen4-turbo": {
+      "type": "duration",
+      "costPerSecond": 0.05,
+      "defaultDurationSeconds": 5,
+      "supportedDurations": [2, 3, 4, 5, 6, 7, 8, 9, 10]
+    },
+    "runway-gen4.5": {
+      "type": "duration",
+      "costPerSecond": 0.12,
+      "defaultDurationSeconds": 5,
+      "supportedDurations": [2, 3, 4, 5, 6, 7, 8, 9, 10]
+    },
+    "suno-v5": {
+      "type": "fixed",
+      "costPerUnit": 0.10,
+      "unitType": "generation"
+    },
+    "V5": {
+      "type": "fixed",
+      "costPerUnit": 0.10,
+      "unitType": "generation"
+    },
+    "rendi": {
+      "type": "fixed",
+      "costPerUnit": 0,
+      "unitType": "operation"
+    },
+    "zapcap": {
+      "type": "duration",
+      "costPerSecond": 0.0015,
+      "defaultDurationSeconds": 20
+    },
+    "gemini-3-flash": {
+      "type": "fixed",
+      "costPerUnit": 0.02,
+      "unitType": "image"
+    },
+    "gemini-3-pro-image": {
+      "type": "fixed",
+      "costPerUnit": 0.04,
+      "unitType": "image"
+    },
+    "gemini-2.5-flash-image": {
+      "type": "fixed",
+      "costPerUnit": 0.02,
+      "unitType": "image"
+    },
+    "gemini-3-pro-image-preview": {
+      "type": "fixed",
+      "costPerUnit": 0.04,
+      "unitType": "image"
+    },
+    "veo-3.1-ref-fast": {
+      "type": "duration",
+      "costPerSecond": 0.15,
+      "supportedDurations": [8]
+    },
+    "veo-3.1-ref": {
+      "type": "duration",
+      "costPerSecond": 0.40,
+      "supportedDurations": [8]
+    },
+    "veo-3.1-ref-fal": {
+      "type": "duration",
+      "costPerSecond": 0.10,
+      "supportedDurations": [8]
+    }
+  }
+}

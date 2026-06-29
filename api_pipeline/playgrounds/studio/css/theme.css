@@ -1,0 +1,227 @@
+/* VidBuddy — Light, friendly AI video creation studio */
+/* Design system extracted from Google Stitch (project 17286975412803031669) */
+
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+:root {
+  /* === VidBuddy Color Palette (Stitch design system) === */
+  --vb-primary:            #4a4bd7;
+  --vb-primary-dim:        #3d3dcb;
+  --vb-primary-container:  #babbff;
+  --vb-primary-fixed:      #babbff;
+  --vb-on-primary:         #fbf7ff;
+
+  --vb-secondary:          #842cd3;
+  --vb-secondary-dim:      #7717c6;
+  --vb-secondary-container:#f0dbff;
+  --vb-on-secondary:       #fff6ff;
+
+  --vb-tertiary:           #b5146e;
+  --vb-tertiary-container: #ff9ac2;
+
+  --vb-background:         #fdf8ff;
+  --vb-surface:            #fdf8ff;
+  --vb-surface-lowest:     #ffffff;
+  --vb-surface-low:        #f7f1ff;
+  --vb-surface-container:  #f1ebff;
+  --vb-surface-high:       #ece4ff;
+  --vb-surface-highest:    #e6deff;
+  --vb-surface-dim:        #ded4ff;
+
+  --vb-on-background:      #342d55;
+  --vb-on-surface:         #342d55;
+  --vb-on-surface-variant: #615985;
+  --vb-outline:            #7d75a2;
+  --vb-outline-variant:    #b5acdc;
+
+  --vb-error:              #ac3149;
+  --vb-error-container:    #f76a80;
+  --vb-success:            #2d7d46;
+  --vb-success-bg:         #d1fae5;
+  --vb-warning:            #92400e;
+  --vb-warning-bg:         #fef3c7;
+
+  /* === Mapped studio variables === */
+  --studio-bg:             var(--vb-background);
+  --studio-bg-elevated:    var(--vb-surface-low);
+  --studio-surface:        var(--vb-surface-lowest);
+  --studio-surface-hover:  var(--vb-surface-container);
+  --studio-border:         var(--vb-outline-variant);
+  --studio-border-focus:   var(--vb-primary);
+  --studio-text:           var(--vb-on-surface);
+  --studio-text-secondary: var(--vb-on-surface-variant);
+  --studio-text-muted:     var(--vb-outline);
+
+  --studio-accent:         var(--vb-primary);
+  --studio-accent-hover:   var(--vb-primary-dim);
+  --studio-accent-dim:     var(--vb-surface-container);
+  --studio-accent-glow:    rgba(74, 75, 215, 0.18);
+
+  --studio-success:        var(--vb-success);
+  --studio-error:          var(--vb-error);
+  --studio-warn:           var(--vb-warning);
+
+  --studio-shadow:         0 2px 16px rgba(74, 75, 215, 0.07);
+  --studio-shadow-hover:   0 6px 28px rgba(74, 75, 215, 0.12);
+
+  --studio-radius:         16px;
+  --studio-radius-sm:      12px;
+
+  --studio-font-heading:   'Plus Jakarta Sans', system-ui, sans-serif;
+  --studio-font:           'Be Vietnam Pro', 'Plus Jakarta Sans', system-ui, sans-serif;
+
+  /* Gradient for primary buttons */
+  --vb-gradient:           linear-gradient(135deg, #4a4bd7, #842cd3);
+  --vb-gradient-hover:     linear-gradient(135deg, #3d3dcb, #7717c6);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--studio-font);
+  background: var(--vb-background);
+  color: var(--vb-on-surface);
+  min-height: 100vh;
+  line-height: 1.55;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* === Ethereal Background Blobs (parallax via JS) === */
+:root {
+  --blob-x: 0px;
+  --blob-y: 0px;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -15%;
+  left: -10%;
+  width: 560px;
+  height: 560px;
+  background: var(--vb-primary-container);
+  border-radius: 50%;
+  filter: blur(110px);
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(calc(var(--blob-x) * 0.6), calc(var(--blob-y) * 0.6));
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -15%;
+  right: -10%;
+  width: 640px;
+  height: 640px;
+  background: var(--vb-secondary-container);
+  border-radius: 50%;
+  filter: blur(110px);
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(calc(var(--blob-x) * -0.5), calc(var(--blob-y) * -0.5));
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/* === Animations === */
+@keyframes stepEnter {
+  from { transform: translateY(10px); }
+  to   { transform: translateY(0); }
+}
+
+@keyframes progressGrow {
+  from { transform: scaleX(0); transform-origin: left; }
+  to   { transform: scaleX(1); transform-origin: left; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(74, 75, 215, 0.4); }
+  50%       { box-shadow: 0 0 0 8px rgba(74, 75, 215, 0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+
+.studio-step-enter {
+  animation: stepEnter 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Material Symbols */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/* === Scrollbar === */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--vb-surface-low); border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: var(--vb-outline-variant); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--vb-outline); }
+
+/* === Selection === */
+::selection {
+  background: rgba(186, 187, 255, 0.35);
+  color: var(--vb-on-surface);
+}
+
+/* ============================================================
+   Stitch utility classes — applied directly in HTML/JS
+   ============================================================ */
+
+/* Dot-grid background (gallery view) */
+.dot-grid {
+  background-image: radial-gradient(#b5acdc 0.5px, transparent 0.5px);
+  background-size: 24px 24px;
+}
+
+/* Glass overlay for hover states (gallery cards) */
+.glass-overlay {
+  background: rgba(253, 248, 255, 0.72);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+/* Glow shadow for selected wizard cards */
+.glow-active {
+  box-shadow: 0 0 20px 0 rgba(74, 75, 215, 0.15);
+}
+
+/* Gradient helper used by nav/CTA buttons */
+.signature-gradient {
+  background: var(--vb-gradient);
+}
+
+/* Ethereal blob helper (for blurred circles) */
+.bg-ethereal-blob {
+  filter: blur(100px);
+  opacity: 0.3;
+}
+
+/* Gradient text helper */
+.gradient-text {
+  background: var(--vb-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

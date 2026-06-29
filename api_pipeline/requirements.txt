@@ -1,0 +1,29 @@
+# API Pipeline Dependencies
+# ========================
+
+# Web framework
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+python-multipart>=0.0.9
+
+# Supabase client
+supabase>=2.0.0
+
+# Pydantic (included with FastAPI but pinned for clarity)
+pydantic>=2.0.0
+
+# GCS Storage (file upload endpoint)
+google-cloud-storage>=2.14.0
+google-auth>=2.25.0
+
+# Veo 3.1 SDK
+google-genai>=1.0.0
+
+# OpenAI (health check endpoint)
+openai>=1.12.0
+
+# HTTP
+requests>=2.31.0
+
+# Environment
+python-dotenv>=1.0.0

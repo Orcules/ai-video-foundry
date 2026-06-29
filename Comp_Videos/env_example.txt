@@ -1,0 +1,38 @@
+# Video Scene Processor - Environment Variables
+# ==============================================
+# Copy this file to .env and fill in your actual values
+
+# Google Sheets Configuration
+SERVICE_ACCOUNT_FILE=service_account.json
+
+# OpenAI API Key
+OPENAI_API_KEY=sk-your-openai-api-key-here
+
+# Kie.ai API Key (for Nano Banana and Runway)
+KIE_API=your-kie-api-key-here
+
+# Rendi.dev API Key
+RENDI_API_KEY=your-rendi-api-key-here
+
+# ElevenLabs API Key
+ELEVEN_LABS_API_KEY=your-elevenlabs-api-key-here
+
+# ZapCap API Key (for subtitles)
+ZAPCAP_API_KEY=your-zapcap-api-key-here
+ZAPCAP_TEMPLATE_ID=your-zapcap-template-id
+
+# Vertex AI (Gemini image / Nano Banana 2). Same key used for Image API when Image api = Google / Nano Banana 2 (Vertex AI)
+# VERTEX_AI_API_KEY=your-vertex-api-key
+# Optional: override model for "Nano Banana 2 (Vertex AI)" (default: gemini-3.1-flash-image-preview)
+# GEMINI_NANO_BANANA_2_IMAGE_MODEL=gemini-3.1-flash-image-preview
+# Optional: Gemini 2.5 Pro (Vertex AI) uses gemini-2.5-flash-image (GA, high quota, 12 parallel workers by default)
+# GEMINI_25_FLASH_IMAGE_MODEL=gemini-2.5-flash-image
+# Optional: lower parallelism for Gemini 3 Pro / Nano Banana 2 to avoid 429 (default: 1 worker = sequential)
+# GEMINI_RATE_LIMITED_IMAGE_PARALLEL_WORKERS=1
+
+# AWS S3 Configuration
+AWS_ACCESS_KEY_ID=your-aws-access-key-id
+AWS_SECRET_ACCESS_KEY=your-aws-secret-access-key
+AWS_BUCKET_NAME=your-bucket-name
+AWS_REGION=us-east-1
+

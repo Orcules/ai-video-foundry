@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VidBuddy — AI Video Studio</title>
+  <link rel="stylesheet" href="css/theme.css?v=vb-9">
+  <link rel="stylesheet" href="css/layout.css?v=vb-9">
+  <link rel="stylesheet" href="css/components.css?v=vb-9">
+  <link rel="stylesheet" href="css/waiting-overlay.css?v=vb-9">
+  <link rel="stylesheet" href="css/effects.css?v=vb-9">
+  <!-- VidBuddy fonts (from Stitch design system) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="studioAuthBanner" class="studio-auth-banner" style="display: none;" role="status">
+    <div class="studio-auth-banner-inner">
+      <strong class="studio-auth-banner-title">Account / sign-in</strong>
+      <p id="studioAuthBannerText" class="studio-auth-banner-text"></p>
+      <button type="button" id="btnDismissAuthBanner" class="studio-btn studio-btn-ghost studio-btn-sm">Dismiss</button>
+    </div>
+  </div>
+  <div id="studioJobLinkBanner" class="studio-auth-banner studio-job-link-banner" style="display: none;" role="alert">
+    <div class="studio-auth-banner-inner">
+      <strong class="studio-auth-banner-title">Pipeline job not on server</strong>
+      <p id="studioJobLinkBannerText" class="studio-auth-banner-text"></p>
+      <button type="button" id="btnDismissJobLinkBanner" class="studio-btn studio-btn-ghost studio-btn-sm">Dismiss</button>
+    </div>
+  </div>
+  <div id="studioAuthOverlay" class="studio-auth-overlay" style="display: none;" aria-hidden="true">
+    <div class="studio-auth-card">
+      <button type="button" id="authOverlayDismiss" class="studio-auth-dismiss" style="display: none;" aria-label="Close">×</button>
+      <h2 class="studio-auth-title">VidBuddy AI</h2>
+      <p class="studio-auth-sub">Sign in to save your videos to <strong>My Videos</strong> and pick up where you left off on any device.</p>
+      <div class="studio-auth-tabs">
+        <button type="button" id="authTabSignIn" class="studio-auth-tab active">Sign in</button>
+        <button type="button" id="authTabRegister" class="studio-auth-tab">Register</button>
+      </div>
+      <form id="authFormSignIn" class="studio-auth-form">
+        <label class="studio-label">Email</label>
+        <input type="email" id="authEmailIn" class="studio-input" required autocomplete="email" />
+        <label class="studio-label">Password</label>
+        <input type="password" id="authPasswordIn" class="studio-input" required autocomplete="current-password" />
+        <button type="submit" class="studio-btn studio-btn-primary studio-auth-submit">Sign in</button>
+      </form>
+      <form id="authFormRegister" class="studio-auth-form" style="display: none;">
+        <label class="studio-label">Email</label>
+        <input type="email" id="authEmailReg" class="studio-input" required autocomplete="email" />
+        <label class="studio-label">Password (min 6 characters)</label>
+        <input type="password" id="authPasswordReg" class="studio-input" required minlength="6" autocomplete="new-password" />
+        <button type="submit" class="studio-btn studio-btn-primary studio-auth-submit">Create account</button>
+      </form>
+      <!-- Divider + social login — Stitch signin.html -->
+      <div class="studio-auth-divider">
+        <span>Or continue with</span>
+      </div>
+      <div class="studio-auth-socials">
+        <button type="button" class="studio-auth-social-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Google
+        </button>
+        <button type="button" class="studio-auth-social-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M16.52 0c.26 1.65-.46 3.28-1.38 4.46-.96 1.22-2.52 2.16-4.04 2.04-.28-1.58.5-3.22 1.44-4.38C13.48 1.03 15.1.1 16.52 0zm4.38 17.38c-.7 1.54-1.03 2.23-1.93 3.59-1.25 1.9-3.01 4.26-5.2 4.28-1.94.02-2.44-1.26-5.08-1.24-2.64.02-3.2 1.28-5.14 1.26C1.36 25.25-.32 23.1.73 19.1c.76-2.82 3.2-5.76 5.75-5.78 1.84-.01 2.96 1.23 5.06 1.23 2.08 0 3.35-1.25 5.2-1.23 2.2.03 4.02 2.06 4.16 4.06z"/>
+          </svg>
+          Apple
+        </button>
+      </div>
+      <p id="authError" class="studio-auth-error" style="display: none;"></p>
+    </div>
+  </div>
+
+  <div id="studioGalleryView" class="studio-gallery-view" style="display: none;">
+    <header class="studio-gallery-header">
+      <h1 class="studio-gallery-title">My videos</h1>
+      <div class="studio-gallery-header-actions">
+        <span id="studioUserEmail" class="studio-gallery-email"></span>
+        <button type="button" id="btnGalleryNewVideo" class="studio-btn studio-btn-primary-lg">
+          <span class="material-symbols-outlined" style="font-size:1.1rem">add</span>
+          New video
+        </button>
+        <button type="button" id="btnGallerySignOut" class="studio-btn studio-btn-ghost">Sign out</button>
+      </div>
+    </header>
+    <div class="studio-gallery-inner">
+      <p id="studioGalleryEmpty" class="studio-gallery-empty" style="display: none;">No videos yet. Create your first video with <strong>New video</strong>.</p>
+      <div id="studioGalleryGrid" class="studio-gallery-grid"></div>
+    </div>
+  </div>
+
+  <div id="studioWizardView">
+  <header class="studio-header">
+    <div class="studio-header-title-row">
+      <h1>VidBuddy</h1>
+      <div id="studioAccountStrip" class="studio-account-strip" style="display: none;" aria-label="Account">
+        <span id="studioAccountStripLabel" class="studio-account-strip-label"></span>
+        <button type="button" id="btnAccountStripSignIn" class="studio-btn studio-btn-ghost studio-btn-sm">Sign in</button>
+        <button type="button" id="btnAccountStripGallery" class="studio-btn studio-btn-secondary studio-btn-sm" style="display: none;">My videos</button>
+        <button type="button" id="btnAccountStripSignOut" class="studio-btn studio-btn-ghost studio-btn-sm" style="display: none;">Sign out</button>
+      </div>
+    </div>
+    <div class="studio-header-right">
+      <button type="button" id="btnBackToGallery" class="studio-btn studio-btn-ghost" style="display: none;" title="Back to gallery">← My videos</button>
+      <div class="studio-session-wrap">
+        <button type="button" id="btnSaveSession" class="studio-btn studio-btn-ghost" title="Add current state to session list">Save session</button>
+        <div class="studio-session-dropdown">
+          <button type="button" id="btnPreviousSessions" class="studio-btn studio-btn-ghost" title="Restore a previous session">Previous sessions <span id="sessionListCount">(0)</span></button>
+          <div id="sessionListPanel" class="studio-session-list-panel" style="display: none;"></div>
+        </div>
+        <button type="button" id="btnClearSession" class="studio-btn studio-btn-ghost" title="Clear current session and reset">Clear session</button>
+        <button type="button" id="btnClearAllSessions" class="studio-btn studio-btn-ghost" title="Clear all saved sessions">Clear all</button>
+      </div>
+      <button type="button" id="btnStudioAccount" class="studio-btn studio-btn-secondary studio-btn-sm" title="Sign in, My videos, or setup help">
+        Account
+      </button>
+      <div class="studio-api-key-wrap">
+        <label class="studio-api-key-label" for="studioApiKey">API key</label>
+        <input type="password" id="studioApiKey" class="studio-input studio-api-key-input" placeholder="Leave empty if signed in (Account), or sk-tvd-…" autocomplete="off" title="Dots are normal (hidden key). Empty + cloud sign-in is OK. &quot;dev&quot; only when the API runs without Supabase.">
+      </div>
+      <div class="studio-mode-toggle">
+        <button type="button" id="modeStep" class="active">Step-by-step</button>
+        <button type="button" id="modeAuto">Automatic</button>
+      </div>
+    </div>
+  </header>
+  <div
+    id="studioServerAuthHint"
+    class="studio-server-auth-hint"
+    style="display: none"
+    role="status"
+    aria-live="polite"
+  ></div>
+  <div id="sessionRestoreBar" class="studio-session-restore-bar" style="display: none;">
+    <span id="sessionRestoreText"></span>
+    <button type="button" id="btnRestoreSession" class="studio-btn studio-btn-primary">Restore session</button>
+    <button type="button" id="btnDismissSession" class="studio-btn studio-btn-ghost">Dismiss</button>
+  </div>
+
+  <div class="studio-progress-wrap">
+    <div class="studio-progress-labels">
+      <span id="progressStepLabel">Step 1 of 16</span>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="studio-progress-bar">
+      <div class="studio-progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+  </div>
+
+  <main class="studio-main">
+    <!-- Step 1: Video Type + Basics -->
+    <section class="studio-step active" id="step1" data-step="1">
+      <h2 class="studio-step-title">Video type and basics</h2>
+      <p class="studio-step-desc">Choose the type of video, then set country, language, and gender.</p>
+      <div class="studio-grid-2" id="videoTypeCards">
+        <div class="studio-card studio-card-selectable" data-video-type="product video">
+          <div class="studio-card-check"><span class="material-symbols-outlined">check</span></div>
+          <div class="studio-card-icon"><span class="material-symbols-outlined">shopping_bag</span></div>
+          <p class="studio-card-title">Product Ad</p>
+          <p class="studio-card-desc">Third-person product showcase with clean visuals.</p>
+        </div>
+        <div class="studio-card studio-card-selectable" data-video-type="influencer">
+          <div class="studio-card-check"><span class="material-symbols-outlined">check</span></div>
+          <div class="studio-card-icon secondary"><span class="material-symbols-outlined">camera_front</span></div>
+          <p class="studio-card-title">Influencer</p>
+          <p class="studio-card-desc">First-person UGC Instagram style.</p>
+        </div>
+        <div class="studio-card studio-card-selectable" data-video-type="personal-brand">
+          <div class="studio-card-check"><span class="material-symbols-outlined">check</span></div>
+          <div class="studio-card-icon tertiary"><span class="material-symbols-outlined">star</span></div>
+          <p class="studio-card-title">Personal Brand</p>
+          <p class="studio-card-desc">Professional self-promotion, VO-first.</p>
+        </div>
+        <div class="studio-card studio-card-selectable" data-video-type="ugc-real">
+          <div class="studio-card-check"><span class="material-symbols-outlined">check</span></div>
+          <div class="studio-card-icon warning"><span class="material-symbols-outlined">settings_voice</span></div>
+          <p class="studio-card-title">UGC Real</p>
+          <p class="studio-card-desc">Offer-aware UGC with grid planning and lip-sync.</p>
+        </div>
+      </div>
+      <!-- Settings section — Stitch: bg-surface-container-low/50 rounded-3xl p-6, 2-col then gender below -->
+      <div class="studio-settings-section">
+        <div class="studio-grid-2">
+          <div class="studio-field">
+            <label class="studio-label">Country</label>
+            <div style="position:relative">
+              <select class="studio-select" id="country"></select>
+            </div>
+          </div>
+          <div class="studio-field">
+            <label class="studio-label">Language</label>
+            <div style="position:relative">
+              <select class="studio-select" id="language"></select>
+            </div>
+          </div>
+        </div>
+        <div class="studio-field" style="margin-top: 1rem;">
+          <label class="studio-label">Narrator Gender</label>
+          <div class="studio-gender-toggle">
+            <button type="button" data-gender="f" class="studio-gender-btn active">Female</button>
+            <button type="button" data-gender="m" class="studio-gender-btn">Male</button>
+          </div>
+        </div>
+      </div>
+      <div class="studio-nav">
+        <span></span>
+        <button type="button" class="studio-btn studio-btn-primary-lg" data-next="2">
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_forward</span>
+          Next
+        </button>
+      </div>
+    </section>
+
+    <!-- Step 2: Style & Duration (merged) -->
+    <section class="studio-step" id="step2" data-step="2">
+      <input type="hidden" id="style" value="Auto">
+      <input type="hidden" id="duration" value="20">
+      <h2 class="studio-step-title">Style & duration</h2>
+      <p class="studio-step-desc">Pick a style and target video length.</p>
+      <div class="studio-field">
+        <label class="studio-label">Visual style</label>
+        <div class="studio-grid-2" id="styleCards"></div>
+      </div>
+      <div class="studio-field" style="margin-top: 1.5rem;">
+        <label class="studio-label">Video length (seconds)</label>
+        <div class="studio-duration-options" id="durationOptions">
+          <button type="button" class="studio-duration-btn" data-duration="15">15s</button>
+          <button type="button" class="studio-duration-btn active" data-duration="20">20s</button>
+          <button type="button" class="studio-duration-btn" data-duration="30">30s</button>
+          <button type="button" class="studio-duration-btn" data-duration="45">45s</button>
+          <button type="button" class="studio-duration-btn" data-duration="60">60s</button>
+          <button type="button" class="studio-duration-btn" data-duration="90">90s</button>
+        </div>
+      </div>
+      <div class="studio-nav">
+        <button type="button" class="studio-btn studio-btn-back" data-prev="1">
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_back</span>
+          Back
+        </button>
+        <button type="button" class="studio-btn studio-btn-primary-lg" data-next="3">
+          Next
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Step 3: Prompt -->
+    <section class="studio-step" id="step3" data-step="3">
+      <h2 class="studio-step-title" id="step3PromptTitle">Prompt</h2>
+      <p class="studio-step-desc" id="promptDesc">Describe your product or story. This drives the script and visuals.</p>
+      <div class="studio-field">
+        <textarea class="studio-textarea" id="prompt" placeholder="Enter your prompt..." rows="6"></textarea>
+        <p class="studio-field-hint"><span id="promptCount">0</span> characters</p>
+      </div>
+      <input type="hidden" id="videoReferenceUrl">
+      <textarea id="voPreWritten" style="display:none" rows="4"></textarea>
+      <div class="studio-nav">
+        <button type="button" class="studio-btn studio-btn-back" data-prev="2">
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_back</span>
+          Back
+        </button>
+        <button type="button" class="studio-btn studio-btn-primary-lg" data-next="4">
+          Next
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Step 4: Product images (product video) + optional character / logo context -->
+    <section class="studio-step" id="step4" data-step="4">
+      <h2 class="studio-step-title" id="step4Title">Character</h2>
+      <p class="studio-step-desc" id="step4Desc">Optional — leave empty to auto-generate. Approve the portrait on a later step.</p>
+      <div id="step4PipelineError" class="studio-status studio-status-error" style="display: none; margin-bottom: 1rem;" role="alert"></div>
+
+      <!-- Product images (product video only) -->
+      <div id="mediaProductOnly" class="studio-media-block" data-video-type-block="product video">
+        <label class="studio-label">Product photos</label>
+        <p id="productStep4Hint" class="studio-field-hint" style="margin-bottom: 0.75rem;">Upload 1–3 product photos. The clean product image step runs automatically after you continue.</p>
+        <div class="studio-grid-3" id="cleanProductZones"></div>
+        <div id="productExplainWrap" class="studio-field" style="margin-top: 1rem;">
+          <label class="studio-label">Product notes (optional)</label>
+          <textarea class="studio-textarea" id="productExplain" rows="2" placeholder="Materials, sizes, key features, target audience…"></textarea>
+        </div>
+      </div>
+
+      <!-- Character block -->
+      <div id="mediaCharacterBlock" class="studio-media-block">
+
+        <!-- Block title — updated by JS per video type (e.g. "Influencer, logo & slogan") -->
+        <label class="studio-label" id="characterBlockTitle">Character</label>
+
+        <!-- No-character toggle (product video) -->
+        <div id="productNoCharacterWrap" style="display: none; margin-bottom: 1rem;">
+          <label class="studio-checkbox-row">
+            <input type="checkbox" id="productNoOnScreenCharacter" />
+            <span style="font-size: 0.875rem; color: var(--vb-on-surface);">No on-screen character (product-only ad)</span>
+          </label>
+        </div>
+
+        <!-- Source picker — 3 compact cards -->
+        <div id="characterSourceModeWrap" style="display: none;">
+          <div class="studio-source-picker">
+            <label class="studio-source-card" for="characterSourceLook">
+              <input type="radio" name="characterSourceMode" id="characterSourceLook" value="look" />
+              <span class="material-symbols-outlined">draw</span>
+              <span>Describe look</span>
+            </label>
+            <label class="studio-source-card" for="characterSourceLibrary">
+              <input type="radio" name="characterSourceMode" id="characterSourceLibrary" value="library" />
+              <span class="material-symbols-outlined">person_book</span>
+              <span>Saved character</span>
+            </label>
+            <label class="studio-source-card" for="characterSourceUpload">
+              <input type="radio" name="characterSourceMode" id="characterSourceUpload" value="upload" />
+              <span class="material-symbols-outlined">upload_file</span>
+              <!-- JS writes characterSourceUploadLabel here -->
+              <span id="characterSourceUploadLabelStrong">Upload photo</span>
+            </label>
+          </div>
+          <!-- JS writes characterSourceUploadSub here (hidden — was sub-description in old design) -->
+          <span id="characterSourceUploadSub" style="display:none"></span>
+          <p id="characterSourceModeHint" class="studio-field-hint" style="display: none; margin-top: 0.5rem; color: var(--vb-error);" role="alert" aria-live="polite"></p>
+        </div>
+
+        <!-- Look section -->
+        <div id="characterLookSection" style="display: none;">
+          <div id="characterBriefWrap" class="studio-field" style="display: none; margin-top: 1.25rem;">
+            <label class="studio-label" for="characterBrief">Appearance description</label>
+            <textarea class="studio-textarea" id="characterBrief" rows="3"
+              placeholder="Face, hair, age, skin tone, expression, clothing top — chest-up portrait on plain white background."></textarea>
+            <input type="hidden" id="portraitImagePromptHidden" value="" />
+
+            <!-- AI panel -->
+            <div class="studio-ai-panel">
+              <div class="studio-ai-panel-chips" id="characterBriefAiRow" aria-live="polite"></div>
+              <button type="button" class="studio-btn studio-btn-primary studio-btn-sm" id="btnCharacterBriefAiRefresh">
+                <span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 1">auto_awesome</span>
+                AI suggestions
+              </button>
+            </div>
+
+            <!-- Quick examples -->
+            <div class="studio-examples-row">
+              <span class="studio-examples-label">Quick fill:</span>
+              <button type="button" class="studio-example-chip" id="btnCharacterBriefExSaaS">SaaS founder</button>
+              <button type="button" class="studio-example-chip" id="btnCharacterBriefExFitness">Fitness creator</button>
+              <button type="button" class="studio-example-chip" id="btnCharacterBriefExBeauty">Beauty UGC</button>
+              <button type="button" class="studio-example-chip studio-example-chip-ai" id="btnGenerateCharacterPortrait">
+                <span class="material-symbols-outlined" style="font-size:0.85rem">psychology</span>
+                AI fill
+              </button>
+            </div>
+
+            <p id="characterPortraitGenStatus" class="studio-field-hint" style="display: none; margin-top: 0.5rem;" aria-live="polite"></p>
+
+            <details class="studio-hint-details">
+              <summary>How the portrait is generated</summary>
+              <p>The portrait runs in the background when you click <strong>Next</strong> (one Nano Banana call). Character approval is on a later step. AI chips are generated from your Step 3 prompt via Gemini.</p>
+            </details>
+          </div>
+        </div>
+
+        <!-- Library section -->
+        <div id="characterLibrarySection" style="display: none;">
+          <div id="characterLibraryWrap" class="studio-field" style="display: none; margin-top: 1.25rem;">
+            <label class="studio-label" for="characterLibrarySelect">Saved character</label>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <select id="characterLibrarySelect" class="studio-select" style="flex: 1;">
+                <option value="">— Select —</option>
+              </select>
+              <button type="button" id="btnCharacterLibraryRefresh" class="studio-btn studio-btn-ghost studio-btn-sm">Refresh</button>
+            </div>
+            <details class="studio-hint-details">
+              <summary>Requirements</summary>
+              <p>Requires Account sign-in, <code>SUPABASE_SERVICE_ROLE_KEY</code> on the API server, and migration <code>002_studio_characters.sql</code>.</p>
+            </details>
+          </div>
+          <p id="characterLibraryLoadHint" class="studio-field-hint" style="display: none; color: var(--vb-error);" aria-live="polite"></p>
+        </div>
+
+        <!-- Upload section -->
+        <div id="characterUploadSection" class="studio-grid-2" style="display: none; margin-top: 1.25rem;">
+          <div class="studio-field">
+            <label class="studio-label" id="characterLabel1">Character photo</label>
+            <div id="characterZone1"></div>
+          </div>
+          <div class="studio-field" id="mediaCharacter2Wrap">
+            <label class="studio-label">Character 2</label>
+            <div id="characterZone2"></div>
+          </div>
+          <div class="studio-field" id="mediaCharacter3Wrap">
+            <label class="studio-label">Character 3</label>
+            <div id="characterZone3"></div>
+          </div>
+        </div>
+
+        <!-- Save to library -->
+        <div id="characterLibrarySaveWrap" class="studio-field" style="display: none; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--vb-outline-variant);">
+          <label class="studio-label" for="characterLibraryName">Save to character library</label>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <input type="text" id="characterLibraryName" class="studio-input" style="flex: 1;" placeholder="Name (e.g. Podcast founder)" required autocomplete="off" />
+            <button type="button" id="btnCharacterLibrarySave" class="studio-btn studio-btn-secondary studio-btn-sm">Save</button>
+          </div>
+          <p id="characterLibrarySaveStatus" class="studio-field-hint" style="display: none; margin-top: 0.35rem;"></p>
+        </div>
+
+      </div>
+      <div class="studio-nav">
+        <button type="button" class="studio-btn studio-btn-back" data-prev="3">
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_back</span>
+          Back
+        </button>
+        <button type="button" class="studio-btn studio-btn-primary-lg" data-next="5">
+          Next
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Step 5: Models, Voice & Subtitles (last input step; Start generation here). Portrait request runs once when leaving step 4 via Next (if no upload). -->
+    <section class="studio-step" id="step6" data-step="5">
+      <h2 class="studio-step-title">Models, voice & subtitles</h2>
+      <p class="studio-step-desc">Choose image and animation models, voice, and subtitle options. Then start generation.</p>
+      <div class="studio-grid-2">
+        <div class="studio-field">
+          <label class="studio-label">Image model</label>
+          <select class="studio-select" id="imageModel"></select>
+        </div>
+        <div class="studio-field">
+          <label class="studio-label">Animation model</label>
+          <select class="studio-select" id="animationModel"></select>
+        </div>
+      </div>
+      <div class="studio-field">
+        <label class="studio-label">Voice</label>
+        <select class="studio-select" id="voiceId"></select>
+      </div>
+      <div class="studio-field">
+        <label class="studio-label">Custom voice ID (advanced)</label>
+        <input type="text" class="studio-input" id="voiceIdCustom" placeholder="Leave empty to use selected voice">
+      </div>
+      <div class="studio-grid-2">
+        <div class="studio-field">
+          <label class="studio-label">Subtitle template</label>
+          <select class="studio-select" id="subtitleTemplate"></select>
+        </div>
+        <div class="studio-field">
+          <label class="studio-label">Subtitle position</label>
+          <select class="studio-select" id="subtitlePosition">
+            <option value="top">Top</option>
+            <option value="middle" selected>Middle</option>
+            <option value="bottom">Bottom</option>
+          </select>
+        </div>
+        <div class="studio-field">
+          <label class="studio-label">Emoji in subtitles</label>
+          <select class="studio-select" id="subtitleEmoji">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        </div>
+      </div>
+      <div class="studio-field">
+        <label class="studio-checkbox-row">
+          <input type="checkbox" id="addSubtitles" checked>
+          <span class="studio-label">Add subtitles</span>
+        </label>
+      </div>
+      <div class="studio-field" style="margin-top: 1rem;">
+        <label class="studio-checkbox-row">
+          <input type="checkbox" id="simulationMode">
+          <span class="studio-label">Simulation mode (check only for quick test — placeholder VO/data; uncheck to run real pipeline like Google Sheets)</span>
+        </label>
+      </div>
+      <div class="studio-nav">
+        <button type="button" class="studio-btn studio-btn-back" data-prev="4">
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_back</span>
+          Back
+        </button>
+        <button type="button" class="studio-btn studio-btn-primary-lg" id="btnStartGenerate">
+          Start generation
+          <span class="material-symbols-outlined" style="font-size:1.1rem">play_arrow</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- UGC Real only — after Preferences (step 7). Nine-cell storyboard starts in the background when you land here. -->
+    <section class="studio-step" id="step6ugcCharacterGate" style="display: none;">
+      <h2 class="studio-step-title">Review character for the grid</h2>
+      <p class="studio-step-desc">
+        Approve the auto-generated portrait or regenerate with a short correction. Your product/reference images are already included for the pipeline.
+        <strong>While you review here,</strong> the server continues Phase 1 (offer analysis → nine-cell plan) in the background so the storyboard step can be ready when you continue.
+      </p>
+      <div id="ugcCharGatePipelineStatus" class="studio-status" style="display: none; margin-bottom: 1rem;" aria-live="polite"></div>
+      <div id="ugcCharGatePreview" class="studio-char-preview" style="display: none;">
+        <div class="studio-char-preview-inner">
+          <img id="ugcCharGateImg" alt="Generated character for grid" />
+          <div class="studio-char-preview-actions">
+            <p class="studio-char-preview-label">Character portrait</p>
+            <input type="text" class="studio-input" id="ugcCharGateCorrection" placeholder="Correction (e.g. 'younger', 'different hair', 'warmer light')" style="margin-bottom: 0.5rem;" />
+            <label class="studio-checkbox-row" id="saveCharOnApproveWrapUgc" style="display: none; margin: 0.35rem 0;">
+              <input type="checkbox" id="chkSaveCharacterOnApproveUgc" />
+              <span class="studio-label">Also save to character library when approving (Account sign-in + <strong>name on step 4</strong> required)</span>
+            </label>
+            <div class="studio-btn-row">
+              <button type="button" class="studio-btn studio-btn-secondary studio-btn-sm" id="btnUgcCharGateRegenerate">Regenerate</button>
+              <button type="button" class="studio-btn studio-btn-primary studio-btn-sm" id="btnUgcCharGateApprove">Approve &amp; use in pipeline</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="studio-field-hint" id="ugcCharGateNoPortraitHint" style="display: none;">
+        No auto-portrait yet — you can go on if you uploaded a character photo in step 4, or use Regenerate after adding a look description in step 4.
+      </p>
+      <div class="studio-nav">
+        <button type="button" class="studio-btn studio-btn-back" data-prev="7">
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_back</span>
+          Back
+        </button>
+        <button type="button" class="studio-btn studio-btn-primary-lg" data-next="9">
+          Next
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Step 6: Preferences (TEXT 1, 2, 3) — wizard step 7 for UGC Real (after models; character gate is step 8) -->
+    <section class="studio-step" id="step7prefs" data-step="6">
+      <h2 class="studio-step-title">Preferences</h2>
+      <p class="studio-step-desc">The pipeline generates these from your prompt (Headline, Key message, Call to action) in <strong>Phase 1</strong> via an LLM parse step — usually <strong>~15–45 seconds</strong> after the job starts processing. Review and edit when they appear. <strong>Influencer / personal-brand:</strong> the optional auto-portrait request in the API log is separate; it does not produce TEXT 1–3. <strong>Product video:</strong> background music (Suno) may also start in the background once these texts exist.</p>
+      <p class="studio-field-hint" id="step6MusicPrefetchHint" style="display: none; margin-top: 0.5rem;" aria-live="polite"></p>
+      <p class="studio-field-hint" id="step6PortraitPrefetchHint" style="display: none; margin-top: 0.35rem; color: var(--studio-warn, #c9a227);" aria-live="polite"></p>
+      <div id="step6LiveStatus" class="studio-status studio-step7-live-status" style="display: none; margin-bottom: 1rem;">
+        <span id="step6LiveStatusText">—</span>
+        <span id="step6LiveStatusStep" class="studio-field-hint" style="display: block; margin-top: 0.25rem;"></span>
+      </div>
+      <div class="studio-field">
+        <label class="studio-label">Headline / Hook (TEXT 1)</label>
+        <textarea class="studio-textarea" id="text1" rows="2" placeholder="Generated from your prompt; will appear after you start generation"></textarea>
+      </div>
+      <div class="studio-field">
+        <label class="studio-label">Key message / Body (TEXT 2)</label>
+        <textarea class="studio-textarea" id="text2" rows="3" placeholder="Generated from your prompt; will appear after you start generation"></textarea>
+      </div>
+      <div class="studio-field">
+        <label class="studio-label">Call to action / Closing (TEXT 3)</label>
+        <textarea class="studio-textarea" id="text3" rows="2" placeholder="Generated from your prompt; will appear after you start generation"></textarea>
+      </div>
+      <p class="studio-field-hint" id="step6UgcOfferFlowHint" style="display: none; margin-bottom: 1rem;" aria-live="polite"></p>
+      <div id="ugcRealOfferStepStatus" class="studio-status" style="display: none; margin-bottom: 0.75rem;" aria-live="polite"></div>
+      <div class="studio-field studio-btn-row">
+        <button type="button" class="studio-btn studio-btn-primary" id="btnGenerateVO" disabled title="Wait for TEXT 1–3 from Phase 1 or type all three fields.">Generate VO</button>
+      </div>
+      <div class="studio-nav">
+        <button type="button" class="studio-btn studio-btn-back" id="btnPrefsBack" data-prev="5">
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_back</span>
+          Back
+        </button>
+        <button type="button" class="studio-btn studio-btn-primary-lg" id="btnPrefsWizardNext">
+          Next
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Non–UGC Real: Influencer / personal-brand = wizard step 7 after Preferences. Product video = wizard step 12 after Scene assets (data-step removed — resolved in app.js getStepEl). -->
+    <section class="studio-step" id="stepNonUgcCharacterGate" style="display: none;">
+      <h2 class="studio-step-title" id="nonUgcCharGateTitle">Character approval</h2>
+      <p class="studio-step-desc" id="nonUgcCharGateDesc">Approve the auto-generated portrait or regenerate with a short correction. <strong>While you are on this step,</strong> the server runs <strong>Phase 2</strong> in the background to generate the <strong>VO script</strong> — open the next step when you are ready to edit voice and audio.</p>
+      <p class="studio-field-hint" id="nonUgcCharVoBackgroundHint" style="display: none; margin-bottom: 0.75rem;" aria-live="polite"></p>
+      <div id="nonUgcCharPortraitActivity" class="studio-status studio-step7-live-status" style="display: none; margin-bottom: 1rem;" aria-live="polite">
+        <div style="display: flex; align-items: flex-start; gap: 0.65rem;">
+          <span class="studio-spinner" id="nonUgcCharPortraitSpinner" style="display: none; flex-shrink: 0; margin-top: 0.2rem;" aria-hidden="true"></span>
+          <div style="flex: 1; min-width: 0;">
+            <div id="nonUgcCharPortraitActivityText" class="studio-field-hint" style="margin: 0; color: var(--studio-text);">—</div>
+            <p class="studio-field-hint" id="nonUgcCharPortraitActivitySub" style="margin: 0.35rem 0 0; font-size: 0.8125rem;">Checks the in-flight <code>/api/generate-character</code> request (see API Log). When it finishes, the preview appears below.</p>
+          </div>
+        </div>
+        <div class="studio-btn-row" style="margin-top: 0.75rem;">
+          <button type="button" class="studio-btn studio-btn-secondary studio-btn-sm" id="btnNonUgcCharPortraitRetry" style="display: none;">Generate portrait again</button>
+        </div>
+      </div>
+      <div id="step6CharPreview" class="studio-char-preview" style="display: none;">
+        <div class="studio-char-preview-inner">
+          <img id="step6CharImg" alt="Auto-generated character" />
+          <div class="studio-char-preview-actions">
+            <p class="studio-char-preview-label">Auto-generated character</p>
+            <input type="text" class="studio-input" id="step6CharCorrection" placeholder="Correction (e.g. 'make her older', 'add glasses')" style="margin-bottom: 0.5rem;" />
+            <label class="studio-checkbox-row" id="saveCharOnApproveWrapNonUgc" style="display: none; margin: 0.35rem 0;">
+              <input type="checkbox" id="chkSaveCharacterOnApproveNonUgc" />
+              <span class="studio-label">Also save to character library when approving (Account sign-in + <strong>name on step 4</strong> required)</span>
+            </label>
+            <div class="studio-btn-row">
+              <button type="button" class="studio-btn studio-btn-secondary studio-btn-sm" id="btnRegenerateChar">Regenerate</button>
+              <button type="button" class="studio-btn studio-btn-primary studio-btn-sm" id="btnApproveChar">Approve</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="studio-field-hint" id="nonUgcCharNoPortraitHint" style="display: none;">No auto-portrait yet — if you uploaded a character in step 4 you can continue. Optional: go back to step 4 to describe the look and generate a portrait.</p>
+      <div class="studio-nav">
+        <button type="button" class="studio-btn studio-btn-back" data-prev="6">
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_back</span>
+          Back
+        </button>
+        <button type="button" class="studio-btn studio-btn-primary-lg" data-next="9">
+          Next
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Step 7: UGC Real — Nine-cell storyboard (wizard skips this step for other video types) -->
+    <section class="studio-step" id="step6ugcNineCell" style="display: none;">
+      <h2 class="studio-step-title" id="ugcNineCellStepTitle">Nine-cell storyboard</h2>
+      <p class="studio-step-desc" id="ugcNineCellStepDesc">Built from your main prompt (step 3), the three offer fields (Preferences), and your approved character. Each cell lists the image prompt and VO line. Regenerate if you changed the offer fields. Continue runs the 3×3 master grid on the same job.</p>
+      <div id="ugcNineCellActivity" class="studio-nine-cell-activity" style="display: none; margin-bottom: 1rem;" aria-live="polite">
+        <div class="studio-nine-cell-activity-head">
+          <span class="studio-spinner" id="ugcNineCellSpinner" aria-hidden="true"></span>
+          <div class="studio-nine-cell-activity-copy">
+            <div class="studio-nine-cell-activity-title" id="ugcNineCellActivityTitle">—</div>
+            <p class="studio-field-hint" id="ugcNineCellActivitySub" style="margin: 0.35rem 0 0;"></p>
+          </div>
+        </div>
+        <div class="studio-progress-track studio-nine-cell-progress-track" id="ugcNineCellProgressTrack" style="display: none;">
+          <div class="studio-progress-fill" id="ugcNineCellProgressFill"></div>
+        </div>
+        <ul class="studio-pipeline-mini" id="ugcNineCellPipelineMini"></ul>
+        <p class="studio-field-hint" id="ugcNineCellActivityHint" style="margin-top: 0.75rem; margin-bottom: 0;"></p>
+      </div>
+      <div id="ugcRealSceneReview" class="studio-card" style="display: none; margin-bottom: 1rem;">
+        <div id="ugcRealSceneReviewStatus" class="studio-status" style="display: none; margin-bottom: 0.75rem;"></div>
+        <div id="ugcRealSceneReviewStoryboardChrome">
+          <h3 class="studio-block-title" id="ugcRealSceneReviewTitle">Plan preview</h3>
+          <p class="studio-field-hint" id="ugcRealSceneReviewHint">Cells fill when the server saves the nine-cell plan.</p>
+          <div id="ugcRealSceneReviewSummary" class="studio-grid-3" style="margin-bottom: 0.75rem;"></div>
+          <div id="ugcRealSceneReviewList" class="studio-ugc-review-list"></div>
+          <div class="studio-btn-row" style="margin-top: 1rem;">
+            <button type="button" class="studio-btn studio-btn-ghost" id="btnUgcRealRestartScenePlan">Regenerate nine-cell plan</button>
+            <button type="button" class="studio-btn studio-btn-primary" id="btnUgcRealContinueToPhase2Grid">Continue to Phase 2 (3×3 grid)</button>
+          </div>
+        </div>
+      </div>
+      <div class="studio-nav">
+        <button type="button" class="studio-btn studio-btn-back" data-prev="8">
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_back</span>
+          Back
+        </button>
+        <button type="button" class="studio-btn studio-btn-primary-lg" data-next="10">
+          Next
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Step 9: VO Review (data-step 9 for non–UGC Real after character gate) -->
+    <section class="studio-step" id="step8vo" data-step="9">
+      <h2 class="studio-step-title">VO script</h2>
+      <p class="studio-step-desc">Review and edit the generated script. Text appears here as soon as the pipeline saves it (polling every ~2s). Product photos: <strong>clean product image</strong> normally runs in Phase 1. <strong>Approve and continue</strong> saves edits and runs the next pipeline segment (e.g. VO audio), then music and later steps.</p>
+      <div id="ugcRealGridReview" class="studio-card" style="display: none; margin-bottom: 1rem;">
+        <h3 class="studio-block-title">UGC Real grid review</h3>
+        <p class="studio-field-hint">Review scene grids, the selected routing, and the cells the system prefers for lip-sync / animation / static hold.</p>
+        <div id="ugcRealGridReviewStatus" class="studio-status" style="display: none; margin-bottom: 0.75rem;"></div>
+        <div id="ugcRealGridReviewList" class="studio-ugc-grid-review"></div>
+        <div class="studio-btn-row" style="margin-top: 1rem;">
+          <button type="button" class="studio-btn studio-btn-ghost" id="btnUgcRealRestartGrids">Regenerate all grids</button>
+          <button type="button" class="studio-btn studio-btn-primary" id="btnUgcRealApproveGrids">Approve grids & continue</button>
+        </div>
+      </div>
+      <div id="step7LiveStatus" class="studio-status studio-step7-live-status" style="display: none;">
+        <span id="step7LiveStatusText">—</span>
+        <span id="step7LiveStatusStep" class="studio-field-hint" style="display: block; margin-top: 0.25rem;"></span>
+      </div>
+      <!-- VO script generating indicator — shown while pipeline is writing the script -->
+      <div id="voScriptGenerating" style="display: none; align-items: center; gap: 0.6rem; margin-bottom: 0.75rem;">
+        <span class="studio-spinner" aria-hidden="true"></span>
+        <span style="font-size: 0.88rem; color: var(--c-text-secondary);">Writing VO script… this usually takes 20–60 seconds.</span>
+      </div>
+      <div class="studio-field">
+        <textarea class="studio-textarea" id="voScript" rows="10" placeholder="VO will appear here when the pipeline generates it (wait a few seconds in step-by-step mode)"></textarea>
+        <p class="studio-field-hint"><span id="voWordCount">0</span> words · ~<span id="voDuration">0</span>s</p>
+        <p class="studio-field-hint" style="margin-top: 0.35rem;"><strong>Format:</strong> <code>|||</code> separates one VO segment per visual scene (required for scene alignment). Square brackets like <code>[dramatically]</code> or <code>[pause]</code> are audio tags — they control delivery and are not spoken. You may edit freely; keep <code>|||</code> between scenes unless you switch to a single continuous line (then the pipeline may fall back to sentence-based scene splits).</p>
+      </div>
+      <!-- Hidden input stores the current effective VO voice ID (written by app.js from designed/selected voice) -->
+      <input type="hidden" id="voEffectiveVoiceId" value="" />
+
+      <div id="step7VoiceBlock" class="studio-field" style="display: none;">
+        <label class="studio-label">Voice (ElevenLabs)</label>
+
+        <!-- Designed-voice section: auto-populated via /api/voice-design -->
+        <div id="voiceDesignWrap">
+          <div id="voiceDesignLoading" style="display: none;">
+            <span class="studio-spinner" aria-hidden="true"></span>
+            <span style="margin-left: 0.5rem; font-size: 0.85rem; color: var(--c-text-secondary);">Designing a matching voice…</span>
+          </div>
+          <div id="voiceDesignError" class="studio-field-hint" style="display: none; color: var(--c-error, #c0392b);"></div>
+          <!-- Preview cards are rendered here by app.js -->
+          <div id="voiceDesignPreviews" style="margin-top: 0.5rem;"></div>
+          <p class="studio-field-hint" id="voiceDesignSaveHint" style="margin-top: 0.35rem; display: none;">Click <strong>▶ Preview</strong> to audition, then <strong>Use this</strong> to save it to your ElevenLabs library and use it for generation.</p>
+          <button type="button" class="studio-btn studio-btn-secondary studio-btn-sm" id="btnRedesignVoice" style="display: none; margin-top: 0.5rem;">Redesign voice suggestions</button>
+        </div>
+
+        <details style="margin-top: 0.75rem;">
+          <summary class="studio-field-hint" style="cursor: pointer; user-select: none;">Or choose from list / paste ID manually</summary>
+          <div style="margin-top: 0.5rem;">
+            <select id="voVoiceSelect" class="studio-input" style="max-width: 20rem;"></select>
+            <p class="studio-field-hint" style="margin-top: 0.5rem;">Or paste a voice ID below:</p>
+            <input type="text" id="voVoiceIdManual" class="studio-input" placeholder="e.g. 21m00Tcm4TlvDq8ikWAM" style="max-width: 24rem; margin-top: 0.25rem;" />
+          </div>
+        </details>
+
+        <button type="button" class="studio-btn studio-btn-secondary" id="btnGenerateVOInStep7" style="margin-top: 0.75rem;">Generate VO</button>
+      </div>
+      <div id="voAudioPlayerWrap" class="studio-field studio-audio-player" style="display: none;">
+        <label class="studio-label">Voiceover audio</label>
+        <audio id="voAudio" controls></audio>
+      </div>
+      <div class="studio-nav">
+        <button type="button" class="studio-btn studio-btn-back" data-prev="7">
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_back</span>
+          Back
+        </button>
+        <button type="button" class="studio-btn studio-btn-primary-lg" id="btnStep7ApproveContinue">
+          Approve and continue
+          <span class="material-symbols-outlined" style="font-size:1.1rem">check</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Step 10: Music -->
+    <section class="studio-step" id="step9music" data-step="10">
+      <h2 class="studio-step-title">Background music</h2>
+      <p class="studio-step-desc" id="musicStepDesc">Edit the music description if needed, then generate or regenerate. Approve when ready. On <strong>product video</strong>, music often started automatically while you were on Preferences (TEXT 1–3) — the player below should already show a track when Suno finishes.</p>
+      <div id="ugcPostGridPipelineActivity" class="studio-nine-cell-activity studio-post-grid-activity" style="display: none; margin-bottom: 1rem;" aria-live="polite">
+        <div class="studio-nine-cell-activity-head">
+          <span class="studio-spinner studio-spinner-off" id="ugcPostGridSpinner" aria-hidden="true"></span>
+          <div class="studio-nine-cell-activity-copy">
+            <div class="studio-nine-cell-activity-title" id="ugcPostGridPipelineActivityTitle">—</div>
+            <p class="studio-field-hint" id="ugcPostGridPipelineActivitySub" style="margin: 0.35rem 0 0;"></p>
+          </div>
+        </div>
+        <div class="studio-progress-track studio-nine-cell-progress-track" id="ugcPostGridProgressTrack" style="display: none;">
+          <div class="studio-progress-fill" id="ugcPostGridProgressFill"></div>
+        </div>
+        <ul class="studio-pipeline-mini" id="ugcPostGridPipelineMini"></ul>
+        <p class="studio-field-hint" id="ugcPostGridPipelineActivityHint" style="margin-top: 0.75rem; margin-bottom: 0;"></p>
+      </div>
+      <div class="studio-field">
+        <label class="studio-label">Music description (used by Suno)</label>
+        <textarea class="studio-textarea" id="musicDescription" rows="3" placeholder="Generated from your content; edit to change mood or style"></textarea>
+      </div>
+      <div class="studio-audio-player" id="musicPlayer" style="display: none;">
+        <audio id="musicAudio" controls></audio>
+      </div>
+      <p class="studio-status" id="musicStatus">Music will appear when ready.</p>
+      <div class="studio-field studio-btn-row">
+        <button type="button" class="studio-btn studio-btn-secondary" id="btnRegenerateMusic">Regenerate music</button>
+        <button type="button" class="studio-btn studio-btn-primary" id="btnApproveMusic">Approve and continue</button>
+      </div>
+      <div class="studio-nav">
+        <button type="button" class="studio-btn studio-btn-back" data-prev="9">
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_back</span>
+          Back
+        </button>
+        <button type="button" class="studio-btn studio-btn-primary-lg" data-next="11">
+          Next
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Step 11: Scene assets (ref images, assets, clean product, logo, slogan; visibility by video type) -->
+    <section class="studio-step" id="step10assets" data-step="11">
+      <h2 class="studio-step-title" id="step9Title">Scene assets</h2>
+      <p class="studio-step-desc" id="step9Desc">Reference images, asset clips, logo, and slogan. (Product photos and character are set in step 4; if you skipped character upload, a portrait is generated in the background and applied automatically.)</p>
+      <div id="ugcRealSceneAssetsFlowHint" class="studio-status studio-status-success" style="display: none; margin-bottom: 1rem;" role="status">
+        <strong>UGC Real — you are in the right place.</strong> Wizard <strong>step 12 of 16</strong> opens after <strong>Background music</strong> (Next or Approve and continue). Your nine-cell storyboard and master grid already defined the shots; this screen is only for <strong>optional</strong> extra product shots, UI screenshots, B-roll, or logo. Use <strong>Next</strong> to Scene prompts, then Scene images — nine stills sync from the grid without starting a separate “phase 3” job.
+      </div>
+      <div id="mediaRefImagesBlock" class="studio-media-block">
+        <h3 class="studio-block-title" id="refImagesBlockTitle">Reference images 1–5</h3>
+        <div id="refImageZones"></div>
+      </div>
+      <div id="mediaAssetsBlock" class="studio-media-block">
+        <h3 class="studio-block-title" id="assetsBlockTitle">Assets 1–3</h3>
+        <div id="assetZones"></div>
+      </div>
+      <div id="mediaLogoSloganBlock" class="studio-media-block">
+        <h3 class="studio-block-title">Logo & slogan</h3>
+        <div class="studio-grid-2">
+          <div class="studio-field">
+            <label class="studio-label">Logo</label>
+            <div id="logoZone"></div>
+          </div>
+          <div class="studio-field">
+            <label class="studio-label">Slogan</label>
+            <input type="text" class="studio-input" id="slogan" placeholder="Optional slogan for CTA">
+          </div>
+        </div>
+      </div>
+      <div class="studio-nav">
+        <button type="button" class="studio-btn studio-btn-back" data-prev="10">
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_back</span>
+          Back
+        </button>
+        <p id="step10assetsProductPhase3Hint" class="studio-field-hint" style="margin-top: 0.75rem;">Runs Media Director (clip plan) then Prompt Writer. Typically about 30–90 seconds; many reference images or asset clips add a bit more time.</p>
+        <button type="button" class="studio-btn studio-btn-primary-lg" id="btnGenerateScenePrompts">
+          Generate scene prompts
+          <span class="material-symbols-outlined" style="font-size:1.1rem">auto_awesome</span>
+        </button>
+        <button type="button" class="studio-btn studio-btn-ghost" data-next="12">Skip →</button>
+      </div>
+    </section>
+
+    <!-- Step 12: Scene prompts -->
+    <section class="studio-step" id="step11prompts" data-step="12">
+      <h2 class="studio-step-title">Scene prompts</h2>
+      <p class="studio-step-desc" id="scenePromptsStepDesc">Review and edit the generated scene prompts. Click <strong>Generate images</strong> to call the API and open the scene images step (your server then talks to Kie or Vertex). Use <strong>Back</strong> on that step to return here if needed.</p>
+      <div id="scenePromptsActivity" class="studio-status studio-step7-live-status" style="display: none; margin-bottom: 1rem;" aria-live="polite">
+        <div style="display: flex; align-items: flex-start; gap: 0.65rem;">
+          <span class="studio-spinner studio-spinner-off" id="scenePromptsSpinner" style="display: none; flex-shrink: 0; margin-top: 0.2rem;" aria-hidden="true"></span>
+          <div style="flex: 1; min-width: 0;">
+            <div id="scenePromptsActivityTitle" class="studio-field-hint" style="margin: 0; color: var(--studio-text); font-weight: 600;">—</div>
+            <p class="studio-field-hint" id="scenePromptsActivitySub" style="margin: 0.35rem 0 0; font-size: 0.8125rem;">—</p>
+          </div>
+        </div>
+      </div>
+      <p id="scenePromptsStatus" class="studio-field-hint" aria-live="polite"></p>
+      <div id="scenePromptsGrid" class="studio-scene-prompts-grid"></div>
+      <div class="studio-nav studio-nav-single">
+        <button type="button" class="studio-btn studio-btn-secondary" id="btnGenerateImages">Generate images</button>
+      </div>
+    </section>
+
+    <!-- Step 13: Scene images -->
+    <section class="studio-step" id="step12images" data-step="13">
+      <h2 class="studio-step-title">Scene images</h2>
+      <p class="studio-step-desc">The browser calls <strong>your API</strong> (<code>/api/generate-scene-image</code>) — not Kie directly — so DevTools will not show requests to <code>kie.ai</code>. If you see <strong>0 / N</strong> and no placeholders, you skipped generation: click <strong>Generate all scene images</strong> below (or go back to step 10 and use <strong>Generate images</strong>). Add correction text and use Regenerate / Fix as needed. When satisfied, click <strong>Animate all</strong>. <strong>Timing:</strong> each image is often ~30–90 seconds. Failed slots show a red message.</p>
+      <p class="studio-field-hint" id="step11ProgressLine" style="display: none; margin-bottom: 0.75rem; font-weight: 600;"></p>
+      <div id="step11Status" class="studio-status" style="display: none; margin-bottom: 1rem;"></div>
+      <div class="studio-media-grid studio-scene-images-grid" id="sceneImagesGrid"></div>
+      <div class="studio-nav">
+        <button type="button" class="studio-btn studio-btn-back" data-prev="12">
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_back</span>
+          Back
+        </button>
+        <button type="button" class="studio-btn studio-btn-secondary" id="btnGenerateImagesStep11">Generate all scene images</button>
+        <button type="button" class="studio-btn studio-btn-primary-lg" id="btnAnimateAll">
+          Animate all
+          <span class="material-symbols-outlined" style="font-size:1.1rem">movie</span>
+        </button>
+        <button type="button" class="studio-btn studio-btn-ghost" data-next="14">Skip →</button>
+      </div>
+    </section>
+
+    <!-- Step 14: Final video (animation runs here after Animate all) -->
+    <section class="studio-step" id="step13final" data-step="14">
+      <h2 class="studio-step-title">Final video</h2>
+      <p class="studio-step-desc">After Animate all, clips appear below as they finish. The job then pauses so you can review. Click <strong>Approve animations &amp; assemble final video</strong> when ready — only then Rendi runs (concat + VO + music).</p>
+      <div id="sceneVideosSection" style="margin-bottom: 1.5rem;">
+        <h3 class="studio-label" style="margin-bottom: 0.5rem;">Scene animations</h3>
+        <p class="studio-field-hint" id="animationProgressLine" style="display: none; margin-bottom: 0.5rem; font-weight: 600;">0 / N scene videos ready</p>
+        <p class="studio-field-hint" id="animationProgressExplainer" style="display: none; margin: 0 0 0.75rem; max-width: 52rem; line-height: 1.45;"></p>
+        <!-- Startup indicator: shows spinner + elapsed time while animation pipeline is initialising (0 clips ready) -->
+        <div id="animationStartupPanel" class="studio-nine-cell-activity" style="display: none; margin: 0 0 0.85rem;">
+          <div class="studio-nine-cell-activity-head">
+            <div class="studio-spinner" id="animationStartupSpinner"></div>
+            <div style="flex: 1; min-width: 0;">
+              <p id="animationStartupText" style="margin: 0; font-weight: 600; font-size: 0.9rem; color: var(--studio-text);"></p>
+              <p id="animationStartupSub" style="margin: 0.3rem 0 0; font-size: 0.8125rem; color: var(--studio-text-secondary, #94a3b8); line-height: 1.45;"></p>
+            </div>
+          </div>
+        </div>
+        <div class="studio-media-grid studio-scene-images-grid" id="sceneVideosGrid"></div>
+      </div>
+      <div id="finalVideoPlaceholder" class="studio-card" style="text-align: center; padding: 2rem;">
+        <p class="studio-text-secondary" id="finalVideoPlaceholderText">Click &quot;Animate all&quot; on the previous step to animate scenes and assemble the final video. Progress will appear here.</p>
+        <button type="button" class="studio-btn studio-btn-primary" id="btnGenerateFinal" style="margin-top: 1rem; display: none;">Approve animations &amp; assemble final video</button>
+        <p id="tryAnimateAgainWrap" style="margin-top: 1.25rem;"><button type="button" class="studio-btn studio-btn-secondary" id="btnTryAnimateAgain">Try Animate all again</button></p>
+        <p id="tryAnimateAgainHint" class="studio-field-hint" style="margin-top: 0.25rem;">Only if Animate all failed before any scene video appeared. Hidden while final video is assembling — do not use then.</p>
+        <p id="retryAllAnimationsWrap" style="margin-top: 1rem;"><button type="button" class="studio-btn studio-btn-secondary" id="btnRetryAllAnimations">Retry all scene animations</button></p>
+        <p id="retryAllAnimationsHint" class="studio-field-hint" style="margin-top: 0.25rem;">Clears every scene clip and runs the animation phase again (same images). If the job is still processing, the server pauses first — may take a minute.</p>
+      </div>
+      <div id="finalAssemblyLive" class="studio-card studio-status" style="display: none; margin-bottom: 1rem; padding: 0.75rem 1rem;">
+        <strong>Final assembly</strong>
+        <p id="finalAssemblyLiveText" class="studio-field-hint" style="margin: 0.35rem 0 0 0;">Starting…</p>
+      </div>
+      <div id="finalVideoResult" style="display: none;">
+        <div id="finalVideoWithSubsBlock" style="margin-bottom: 1.5rem;">
+          <h3 class="studio-label" style="margin-bottom: 0.5rem;">Final deliverable (with subtitles when enabled)</h3>
+          <p class="studio-field-hint" style="margin-bottom: 0.5rem;">After ZapCap when &quot;Add subtitles&quot; is on; otherwise the mixed VO+music master.</p>
+          <video id="finalVideoPlayer" controls class="studio-final-video" playsinline crossorigin="anonymous"></video>
+          <p style="margin-top: 0.5rem;">
+            <button type="button" id="finalVideoDownload" class="studio-btn studio-btn-secondary">Download</button>
+            <a id="finalVideoOpenTab" href="#" target="_blank" rel="noopener noreferrer" class="studio-btn studio-btn-ghost" style="display: none; margin-left: 0.5rem;">Open in new tab</a>
+          </p>
+        </div>
+        <div id="finalVideoNoSubsBlock" style="display: none; margin-bottom: 1rem;">
+          <h3 class="studio-label" style="margin-bottom: 0.5rem;">Before ZapCap (no burned-in subtitles)</h3>
+          <p class="studio-field-hint" style="margin-bottom: 0.5rem;">VO + music mix only — this file is what we send to ZapCap for caption burn-in.</p>
+          <video id="finalVideoNoSubsPlayer" controls class="studio-final-video" playsinline crossorigin="anonymous"></video>
+          <p style="margin-top: 0.5rem;">
+            <button type="button" id="finalVideoNoSubsDownload" class="studio-btn studio-btn-ghost">Download (no subtitles)</button>
+            <a id="finalVideoNoSubsOpenTab" href="#" target="_blank" rel="noopener noreferrer" class="studio-btn studio-btn-ghost" style="display: none; margin-left: 0.5rem;">Open in new tab</a>
+          </p>
+        </div>
+      </div>
+      <div class="studio-status" id="finalStatus"></div>
+      <div class="studio-nav">
+        <button type="button" class="studio-btn studio-btn-back" data-prev="13">
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_back</span>
+          Back
+        </button>
+      </div>
+    </section>
+
+    <!-- Step 15: Subtitles -->
+    <section class="studio-step" id="step14subs" data-step="15">
+      <h2 class="studio-step-title">Subtitles</h2>
+      <p class="studio-step-desc">Add subtitles to the final video. Choose template and position, then generate.</p>
+      <div class="studio-grid-2">
+        <div class="studio-field">
+          <label class="studio-label">Subtitle template</label>
+          <select class="studio-select" id="subtitleTemplateStep12"></select>
+        </div>
+        <div class="studio-field">
+          <label class="studio-label">Subtitle position</label>
+          <select class="studio-select" id="subtitlePositionStep12">
+            <option value="top">Top</option>
+            <option value="middle" selected>Middle</option>
+            <option value="bottom">Bottom</option>
+          </select>
+        </div>
+      </div>
+      <div class="studio-field">
+        <button type="button" class="studio-btn studio-btn-primary" id="btnAddSubtitles">Add subtitles</button>
+      </div>
+      <div id="subtitledVideoWrap" style="display: none;">
+        <video id="subtitledVideoPlayer" controls class="studio-final-video"></video>
+        <p><button type="button" id="subtitledVideoDownload" class="studio-btn studio-btn-secondary">Download with subtitles</button></p>
+      </div>
+      <div class="studio-nav">
+        <button type="button" class="studio-btn studio-btn-back" data-prev="14">
+          <span class="material-symbols-outlined" style="font-size:1.1rem">arrow_back</span>
+          Back
+        </button>
+      </div>
+    </section>
+
+    <details class="studio-api-log-details" id="apiLogDetails" style="margin-top: 2rem; border: 1px solid var(--studio-border, #e0e0e0); border-radius: 8px; padding: 0.5rem 1rem;">
+      <summary style="cursor: pointer; font-weight: 600;">API Log (browser → server + PIPE + EXT + LOG)</summary>
+      <p class="studio-field-hint" style="margin: 0.35rem 0 0.5rem; font-size: 0.8rem;"><strong>EXT</strong> = third-party activity: HTTP traces (<code>EXTERNAL_API</code>) when available, plus <strong>cost / usage lines</strong> (<code>COST</code>) after each billed model or API call (Gemini, Kie, ElevenLabs, …). For Studio routes that run on the server without a job (e.g. generate music, VO, character, voice design), an extra synthetic <strong>EXT</strong> line explains which providers the server will call. <strong>PIPE</strong> = internal step messages from pipeline-events. <strong>GET</strong> lines = <code>GET /api/jobs/…</code> (throttled when unchanged) and other REST calls from the Studio client — turn on <em>External APIs only</em> to hide those and focus on EXT. Server stdout: <code>[ExternalAPI]</code>.</p>
+      <style>
+        .studio-api-log-entries { max-height: 280px; overflow: auto; font-size: 0.8rem; font-family: ui-monospace, monospace; background: #1e1e1e; color: #d4d4d4; padding: 0.75rem; border-radius: 6px; line-height: 1.5; }
+        .studio-api-log-line { margin-bottom: 0.25rem; word-break: break-all; }
+        .studio-api-log-line .studio-log-ts { color: #6a9955; }
+        .studio-api-log-line .studio-log-method { color: #569cd6; font-weight: 600; }
+        .studio-api-log-line .studio-log-method.studio-log-ext { color: #dcdcaa; }
+        .studio-api-log-line .studio-log-path { color: #9cdcfe; }
+        .studio-api-log-line .studio-log-arrow { color: #808080; }
+        .studio-api-log-line .studio-log-status-2xx { color: #4ec9b0; font-weight: 600; }
+        .studio-api-log-line .studio-log-status-err { color: #f48771; font-weight: 600; }
+        .studio-api-log-line .studio-log-status { font-weight: 600; }
+        .studio-api-log-line .studio-log-meta { color: #858585; }
+        .studio-api-log-line .studio-log-err { color: #f48771; }
+      </style>
+      <div style="margin-top: 0.5rem;">
+        <button type="button" class="studio-btn studio-btn-ghost" id="apiLogClear" style="margin-bottom: 0.5rem;">Clear log</button>
+        <label class="studio-field-hint" style="display: inline-flex; align-items: center; gap: 0.35rem; margin-left: 0.75rem; cursor: pointer; font-size: 0.85rem;">
+          <input type="checkbox" id="apiLogExtOnly" />
+          External APIs only (hide GET/POST/PATCH/Pipeline log — off by default so all client calls appear)
+        </label>
+        <div id="apiLogEntries" class="studio-api-log-entries"></div>
+      </div>
+    </details>
+  </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/data.js?v=studio-25"></script>
+  <script src="js/waiting-overlay.js?v=studio-24"></script>
+  <script src="js/api.js?v=studio-30"></script>
+  <script src="js/auth.js?v=studio-24"></script>
+  <script src="js/upload.js?v=studio-25"></script>
+  <script src="js/steps.js?v=studio-33"></script>
+  <script src="js/media.js?v=studio-24"></script>
+  <script src="js/gallery.js?v=studio-24"></script>
+  <script src="js/app.js?v=studio-51"></script>
+  <script src="js/effects.js?v=vb-7"></script>
+</body>
+</html>

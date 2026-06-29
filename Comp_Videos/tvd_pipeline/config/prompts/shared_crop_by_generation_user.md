@@ -1,0 +1,1 @@
+Recreate this image in 9:16 portrait. use the same details, just zoom in little bit, using the same angle of the camera.

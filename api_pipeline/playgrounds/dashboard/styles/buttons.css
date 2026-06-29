@@ -1,0 +1,91 @@
+.btn-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent2);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-danger {
+  background: transparent;
+  border: 1px solid var(--red);
+  color: var(--red);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: rgba(239,68,68,0.1);
+}
+
+.btn-danger:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-warning {
+  background: transparent;
+  border: 1px solid var(--yellow);
+  color: var(--yellow);
+}
+
+.btn-warning:hover:not(:disabled) {
+  background: rgba(234,179,8,0.1);
+}
+
+.btn-warning:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-success {
+  background: transparent;
+  border: 1px solid var(--green);
+  color: var(--green);
+}
+
+.btn-success:hover:not(:disabled) {
+  background: rgba(34,197,94,0.1);
+}
+
+.btn-success:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.restart-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.restart-row select {
+  flex: 1;
+}
+
+.restart-row .btn {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+}
